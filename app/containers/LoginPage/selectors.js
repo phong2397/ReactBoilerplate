@@ -14,12 +14,16 @@ const selectLoginPageDomain = state => state.loginPage || initialState;
 /**
  * Default selector used by LoginPage
  */
-
 const makeSelectLoginPage = () =>
   createSelector(
     selectLoginPageDomain,
     substate => substate,
   );
+const makeSelectPhone = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.phone,
+  );
 
 export default makeSelectLoginPage;
-export { selectLoginPageDomain };
+export { selectLoginPageDomain, makeSelectPhone };
