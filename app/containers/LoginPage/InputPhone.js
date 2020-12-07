@@ -13,7 +13,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { SmartphoneOutlined } from '@material-ui/icons';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -47,7 +48,13 @@ const useStyles = makeStyles(theme =>
     },
   }),
 );
-export function InputPhone() {
+export function InputPhone({
+  companyIdValue,
+  phoneValue,
+  onChangeCompanyId,
+  onChangePhone,
+  onSubmitForm,
+}) {
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
   const classes = useStyles();
@@ -59,13 +66,15 @@ export function InputPhone() {
           Đăng Nhập
         </Typography>
       </div>
-      <form className={classes.form} noValidate>
+      <form className={classes.form} noValidate onSubmit={onSubmitForm}>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
           label="Nhập mã công ty"
+          value={companyIdValue}
+          onChange={evt => onChangeCompanyId(evt.target.value)}
         />
         <TextField
           variant="outlined"
@@ -73,14 +82,17 @@ export function InputPhone() {
           required
           fullWidth
           label="Số điện thoại"
+          value={phoneValue}
+          onChange={evt => onChangePhone(evt.target.value)}
         />
         <Box pt={1}>
           <Button
+            type="submit"
             variant="contained"
             fullWidth
             color="primary"
-            component={Link}
-            to="/login/verify"
+            // component={Link}
+            // to="/login/verify"
           >
             Gửi OTP
           </Button>
@@ -90,8 +102,12 @@ export function InputPhone() {
   );
 }
 
-// LoginPage.propTypes = {
-//   dispatch: PropTypes.func.isRequired,
-// };
+InputPhone.propTypes = {
+  companyIdValue: PropTypes.string,
+  phoneValue: PropTypes.string,
+  onChangePhone: PropTypes.func,
+  onChangeCompanyId: PropTypes.func,
+  onSubmitForm: PropTypes.func,
+};
 
 export default InputPhone;

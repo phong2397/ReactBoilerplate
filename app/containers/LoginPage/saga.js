@@ -1,10 +1,11 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 
 import request from 'utils/request';
 import moment from 'moment';
 import { makeSelectPhone } from './selectors';
-import { REQUEST_LOGIN, REQUEST_OTP } from './constants';
+import { REQUEST_OTP } from './constants';
+import { loadRequestOtp } from './actions';
+import { repoLoadingError } from '../App/actions';
 
 /**
  * Github repos request/response handler
@@ -21,7 +22,6 @@ export function* requestOtp() {
     },
     body: JSON.stringify({
       RequestDateTime: `${moment().format('YYYYMMDDhhmms')}`,
-      // "RequestDateTime": "20201130151525",
       RequestID: '{{$guid}}',
       FunctionName: 'SENDSMSOTP',
       Data: {
@@ -33,10 +33,11 @@ export function* requestOtp() {
   };
   try {
     // Call our request helper (see 'utils/request')
-    const repos = yield call(request, requestURL, parameters);
-    // yield put(reposLoaded(repos, username));
+    const response = yield call(request, requestURL, parameters);
+    console.log(response);
+    yield put(loadRequestOtp(response));
   } catch (err) {
-    // yield put(repoLoadingError(err));
+    yield put(repoLoadingError(err));
   }
 }
 

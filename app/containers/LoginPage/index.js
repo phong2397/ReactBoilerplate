@@ -5,20 +5,36 @@
  */
 
 import React from 'react';
-import { createStyles, makeStyles } from '@material-ui/core';
-// import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  createStyles,
+  IconButton,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+import {
+  KeyboardBackspaceOutlined,
+  SmartphoneOutlined,
+  Textsms,
+} from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import { Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectLoginPage from './selectors';
+import makeSelectLoginPage, {
+  makeSelectCompanyId,
+  makeSelectPhone,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import InputPhone from './InputPhone';
-import InputOtp from './InputOtp';
+
+import OtpInputCard from '../../components/OtpInputCard';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -49,7 +65,17 @@ const useStyles = makeStyles(theme =>
     },
     form: {
       width: '100%',
-      marginTop: theme.spacing(12),
+      padding: theme.spacing(2),
+    },
+    appHeader: {
+      background: 'linear-gradient(to right, #3cb88c, #2cb0d0)',
+      minWidth: '100%',
+      minHeight: '30vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
     },
     mainStyle: {
       // background: "rgb(60, 184, 140)",
@@ -58,7 +84,11 @@ const useStyles = makeStyles(theme =>
     },
   }),
 );
-export function LoginPage() {
+export function LoginPage({
+  onChangePhone,
+  onChangeCompanyId,
+  // onSubmitRequestOtp,
+}) {
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
   const classes = useStyles();
@@ -68,24 +98,118 @@ export function LoginPage() {
   return (
     <div className={classes.paper}>
       <Switch>
-        <Route exact path="/login" component={InputPhone} />
-        <Route path="/login/verify" component={InputOtp} />
+        <Route exact path="/login">
+          <div>
+            <div className={classes.appHeader}>
+              <SmartphoneOutlined style={{ fontSize: 40 }} />
+              <Typography variant="h4" gutterBottom>
+                Đăng Nhập
+              </Typography>
+            </div>
+            <form className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Nhập mã công ty"
+                onChange={onChangeCompanyId}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Số điện thoại"
+                onChange={onChangePhone}
+              />
+              <Box pt={1}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  // component={Link}
+                  // to="/login/verify"
+                >
+                  Gửi OTP
+                </Button>
+              </Box>
+            </form>
+          </div>
+        </Route>
+        <Route path="/login/verify">
+          <div
+            style={{
+              width: '100%',
+              minHeight: '100vh',
+            }}
+          >
+            <div className={classes.appHeader}>
+              <Textsms style={{ fontSize: 40 }} />
+              <Typography variant="h4" gutterBottom>
+                Nhập mã OTP
+              </Typography>
+              <IconButton
+                style={{
+                  color: '#ffff',
+                }}
+                component={Link}
+                to="/login"
+              >
+                <KeyboardBackspaceOutlined />
+              </IconButton>
+            </div>
+            <form className={classes.form} noValidate>
+              <OtpInputCard
+                // autoFocus
+                w={1}
+                OTPLength={6}
+                otpType="number"
+                disabled={false}
+                containerStyle={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  display: 'flex',
+                }}
+                inputStyle={{
+                  height: '45px',
+                  width: '45px',
+                  border: '1px solid #000000',
+                }}
+                separator={<span>-</span>}
+                // secure
+              />
+              <Box pt={1}>
+                <Button variant="contained" fullWidth color="primary">
+                  Xác nhận OTP
+                </Button>
+              </Box>
+            </form>
+          </div>
+        </Route>
       </Switch>
     </div>
   );
 }
-
-// LoginPage.propTypes = {
-//   dispatch: PropTypes.func.isRequired,
-// };
+LoginPage.propTypes = {
+  // dispatch: PropTypes.func.isRequired,
+  // companyId: PropTypes.string,
+  // phone: PropTypes.string,
+  onChangeCompanyId: PropTypes.func,
+  onChangePhone: PropTypes.func,
+  // onSubmitRequestOtp: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
   loginPage: makeSelectLoginPage(),
+  companyId: makeSelectCompanyId(),
+  phone: makeSelectPhone(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    onChangeCompanyId: () => console.log('Test'),
   };
 }
 
