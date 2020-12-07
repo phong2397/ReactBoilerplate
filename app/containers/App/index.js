@@ -15,12 +15,12 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import LoginPage from 'containers/LoginPage/Loadable';
 // import Header from 'components/Header';
 // import Footer from 'components/Footer';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import GlobalStyle from '../../global-styles';
-import { LoginPage } from '../LoginPage';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);

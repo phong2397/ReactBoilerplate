@@ -4,16 +4,11 @@
  *
  */
 import produce from 'immer';
-import {
-  CHANGE_COMPANYID,
-  CHANGE_PHONE,
-  DEFAULT_ACTION,
-  REQUEST_OTP,
-} from './constants';
+import { CHANGE_COMPANYID, CHANGE_PHONE, DEFAULT_ACTION } from './constants';
 
 export const initialState = {
-  companyId: '123123',
-  phone: '123123',
+  companyId: '',
+  phone: '',
   otp: '',
 };
 
@@ -28,11 +23,12 @@ const loginPageReducer = (state = initialState, action) =>
         draft.phone = action.phone;
         break;
       case CHANGE_COMPANYID:
+        console.log('COMPANY CHANGE');
         draft.companyId = action.companyId;
         break;
-      case REQUEST_OTP:
-        console.log('REQUEST OTP');
-        break;
+      // case REQUEST_OTP:
+      //   console.log('REQUEST OTP');
+      //   break;
     }
   });
 

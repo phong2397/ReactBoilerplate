@@ -35,7 +35,7 @@ import reducer from './reducer';
 import saga from './saga';
 
 import OtpInputCard from '../../components/OtpInputCard';
-
+import { changeCompanyId, changePhone, requestOtpAction } from './actions';
 const useStyles = makeStyles(theme =>
   createStyles({
     header: {
@@ -85,9 +85,11 @@ const useStyles = makeStyles(theme =>
   }),
 );
 export function LoginPage({
+  companyId,
+  phone,
   onChangePhone,
   onChangeCompanyId,
-  // onSubmitRequestOtp,
+  onSubmitRequestOtp,
 }) {
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
@@ -106,13 +108,18 @@ export function LoginPage({
                 Đăng Nhập
               </Typography>
             </div>
-            <form className={classes.form} noValidate>
+            <form
+              className={classes.form}
+              noValidate
+              // onSubmit={onSubmitRequestOtp}
+            >
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 label="Nhập mã công ty"
+                value={companyId}
                 onChange={onChangeCompanyId}
               />
               <TextField
@@ -121,16 +128,17 @@ export function LoginPage({
                 required
                 fullWidth
                 label="Số điện thoại"
+                value={phone}
                 onChange={onChangePhone}
               />
               <Box pt={1}>
                 <Button
-                  type="submit"
                   variant="contained"
                   fullWidth
                   color="primary"
                   // component={Link}
                   // to="/login/verify"
+                  onClick={onSubmitRequestOtp}
                 >
                   Gửi OTP
                 </Button>
@@ -194,11 +202,11 @@ export function LoginPage({
 }
 LoginPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
-  // companyId: PropTypes.string,
-  // phone: PropTypes.string,
+  companyId: PropTypes.string,
+  phone: PropTypes.string,
   onChangeCompanyId: PropTypes.func,
   onChangePhone: PropTypes.func,
-  // onSubmitRequestOtp: PropTypes.func,
+  onSubmitRequestOtp: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -209,7 +217,9 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeCompanyId: () => console.log('Test'),
+    onChangeCompanyId: evt => dispatch(changeCompanyId(evt.target.value)),
+    onChangePhone: evt => dispatch(changePhone(evt.target.value)),
+    onSubmitRequestOtp: () => dispatch(requestOtpAction()),
   };
 }
 

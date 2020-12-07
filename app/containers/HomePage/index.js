@@ -6,7 +6,6 @@
 
 import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
@@ -86,7 +85,7 @@ export function HomePage({
               <AtPrefix>
                 <FormattedMessage {...messages.trymeAtPrefix} />
               </AtPrefix>
-              <TextField
+              <Input
                 id="username"
                 type="text"
                 placeholder="mxstbr"
@@ -120,7 +119,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => console.log('Test'),
+    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
     onSubmitForm: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());

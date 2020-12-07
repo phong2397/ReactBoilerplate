@@ -26,6 +26,7 @@ export function changePhone(phone) {
   };
 }
 export function changeCompanyId(companyId) {
+  console.log(companyId);
   return {
     type: CHANGE_COMPANYID,
     companyId,
@@ -36,7 +37,8 @@ export function requestLoginAction() {
     type: REQUEST_LOGIN,
   };
 }
-export function requestOtp() {
+export function requestOtpAction() {
+  console.log('Request OTP 2');
   return {
     type: REQUEST_OTP,
   };

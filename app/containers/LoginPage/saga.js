@@ -4,8 +4,7 @@ import request from 'utils/request';
 import moment from 'moment';
 import { makeSelectPhone } from './selectors';
 import { REQUEST_OTP } from './constants';
-import { loadRequestOtp } from './actions';
-import { repoLoadingError } from '../App/actions';
+import { loadRequestOtp, requestOtpError } from './actions';
 
 /**
  * Github repos request/response handler
@@ -13,13 +12,14 @@ import { repoLoadingError } from '../App/actions';
 export function* requestOtp() {
   // const companyId = yield select(makeSelectCompanyId());
   const phone = yield select(makeSelectPhone());
-  const requestURL = `http://52.76.217.79:8080/smsgateway/api/v1/`;
+  const requestURL = `/smsgateway/api/v1/`;
   const parameters = {
     method: 'POST',
-    headers: {
+    headers: new Headers({
       'Content-Type': 'application/json',
-      Authorization: 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY=',
-    },
+      // prettier-ignore
+      'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
+    }),
     body: JSON.stringify({
       RequestDateTime: `${moment().format('YYYYMMDDhhmms')}`,
       RequestID: '{{$guid}}',
@@ -33,11 +33,13 @@ export function* requestOtp() {
   };
   try {
     // Call our request helper (see 'utils/request')
+    // console.log('Request Header ',);
+    console.log('Request OTP 3');
     const response = yield call(request, requestURL, parameters);
     console.log(response);
     yield put(loadRequestOtp(response));
   } catch (err) {
-    yield put(repoLoadingError(err));
+    yield put(requestOtpError(err));
   }
 }
 
