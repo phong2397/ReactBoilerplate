@@ -29,5 +29,16 @@ const makeSelectCompanyId = () =>
     selectLoginPageDomain,
     loginState => loginState.comapanyId,
   );
+const makeSelectError = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.error,
+  );
+
 export default makeSelectLoginPage;
-export { selectLoginPageDomain, makeSelectPhone, makeSelectCompanyId };
+export {
+  selectLoginPageDomain,
+  makeSelectPhone,
+  makeSelectCompanyId,
+  makeSelectError,
+};

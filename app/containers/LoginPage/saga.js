@@ -36,8 +36,8 @@ export function* requestOtp() {
     // console.log('Request Header ',);
     console.log('Request OTP 3');
     const response = yield call(request, requestURL, parameters);
-    console.log(response);
-    yield put(loadRequestOtp(response));
+    if (response.ResponseCode === '000') yield put(loadRequestOtp(response));
+    yield put(requestOtpError(response));
   } catch (err) {
     yield put(requestOtpError(err));
   }
