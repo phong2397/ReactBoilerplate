@@ -17,17 +17,17 @@ import PropTypes from 'prop-types';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-export function Document({ title, imageLink }) {
+export function Document(props) {
   return (
     <div>
-      <GridList cellHeight={200} spacing={1} cols={1}>
-        <GridListTile key={imageLink} cols={1} rows={1}>
-          <img src={imageLink} alt={title} />
+      <GridList spacing={1} cols={1}>
+        <GridListTile key={props.imageLink} cols={1} rows={1}>
+          <img src={props.imageLink} alt={props.title} />
           <GridListTileBar
-            title={title}
+            title={props.title}
             titlePosition="top"
             actionIcon={
-              <IconButton aria-label={`star ${title}`}>
+              <IconButton aria-label={`star ${props.title}`}>
                 <StarBorderIcon />
               </IconButton>
             }

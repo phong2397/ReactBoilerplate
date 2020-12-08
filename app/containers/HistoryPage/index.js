@@ -13,10 +13,14 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import OrderInfo from "components/OrderInfo";
+import { List, ListItem } from "@material-ui/core";
+import { Link } from "react-router-dom";
+
 import makeSelectHistoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+// import messages from './messages';
 
 export function HistoryPage() {
   useInjectReducer({ key: 'historyPage', reducer });
@@ -24,7 +28,16 @@ export function HistoryPage() {
 
   return (
     <div>
-      <FormattedMessage {...messages.header} />
+      <List>
+        <ListItem button component={Link} to="/orders/1">
+          <OrderInfo orderId="#0010" orderStatus="Đang chờ giải ngân" orderAmount="1000000" submitTime="7/12/2020 16:50"></OrderInfo>
+        </ListItem>
+       
+        <ListItem button component={Link} to="/orders/1">
+          <OrderInfo orderId="#0012" orderStatus="Đang chờ giải ngân" orderAmount="1000000" submitTime="1/12/2020 13:23"></OrderInfo>
+        </ListItem>
+
+      </List>
     </div>
   );
 }
