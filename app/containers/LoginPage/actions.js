@@ -7,11 +7,14 @@
 import {
   CHANGE_PHONE,
   CHANGE_COMPANYID,
+  CHANGE_OTP,
   DEFAULT_ACTION,
-  REQUEST_LOGIN,
   REQUEST_OTP,
   REQUEST_OTP_ERROR,
   REQUEST_OTP_SUCCESS,
+  REQUEST_LOGIN,
+  REQUEST_LOGIN_SUCCESS,
+  REQUEST_LOGIN_ERROR,
 } from './constants';
 
 export function defaultAction() {
@@ -26,15 +29,15 @@ export function changePhone(phone) {
   };
 }
 export function changeCompanyId(companyId) {
-  console.log(companyId);
   return {
     type: CHANGE_COMPANYID,
     companyId,
   };
 }
-export function requestLoginAction() {
+export function changeOtp(otp) {
   return {
-    type: REQUEST_LOGIN,
+    type: CHANGE_OTP,
+    otp,
   };
 }
 export function requestOtpAction() {
@@ -44,14 +47,32 @@ export function requestOtpAction() {
   };
 }
 export function loadRequestOtp(response) {
+  console.log('REQUEST OTP SUCCESS');
   return {
     type: REQUEST_OTP_SUCCESS,
     response,
   };
 }
-export function requestOtpError(err) {
+export function requestOtpError(error) {
   return {
     type: REQUEST_OTP_ERROR,
-    err,
+    error,
+  };
+}
+export function requestLoginAction() {
+  return {
+    type: REQUEST_LOGIN,
+  };
+}
+export function loadLoginSuccess(response) {
+  return {
+    type: REQUEST_LOGIN_SUCCESS,
+    response,
+  };
+}
+export function requestLoginError(error) {
+  return {
+    type: REQUEST_LOGIN_ERROR,
+    error,
   };
 }

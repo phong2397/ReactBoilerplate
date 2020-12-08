@@ -20,22 +20,33 @@ import {
   Textsms,
 } from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import { Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import { Alert } from '@material-ui/lab';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import OtpInput from 'react-otp-input';
 import makeSelectLoginPage, {
   makeSelectCompanyId,
+  makeSelectError,
+  makeSelectOtp,
   makeSelectPhone,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import OtpInputCard from '../../components/OtpInputCard';
-import { changeCompanyId, changePhone, requestOtpAction } from './actions';
+import {
+  changeCompanyId,
+  changeOtp,
+  changePhone,
+  requestLoginAction,
+  requestOtpAction,
+} from './actions';
+
 const useStyles = makeStyles(theme =>
   createStyles({
     header: {
@@ -84,19 +95,46 @@ const useStyles = makeStyles(theme =>
     },
   }),
 );
+const convertErrorStatus = code => {
+  switch (code) {
+    case '019':
+      return 'Số điện thoại không hợp lệ';
+    case '013':
+      return 'Yêu cầu gửi mã xác nhận quá nhiều';
+    default:
+      return 'Lỗi không xác định';
+  }
+};
 export function LoginPage({
+  errorServer,
   companyId,
   phone,
+  otp,
   onChangePhone,
   onChangeCompanyId,
+  onChangeOtpInput,
   onSubmitRequestOtp,
+  onSubmitValidateOtp,
 }) {
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
   const classes = useStyles();
-  // const [value, setValue] = React.useState(0);
-  // const changeScreen = index => {
-  //   setValue(index);
+  const schema = yup.object().shape({
+    companyId: yup.string().required(),
+    phone: yup.string().required(),
+  });
+  const { register, errors, handleSubmit } = useForm({
+    validationSchema: schema,
+  });
+
+  const onSubmit = () => onSubmitRequestOtp();
+  const onSubmitOtp = () => {
+    if (otp.length < 6) {
+      console.log('error');
+    } else {
+      onSubmitValidateOtp();
+    }
+  };
   return (
     <div className={classes.paper}>
       <Switch>
@@ -108,39 +146,50 @@ export function LoginPage({
                 Đăng Nhập
               </Typography>
             </div>
+
             <form
+              autoComplete="off"
               className={classes.form}
-              noValidate
-              // onSubmit={onSubmitRequestOtp}
+              onSubmit={handleSubmit(onSubmit)}
             >
+              {errorServer && (
+                <Alert severity="error">
+                  {convertErrorStatus(errorServer.ResponseCode)}
+                </Alert>
+              )}
               <TextField
-                variant="outlined"
-                margin="normal"
-                required
                 fullWidth
-                label="Nhập mã công ty"
+                id="companyId"
+                label="Mã công ty"
+                name="companyId"
+                inputRef={register({
+                  required: 'Mã công ty không được để trống',
+                })}
+                margin="normal"
+                variant="outlined"
                 value={companyId}
                 onChange={onChangeCompanyId}
+                error={!!errors.companyId}
+                helperText={errors.companyId ? errors.companyId.message : ''}
               />
               <TextField
-                variant="outlined"
-                margin="normal"
-                required
                 fullWidth
+                id="phone"
                 label="Số điện thoại"
+                name="phone"
+                inputRef={register({
+                  required: 'Số điện thoại không được để trống',
+                })}
                 value={phone}
                 onChange={onChangePhone}
+                margin="normal"
+                variant="outlined"
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone.message : ''}
               />
               <Box pt={1}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                  // component={Link}
-                  // to="/login/verify"
-                  onClick={onSubmitRequestOtp}
-                >
-                  Gửi OTP
+                <Button variant="contained" fullWidth type="submit">
+                  Submit
                 </Button>
               </Box>
             </form>
@@ -168,11 +217,20 @@ export function LoginPage({
                 <KeyboardBackspaceOutlined />
               </IconButton>
             </div>
-            <form className={classes.form} noValidate>
-              <OtpInputCard
+            {/* {<p>{otp}</p>} */}
+            <form
+              className={classes.form}
+              onSubmit={handleSubmit(onSubmitOtp)}
+              noValidate
+            >
+              <OtpInput
                 // autoFocus
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={onChangeOtpInput}
                 w={1}
-                OTPLength={6}
+                numInputs={6}
                 otpType="number"
                 disabled={false}
                 containerStyle={{
@@ -189,7 +247,12 @@ export function LoginPage({
                 // secure
               />
               <Box pt={1}>
-                <Button variant="contained" fullWidth color="primary">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                >
                   Xác nhận OTP
                 </Button>
               </Box>
@@ -202,24 +265,32 @@ export function LoginPage({
 }
 LoginPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  errorServer: PropTypes.any,
   companyId: PropTypes.string,
   phone: PropTypes.string,
+  otp: PropTypes.string,
   onChangeCompanyId: PropTypes.func,
   onChangePhone: PropTypes.func,
+  onChangeOtpInput: PropTypes.func,
   onSubmitRequestOtp: PropTypes.func,
+  onSubmitValidateOtp: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loginPage: makeSelectLoginPage(),
   companyId: makeSelectCompanyId(),
   phone: makeSelectPhone(),
+  otp: makeSelectOtp(),
+  errorServer: makeSelectError(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeCompanyId: evt => dispatch(changeCompanyId(evt.target.value)),
     onChangePhone: evt => dispatch(changePhone(evt.target.value)),
+    onChangeOtpInput: otp => dispatch(changeOtp(otp)),
     onSubmitRequestOtp: () => dispatch(requestOtpAction()),
+    onSubmitValidateOtp: () => dispatch(requestLoginAction()),
   };
 }
 

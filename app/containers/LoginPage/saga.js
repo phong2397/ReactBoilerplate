@@ -1,10 +1,16 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-
+import { push } from 'connected-react-router';
 import request from 'utils/request';
 import moment from 'moment';
-import { makeSelectPhone } from './selectors';
-import { REQUEST_OTP } from './constants';
-import { loadRequestOtp, requestOtpError } from './actions';
+import { makeSelectData, makeSelectPhone, makeSelectOtp } from './selectors';
+import { REQUEST_LOGIN, REQUEST_OTP } from './constants';
+import {
+  loadRequestOtp,
+  requestLoginError,
+  requestOtpError,
+  loadLoginSuccess,
+} from './actions';
+import { saveAccessToken } from '../../utils/storage';
 
 /**
  * Github repos request/response handler
@@ -32,17 +38,52 @@ export function* requestOtp() {
     }),
   };
   try {
-    // Call our request helper (see 'utils/request')
-    // console.log('Request Header ',);
-    console.log('Request OTP 3');
     const response = yield call(request, requestURL, parameters);
-    if (response.ResponseCode === '000') yield put(loadRequestOtp(response));
-    yield put(requestOtpError(response));
+    if (response.ResponseCode === '000') {
+      yield put(push('/login/verify'));
+      yield put(loadRequestOtp(response));
+    } else yield put(requestOtpError(response));
   } catch (err) {
     yield put(requestOtpError(err));
   }
 }
-
+export function* doLogin() {
+  // const companyId = yield select(makeSelectCompanyId());
+  const data = yield select(makeSelectData());
+  const otp = yield select(makeSelectOtp());
+  const { systemtrace } = data;
+  const { tel } = data;
+  const requestURL = `/smsgateway/api/v1/`;
+  const parameters = {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      // prettier-ignore
+      'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
+    }),
+    body: JSON.stringify({
+      RequestDateTime: `${moment().format('YYYYMMDDhhmms')}`,
+      RequestID: '{{$guid}}',
+      FunctionName: 'VALIDATESMSOTP',
+      Data: {
+        otp,
+        systemtrace,
+        tel,
+      },
+    }),
+  };
+  try {
+    const response = yield call(request, requestURL, parameters);
+    if (response.ResponseCode === '000') {
+      // SAVE TOKEN
+      saveAccessToken(response.Data);
+      yield put(push('/'));
+      yield put(loadLoginSuccess(response));
+    } else yield put(requestLoginError(response));
+  } catch (err) {
+    yield put(requestLoginError(err));
+  }
+}
 // /**
 //  * Root saga manages watcher lifecycle
 //  */
@@ -58,4 +99,5 @@ export function* requestOtp() {
 export default function* loginPageSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(REQUEST_OTP, requestOtp);
+  yield takeLatest(REQUEST_LOGIN, doLogin);
 }
