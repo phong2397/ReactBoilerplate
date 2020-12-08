@@ -19,6 +19,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import TabPanel from '../TabPanel';
+import { AppBarMenu } from '../AppBarMenu';
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -50,6 +51,7 @@ function MainLayout({ homePage, profilePage, faqPage }) {
   };
   return (
     <div>
+      <AppBarMenu />
       <div>
         <TabPanel value={value} index={0}>
           {homePage}

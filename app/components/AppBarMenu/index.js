@@ -22,6 +22,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    minHeight: '5vh',
     position: 'fixed',
     top: 0,
     backgroundColor: '#3cb88c',
@@ -36,7 +37,7 @@ export function AppBarMenu() {
         <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6">Nguyen Van A</Typography>
+        <Typography variant="h6">Salary Advance</Typography>
       </Toolbar>
     </AppBar>
   );

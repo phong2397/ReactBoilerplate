@@ -26,7 +26,7 @@ export function FaqPage() {
   useInjectSaga({ key: 'faqPage', saga });
 
   return (
-    <Box p={3}>
+    <Box mt={6} p={3}>
       <List>
         {data.map(q => (
           <div key={q.id}>

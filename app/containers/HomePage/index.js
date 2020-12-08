@@ -50,10 +50,10 @@ function convertWithCommas(x) {
 const useStyles = makeStyles(theme =>
   createStyles({
     root: {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(8),
       // margin: theme.spacing(3),
       padding: theme.spacing(1),
-      minHeight: '90vh',
+      minHeight: '80vh',
     },
     rowStyle: {
       display: 'inline-block',

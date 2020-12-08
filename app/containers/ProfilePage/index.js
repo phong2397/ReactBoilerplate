@@ -36,7 +36,7 @@ export function ProfilePage() {
   useInjectSaga({ key: 'profilePage', saga });
 
   return (
-    <Box p={3}>
+    <Box mt={8} p={2}>
       <List spacing={12}>
         {/* User info */}
         <ListItem button component={Link} to="/profileinfo">
