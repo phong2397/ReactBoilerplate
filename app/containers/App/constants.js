@@ -8,7 +8,9 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
-
-export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
-export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
-export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
+export const ON_LOAD_APP = 'boilerplate/App/ON_LOAD_APP';
+export const ON_LOAD_APP_SUCCESS = 'boilerplate/App/ON_LOAD_APP_ERROR';
+export const ON_LOAD_APP_ERROR = 'boilerplate/App/ON_LOAD_APP_ERROR';
+export const AUTHENTICATED = 'boilerplate/App/AUTHENTICATED';
+export const UNAUTHENTICATED = 'boilerplate/App/UNAUTHENTICATED';
+export const REQUEST_LOGOUT = 'boilerplate/App/REQUEST_LOGOUT';

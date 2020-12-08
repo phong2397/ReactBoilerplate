@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -30,8 +30,9 @@ import ArrowForward from '@material-ui/icons/ArrowForwardIos';
 import makeSelectProfilePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import { doLogout } from '../App/actions';
 
-export function ProfilePage() {
+export function ProfilePage({ onClickSignOut }) {
   useInjectReducer({ key: 'profilePage', reducer });
   useInjectSaga({ key: 'profilePage', saga });
 
@@ -95,7 +96,7 @@ export function ProfilePage() {
         fullWidth
         variant="contained"
         color="inherit"
-        // onClick={}
+        onClick={onClickSignOut}
       >
         Đăng xuất
       </Button>
@@ -105,6 +106,7 @@ export function ProfilePage() {
 
 ProfilePage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  onClickSignOut: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -114,6 +116,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    onClickSignOut: () => dispatch(doLogout()),
   };
 }
 

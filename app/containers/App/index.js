@@ -29,6 +29,7 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import GlobalStyle from '../../global-styles';
 import MainLayout from '../../components/MainLayout';
+import PrivateRoute from '../../components/PrivateRoute';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -67,22 +68,19 @@ const theme = createMuiTheme({
 export default function App() {
   return (
     <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-      >
-        <meta name="description" content="A React.js Boilerplate application" />
+      <Helmet titleTemplate="%s - Salary Advance" defaultTitle="Salary Advance">
+        <meta name="description" content="A Salary Advance application" />
       </Helmet>
       <ThemeProvider theme={theme}>
         <Switch>
           <Route path="/login" component={LoginPage} />
-          <Route exact path="/">
+          <PrivateRoute exact path="/">
             <MainLayout
               homePage={HomePage}
               profilePage={ProfilePage}
               faqPage={FaqPage}
             />
-          </Route>
+          </PrivateRoute>
 
           <Route path="/orders/1" component={OrderDetailPage} />
 
