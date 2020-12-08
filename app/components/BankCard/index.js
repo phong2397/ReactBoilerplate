@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-function BankCard(props) {
+function BankCard({ bankName, accNo, accName }) {
   return (
     <Card>
       <CardContent>
@@ -28,7 +28,7 @@ function BankCard(props) {
             Ngân hàng
           </Box>
           <Box p={1}>
-            <b>{props.bankName}</b>
+            <b>{bankName}</b>
           </Box>
         </Box>
         <Box display="flex">
@@ -36,7 +36,7 @@ function BankCard(props) {
             Số tài khoản
           </Box>
           <Box p={1}>
-            <b>{props.bankNo}</b>
+            <b>{accNo}</b>
           </Box>
         </Box>
         <Box display="flex">
@@ -44,7 +44,7 @@ function BankCard(props) {
             Chủ tài khoản
           </Box>
           <Box p={1}>
-            <b>{props.accountName}</b>
+            <b>{accName}</b>
           </Box>
         </Box>
         {/* </div> */}
@@ -54,8 +54,8 @@ function BankCard(props) {
 }
 BankCard.propTypes = {
   bankName: PropTypes.string,
-  bankNo: PropTypes.number,
-  accountName: PropTypes.string,
+  accNo: PropTypes.string,
+  accName: PropTypes.string,
 };
 
 export default BankCard;

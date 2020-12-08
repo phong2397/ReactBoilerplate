@@ -1,129 +1,151 @@
-/*
+/**
+ *
  * HomePage
  *
- * This is the first thing users see of our App, at the '/' route
  */
 
-import React, { useEffect, memo } from 'react';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
+import React, { memo } from 'react';
 
-import { useInjectReducer } from 'utils/injectReducer';
-import { useInjectSaga } from 'utils/injectSaga';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import { FormattedMessage } from 'react-intl';
+import { createStructuredSelector } from 'reselect';
+import { Link } from 'react-router-dom';
+import { compose } from 'redux';
 import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
-import H2 from 'components/H2';
-import ReposList from 'components/ReposList';
-import AtPrefix from './AtPrefix';
-import CenteredSection from './CenteredSection';
-import Form from './Form';
-import Input from './Input';
-import Section from './Section';
-import messages from './messages';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
+  Button,
+  createStyles,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+
+// import makeSelectHomePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-const key = 'home';
+import makeSelectHomePage, {
+  makeSelectAccName,
+  makeSelectAmount,
+  makeSelectBankName,
+  makeSelectAccNo,
+  makeSelectCreditAmount,
+  makeSelectDefaultAmount,
+  makeSelectFeeAmount,
+  makeSelectStep,
+} from './selectors';
+import CustomizedSlider from '../../components/CustomizeSlider';
+import FeeToolTip from '../../components/FeeTooltip';
+import BankCard from '../../components/BankCard';
+import { changeSelectAmount } from './actions';
+
+function convertWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    root: {
+      marginTop: theme.spacing(3),
+    },
+    rowStyle: {
+      display: 'inline-block',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+  }),
+);
 
 export function HomePage({
-  username,
-  loading,
-  error,
-  repos,
-  onSubmitForm,
-  onChangeUsername,
+  creditAmount,
+  selectedAmount,
+  step,
+  defaultAmount,
+  feeAmount,
+  bankName,
+  accNo,
+  accName,
+  onChangeSlider,
 }) {
-  useInjectReducer({ key, reducer });
-  useInjectSaga({ key, saga });
-
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (username && username.trim().length > 0) onSubmitForm();
-  }, []);
-
-  const reposListProps = {
-    loading,
-    error,
-    repos,
-  };
-
+  useInjectReducer({ key: 'homePage', reducer });
+  useInjectSaga({ key: 'homePage', saga });
+  const classes = useStyles();
   return (
-    <article>
-      <Helmet>
-        <title>Home Page</title>
-        <meta
-          name="description"
-          content="A React.js Boilerplate application homepage"
+    <Grid container spacing={1} className={classes.root}>
+      <Grid item xs={12} className={classes.rowStyle}>
+        <Typography variant="subtitle1" align="center">
+          Mức lớn nhất bạn có thể ứng: {convertWithCommas(creditAmount)}đ
+        </Typography>
+        <Typography variant="subtitle1" align="center">
+          Số tiền lương được ứng:
+        </Typography>
+        <Typography variant="h3" align="center">
+          {convertWithCommas(selectedAmount)}đ
+        </Typography>
+      </Grid>
+      <Grid item xs={12} className={classes.rowStyle}>
+        <CustomizedSlider
+          min={0}
+          step={step}
+          max={creditAmount}
+          defaultValue={defaultAmount}
+          onChange={onChangeSlider}
         />
-      </Helmet>
-      <div>
-        <CenteredSection>
-          <H2>
-            <FormattedMessage {...messages.startProjectHeader} />
-          </H2>
-          <p>
-            <FormattedMessage {...messages.startProjectMessage} />
-          </p>
-        </CenteredSection>
-        <Section>
-          <H2>
-            <FormattedMessage {...messages.trymeHeader} />
-          </H2>
-          <Form onSubmit={onSubmitForm}>
-            <label htmlFor="username">
-              <FormattedMessage {...messages.trymeMessage} />
-              <AtPrefix>
-                <FormattedMessage {...messages.trymeAtPrefix} />
-              </AtPrefix>
-              <Input
-                id="username"
-                type="text"
-                placeholder="mxstbr"
-                value={username}
-                onChange={onChangeUsername}
-              />
-            </label>
-          </Form>
-          <ReposList {...reposListProps} />
-        </Section>
-      </div>
-    </article>
+      </Grid>
+      <Grid item xs={12} className={classes.rowStyle} align="center">
+        <Typography variant="subtitle2" align="center" display="inline">
+          Phí: {convertWithCommas(feeAmount)}đ<FeeToolTip />
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={12} className={classes.rowStyle}>
+        <BankCard bankName={bankName} accNo={accNo} accName={accName} />
+      </Grid>
+      <Grid item xs={12} className={classes.rowStyle}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/verify"
+        >
+          Yêu cầu ứng lương
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
+  creditAmount: PropTypes.number,
+  selectedAmount: PropTypes.number,
+  step: PropTypes.number,
+  defaultAmount: PropTypes.number,
+  onChangeSlider: PropTypes.func,
+  feeAmount: PropTypes.number,
+  bankName: PropTypes.string,
+  accNo: PropTypes.string,
+  accName: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  homePage: makeSelectHomePage(),
+  creditAmount: makeSelectCreditAmount(),
+  selectedAmount: makeSelectAmount(),
+  step: makeSelectStep(),
+  defaultAmount: makeSelectDefaultAmount(),
+  feeAmount: makeSelectFeeAmount(),
+  bankName: makeSelectBankName(),
+  accNo: makeSelectAccNo(),
+  accName: makeSelectAccName(),
 });
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    onSubmitForm: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
-    },
+    dispatch,
+    onChangeSlider: (evt, newValue) => dispatch(changeSelectAmount(newValue)),
   };
 }
 

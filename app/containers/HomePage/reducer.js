@@ -1,29 +1,31 @@
 /*
- * HomeReducer
  *
- * The reducer takes care of our data. Using actions, we can
- * update our application state. To add a new action,
- * add it to the switch statement in the reducer function
+ * HomePage reducer
  *
  */
-
 import produce from 'immer';
-import { CHANGE_USERNAME } from './constants';
+import { CHANGE_SELECTED_AMOUNT, DEFAULT_ACTION } from './constants';
 
-// The initial state of the App
 export const initialState = {
-  username: '',
+  creditAmount: 3000000,
+  selectedAmount: 1500000,
+  step: 100000,
+  defaultAmount: 1500000,
+  feeAmount: 150000,
+  bankName: 'SCB',
+  accNo: '0000 1234 5678 0112',
+  accName: 'Nguyen Van A',
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const homeReducer = (state = initialState, action) =>
+const homePageReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case CHANGE_USERNAME:
-        // Delete prefixed '@' from the github username
-        draft.username = action.username.replace(/@/gi, '');
+      case DEFAULT_ACTION:
         break;
+      case CHANGE_SELECTED_AMOUNT:
+        draft.selectedAmount = action.value;
     }
   });
 
-export default homeReducer;
+export default homePageReducer;
