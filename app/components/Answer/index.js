@@ -14,6 +14,7 @@ import { useParams, useHistory } from 'react-router-dom';
 // import styled from 'styled-components';
 
 function find(id) {
+  // eslint-disable-next-line eqeqeq
   return data.find(q => q.id == id);
 }
 
