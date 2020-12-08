@@ -14,7 +14,7 @@ import { useParams, useHistory } from 'react-router-dom';
 // import styled from 'styled-components';
 
 function find(id) {
-  return data.find(q => q.id.toString() === id.toString());
+  return data.find(q => q.id == id);
 }
 
 const data = [
@@ -152,7 +152,6 @@ function Answer() {
   const { id } = useParams();
   const history = useHistory();
   const item = find(id);
-  // console.log(item);
   const backFunc = () => {
     history.push('/faq');
   };

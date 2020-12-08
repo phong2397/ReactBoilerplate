@@ -11,6 +11,9 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import {Typography, Button } from '@material-ui/core';
+import { useHistory, useParams } from 'react-router-dom'; 
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectAnswerPage from './selectors';
@@ -22,9 +25,29 @@ export function AnswerPage() {
   useInjectReducer({ key: 'answerPage', reducer });
   useInjectSaga({ key: 'answerPage', saga });
 
+  let { id } = useParams();
+  let history = useHistory();
+  let item = find(id);
+  const backFunc = () => {
+    history.push('/faq');
+  };
+
   return (
     <div>
-      <FormattedMessage {...messages.header} />
+      {/* <FormattedMessage {...messages.header} /> */}
+      <Typography variant="h3" gutterBottom>
+        Câu hỏi #{id}
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        {item.question}
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        {item.answer}
+      </Typography>
+
+      <Button variant="contained" onClick={backFunc}>
+        Trờ lại
+      </Button>
     </div>
   );
 }

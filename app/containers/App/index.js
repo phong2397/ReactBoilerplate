@@ -84,7 +84,7 @@ export default function App() {
           <Route path="/documents" component={DocumentPage} />
 
           <Route path="/faq" component={FaqPage} />
-          <Route path="/answer" component={AnswerPage} />
+          <Route path="/question/:id" component={AnswerPage} />
           <Route path="/features" component={FeaturePage} />
 
           <Route path="" component={NotFoundPage} />
