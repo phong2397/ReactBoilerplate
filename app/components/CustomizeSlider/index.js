@@ -13,10 +13,6 @@ import { Slider, withStyles } from '@material-ui/core';
 // import messages from './messages';
 
 const CustomizedSlider = withStyles({
-  // root: {
-  //     color: "#52af77",
-  //     height: 8
-  // },
   thumb: {
     height: 24,
     width: 24,

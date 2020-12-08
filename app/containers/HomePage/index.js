@@ -13,6 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import {
+  Box,
   Button,
   createStyles,
   Grid,
@@ -50,6 +51,9 @@ const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       marginTop: theme.spacing(3),
+      // margin: theme.spacing(3),
+      padding: theme.spacing(1),
+      minHeight: '90vh',
     },
     rowStyle: {
       display: 'inline-block',
@@ -74,7 +78,7 @@ export function HomePage({
   useInjectSaga({ key: 'homePage', saga });
   const classes = useStyles();
   return (
-    <Grid container spacing={1} className={classes.root}>
+    <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
           Mức lớn nhất bạn có thể ứng: {convertWithCommas(creditAmount)}đ
@@ -87,13 +91,15 @@ export function HomePage({
         </Typography>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
-        <CustomizedSlider
-          min={0}
-          step={step}
-          max={creditAmount}
-          defaultValue={defaultAmount}
-          onChange={onChangeSlider}
-        />
+        <Box px={3}>
+          <CustomizedSlider
+            min={0}
+            step={step}
+            max={creditAmount}
+            defaultValue={defaultAmount}
+            onChange={onChangeSlider}
+          />
+        </Box>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle} align="center">
         <Typography variant="subtitle2" align="center" display="inline">

@@ -28,6 +28,7 @@ import LoginPage from 'containers/LoginPage/Loadable';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import GlobalStyle from '../../global-styles';
+import MainLayout from '../../components/MainLayout';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -74,8 +75,15 @@ export default function App() {
       </Helmet>
       <ThemeProvider theme={theme}>
         <Switch>
-          <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
+          <Route exact path="/">
+            <MainLayout
+              homePage={HomePage}
+              profilePage={ProfilePage}
+              faqPage={FaqPage}
+            />
+          </Route>
+
           <Route path="/orders/1" component={OrderDetailPage} />
 
           <Route path="/profile" component={ProfilePage} />
