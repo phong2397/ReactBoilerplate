@@ -223,6 +223,11 @@ export function LoginPage({
               onSubmit={handleSubmit(onSubmitOtp)}
               noValidate
             >
+              {errorServer && (
+                <Alert severity="error">
+                  {convertErrorStatus(errorServer.ResponseCode)}
+                </Alert>
+              )}
               <OtpInput
                 // autoFocus
                 id="otp"
