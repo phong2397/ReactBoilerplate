@@ -37,6 +37,7 @@ import makeSelectHomePage, {
   makeSelectDefaultAmount,
   makeSelectFeeAmount,
   makeSelectStep,
+  makeSelectRate,
 } from './selectors';
 import CustomizedSlider from '../../components/CustomizeSlider';
 import FeeToolTip from '../../components/FeeTooltip';
@@ -73,6 +74,7 @@ export function HomePage({
   accNo,
   accName,
   onChangeSlider,
+  rate,
 }) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
@@ -83,14 +85,14 @@ export function HomePage({
         <Typography variant="subtitle1" align="center">
           Mức lớn nhất bạn có thể ứng: {convertWithCommas(creditAmount)}đ
         </Typography>
+      </Grid>
+      <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
           Số tiền lương được ứng:
         </Typography>
-        <Typography variant="h3" align="center">
-          {convertWithCommas(selectedAmount)}đ
+        <Typography color="primary" variant="h3" align="center">
+          <b>{convertWithCommas(selectedAmount)}đ</b>
         </Typography>
-      </Grid>
-      <Grid item xs={12} className={classes.rowStyle}>
         <Box px={3}>
           <CustomizedSlider
             min={0}
@@ -100,10 +102,9 @@ export function HomePage({
             onChange={onChangeSlider}
           />
         </Box>
-      </Grid>
-      <Grid item xs={12} className={classes.rowStyle} align="center">
-        <Typography variant="subtitle2" align="center" display="inline">
-          Phí: {convertWithCommas(feeAmount)}đ<FeeToolTip />
+        <Typography variant="subtitle2" align="center" display="block">
+          Phí: {convertWithCommas(feeAmount)}đ
+          <FeeToolTip amount={selectedAmount} rate={rate} />
         </Typography>
       </Grid>
       <Grid item xs={12} md={12} className={classes.rowStyle}>
@@ -117,7 +118,7 @@ export function HomePage({
           component={Link}
           to="/verify"
         >
-          Yêu cầu ứng lương
+          <b>Yêu cầu ứng lương</b>
         </Button>
       </Grid>
     </Grid>
@@ -134,6 +135,7 @@ HomePage.propTypes = {
   bankName: PropTypes.string,
   accNo: PropTypes.string,
   accName: PropTypes.string,
+  rate: PropTypes.number,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -143,6 +145,7 @@ const mapStateToProps = createStructuredSelector({
   step: makeSelectStep(),
   defaultAmount: makeSelectDefaultAmount(),
   feeAmount: makeSelectFeeAmount(),
+  rate: makeSelectRate(),
   bankName: makeSelectBankName(),
   accNo: makeSelectAccNo(),
   accName: makeSelectAccName(),

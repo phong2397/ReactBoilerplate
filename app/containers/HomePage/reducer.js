@@ -10,6 +10,7 @@ export const initialState = {
   creditAmount: 3000000,
   selectedAmount: 1500000,
   step: 100000,
+  rate: 0.014,
   defaultAmount: 1500000,
   feeAmount: 150000,
   bankName: 'SCB',
@@ -24,6 +25,7 @@ const homePageReducer = (state = initialState, action) =>
       case DEFAULT_ACTION:
         break;
       case CHANGE_SELECTED_AMOUNT:
+        draft.feeAmount = action.value * draft.rate;
         draft.selectedAmount = action.value;
     }
   });

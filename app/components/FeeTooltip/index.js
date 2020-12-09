@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +15,7 @@ const HtmlTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-export default function FeeToolTip() {
+function FeeToolTip({ amount, rate }) {
   const [open, setOpen] = React.useState(false);
   const inputRef = React.createRef();
   const handleTooltipClose = () => {
@@ -41,18 +42,14 @@ export default function FeeToolTip() {
               <Typography color="inherit">Chi tiết</Typography>
               <b>Phí </b>
               <em>
-                {
-                  '= 4.500.000 * 0.05(TIền phí này được sử dụng để quản lý ứng dụng)'
-                }
+                {`= ${amount} * ${(rate * 100).toFixed(
+                  1,
+                )}%(TIền phí này được sử dụng để quản lý ứng dụng)`}
               </em>
             </React.Fragment>
           }
         >
-          <IconButton
-            onClick={handleTooltipOpen}
-            color="primary"
-            aria-label="add to shopping cart"
-          >
+          <IconButton onClick={handleTooltipOpen} color="primary">
             <HelpOutline />
           </IconButton>
         </HtmlTooltip>
@@ -60,3 +57,9 @@ export default function FeeToolTip() {
     </Box>
   );
 }
+FeeToolTip.propTypes = {
+  amount: PropTypes.number,
+  rate: PropTypes.number,
+};
+
+export default FeeToolTip;

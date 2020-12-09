@@ -66,6 +66,13 @@ const theme = createMuiTheme({
   },
 });
 export default function App() {
+  const mainLayout = () => (
+    <MainLayout
+      homePage={HomePage}
+      profilePage={ProfilePage}
+      faqPage={FaqPage}
+    />
+  );
   return (
     <AppWrapper>
       <Helmet titleTemplate="%s - Salary Advance" defaultTitle="Salary Advance">
@@ -74,14 +81,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <Switch>
           <Route path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/">
-            <MainLayout
-              homePage={HomePage}
-              profilePage={ProfilePage}
-              faqPage={FaqPage}
-            />
-          </PrivateRoute>
-
+          <PrivateRoute exact path="/" component={mainLayout} />
           <Route path="/orders/1" component={OrderDetailPage} />
 
           <Route path="/profile" component={ProfilePage} />

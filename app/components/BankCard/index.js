@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 
 function BankCard({ bankName, accNo, accName }) {
   return (
-    <Card>
+    <Card variant="outlined" square>
       <CardContent>
         {/* <div style={{ width: "100%" }} bgcolor="grey.300"> */}
         <Box display="flex" justifyContent="center">

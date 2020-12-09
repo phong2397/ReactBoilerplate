@@ -4,4 +4,7 @@ export const saveAccessToken = token => {
 export const deleteAccessToken = () => {
   localStorage.removeItem('accessToken');
 };
-export const getAccessToken = () => localStorage.getItem('accessToken');
+export const getAccessToken = () => {
+  console.log('Check ?');
+  return localStorage.getItem('accessToken');
+};

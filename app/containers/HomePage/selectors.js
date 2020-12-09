@@ -45,9 +45,13 @@ const makeSelectDefaultAmount = () =>
 const makeSelectFeeAmount = () =>
   createSelector(
     selectHomePageDomain,
-    homeState => homeState.defaultAmount,
+    homeState => homeState.feeAmount,
   );
-
+const makeSelectRate = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.rate,
+  );
 const makeSelectAccNo = () =>
   createSelector(
     selectHomePageDomain,
@@ -74,6 +78,7 @@ export {
   makeSelectStep,
   makeSelectDefaultAmount,
   makeSelectFeeAmount,
+  makeSelectRate,
   makeSelectAccNo,
   makeSelectBankName,
   makeSelectAccName,
