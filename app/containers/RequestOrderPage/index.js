@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Box, Button, makeStyles, Modal, Typography } from '@material-ui/core';
-import { CheckCircleOutline } from '@material-ui/icons';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -66,13 +66,13 @@ export function RequestOrderPage({
     <div className={classes.paper}>
       <Box display="flex" justifyContent="center">
         <Box p={1}>
-          <CheckCircleOutline style={{ fontSize: 80 }} />
+          <AssignmentTurnedInIcon style={{ fontSize: 80 }} color="primary" />
         </Box>
       </Box>
 
       <Box display="flex" justifyContent="center">
         <Box p={2}>
-          <Typography variant="h5" align="center">
+          <Typography variant="h6" align="center">
             Chúc mừng bạn đã gửi yêu cầu thành công
           </Typography>
         </Box>
@@ -86,7 +86,7 @@ export function RequestOrderPage({
             color="primary"
             onClick={confirmOrder}
           >
-            Xác nhận
+            <b>Xác nhận</b>
           </Button>
         </Box>
       </Box>
@@ -105,7 +105,7 @@ export function RequestOrderPage({
           />
           <Box p={1} />
           <BankCard bankName={bankName} accNo={accNo} accName={accName} />
-          <div>
+          <Box pt={2}>
             <Button
               fullWidth
               variant="contained"
@@ -123,7 +123,7 @@ export function RequestOrderPage({
             >
               {body}
             </Modal>
-          </div>
+          </Box>
         </Box>
       </SecondaryLayout>
     </div>

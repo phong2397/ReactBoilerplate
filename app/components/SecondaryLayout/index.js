@@ -8,14 +8,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
-  Container,
   IconButton,
+  makeStyles,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import { KeyboardBackspaceOutlined } from '@material-ui/icons';
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '100%',
+    height: '60vh',
+  },
+}));
 
 function SecondaryLayout({ children, title }) {
+  const classes = useStyles();
   return (
     <div>
       <AppBar position="static">
@@ -32,7 +39,7 @@ function SecondaryLayout({ children, title }) {
         </Toolbar>
       </AppBar>
       {/* <AppbarDetail title="Test" /> */}
-      <Container maxWidth="sm">{children}</Container>
+      <div className={classes.root}>{children}</div>
     </div>
   );
 }

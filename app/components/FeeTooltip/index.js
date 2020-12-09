@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { Box, ClickAwayListener, IconButton } from '@material-ui/core';
 import HelpOutline from '@material-ui/icons/HelpOutline';
+import { convertWithCommas } from '../../utils/formater';
 
 const HtmlTooltip = withStyles(theme => ({
   tooltip: {
@@ -42,7 +43,7 @@ function FeeToolTip({ amount, rate }) {
               <Typography color="inherit">Chi tiết</Typography>
               <b>Phí </b>
               <em>
-                {`= ${amount} * ${(rate * 100).toFixed(
+                {`= ${convertWithCommas(amount)}đ * ${(rate * 100).toFixed(
                   1,
                 )}%(TIền phí này được sử dụng để quản lý ứng dụng)`}
               </em>

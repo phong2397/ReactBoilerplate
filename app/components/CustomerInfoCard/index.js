@@ -7,6 +7,7 @@
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { convertWithCommas } from '../../utils/formater';
 // import styled from 'styled-components';
 
 function CustomerInfoCard({
@@ -58,7 +59,7 @@ function CustomerInfoCard({
               Số tiền ứng lương
             </Box>
             <Box p={1}>
-              <b>{amount}</b>
+              <b>{convertWithCommas(amount)}đ</b>
             </Box>
           </Box>
           <Box display="flex">
@@ -66,7 +67,7 @@ function CustomerInfoCard({
               Phí
             </Box>
             <Box p={1}>
-              <b>{feeAmount}</b>
+              <b>{convertWithCommas(feeAmount)}đ</b>
             </Box>
           </Box>
         </div>
