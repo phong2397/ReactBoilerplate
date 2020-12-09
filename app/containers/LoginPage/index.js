@@ -101,6 +101,8 @@ const convertErrorStatus = code => {
       return 'Số điện thoại không hợp lệ';
     case '013':
       return 'Yêu cầu gửi mã xác nhận quá nhiều';
+    case '014':
+      return 'Mã xác nhận không đúng';
     default:
       return 'Lỗi không xác định';
   }
@@ -143,7 +145,7 @@ export function LoginPage({
             <div className={classes.appHeader}>
               <SmartphoneOutlined style={{ fontSize: 40 }} />
               <Typography variant="h4" gutterBottom>
-                Đăng Nhập
+                <b>Đăng Nhập</b>
               </Typography>
             </div>
 
@@ -188,8 +190,13 @@ export function LoginPage({
                 helperText={errors.phone ? errors.phone.message : ''}
               />
               <Box pt={1}>
-                <Button variant="contained" fullWidth type="submit">
-                  Submit
+                <Button
+                  variant="contained"
+                  fullWidth
+                  type="submit"
+                  color="primary"
+                >
+                  <b>Gửi mã xác nhận</b>
                 </Button>
               </Box>
             </form>
@@ -228,29 +235,31 @@ export function LoginPage({
                   {convertErrorStatus(errorServer.ResponseCode)}
                 </Alert>
               )}
-              <OtpInput
-                // autoFocus
-                id="otp"
-                name="otp"
-                value={otp}
-                onChange={onChangeOtpInput}
-                w={1}
-                numInputs={6}
-                otpType="number"
-                disabled={false}
-                containerStyle={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  display: 'flex',
-                }}
-                inputStyle={{
-                  height: '45px',
-                  width: '45px',
-                  border: '1px solid #000000',
-                }}
-                separator={<span>-</span>}
-                // secure
-              />
+              <Box p={1}>
+                <OtpInput
+                  // autoFocus
+                  id="otp"
+                  name="otp"
+                  value={otp}
+                  onChange={onChangeOtpInput}
+                  w={1}
+                  numInputs={6}
+                  otpType="number"
+                  disabled={false}
+                  containerStyle={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}
+                  inputStyle={{
+                    height: '45px',
+                    width: '45px',
+                    border: '1px solid #000000',
+                  }}
+                  separator={<span>-</span>}
+                  // secure
+                />
+              </Box>
               <Box pt={1}>
                 <Button
                   type="submit"
