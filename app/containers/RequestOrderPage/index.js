@@ -32,8 +32,8 @@ import {
   makeSelectFeeAmount,
 } from '../HomePage/selectors';
 import BankCard from '../../components/BankCard';
-import SecondaryLayout from '../../components/SecondaryLayout';
 import { confirmOrderAction, sendOrderRequestAction } from './actions';
+import SubContent from '../SubContent/Loadable';
 const useStyles = makeStyles(theme => ({
   paper: {
     top: `50%`,
@@ -94,8 +94,8 @@ export function RequestOrderPage({
   );
   return (
     <div>
-      <SecondaryLayout title="Gửi yêu cầu ứng lương">
-        <Box pt={1} margin={1}>
+      <SubContent title="Gửi yêu cầu ứng lương">
+        <Box pt={3} margin={1}>
           <CustomerInfoCard
             customerId={customerId}
             customerName={customerName}
@@ -114,7 +114,6 @@ export function RequestOrderPage({
             >
               Yêu cầu ứng lương
             </Button>
-            <Modal />
             <Modal
               open={openModal}
               onClose={confirmOrder}
@@ -125,7 +124,7 @@ export function RequestOrderPage({
             </Modal>
           </Box>
         </Box>
-      </SecondaryLayout>
+      </SubContent>
     </div>
   );
 }
@@ -161,7 +160,6 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     sendOrderRequest: () => dispatch(sendOrderRequestAction()),
-    // setOpenModal: () => dispatch(openModalAction()),
     confirmOrder: () => dispatch(confirmOrderAction()),
   };
 }

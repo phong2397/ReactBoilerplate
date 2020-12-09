@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import OrderInfo from 'components/OrderInfo';
-import { List, ListItem } from '@material-ui/core';
+import { Box, List, ListItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import makeSelectHistoryPage from './selectors';
@@ -26,25 +26,27 @@ export function HistoryPage() {
 
   return (
     <SubContent title="Lịch sử yêu cầu">
-      <List>
-        <ListItem button component={Link} to="/orders/1">
-          <OrderInfo
-            orderId="#0010"
-            orderStatus="Đang chờ giải ngân"
-            orderAmount="1000000"
-            submitTime="7/12/2020 16:50"
-          />
-        </ListItem>
+      <Box mt={6}>
+        <List>
+          <ListItem button component={Link} to="/orders/1">
+            <OrderInfo
+              orderId="#0010"
+              orderStatus="Đang chờ giải ngân"
+              orderAmount="1000000"
+              submitTime="7/12/2020 16:50"
+            />
+          </ListItem>
 
-        <ListItem button component={Link} to="/orders/1">
-          <OrderInfo
-            orderId="#0012"
-            orderStatus="Đang chờ giải ngân"
-            orderAmount="1000000"
-            submitTime="1/12/2020 13:23"
-          />
-        </ListItem>
-      </List>
+          <ListItem button component={Link} to="/orders/1">
+            <OrderInfo
+              orderId="#0012"
+              orderStatus="Đang chờ giải ngân"
+              orderAmount="1000000"
+              submitTime="1/12/2020 13:23"
+            />
+          </ListItem>
+        </List>
+      </Box>
     </SubContent>
   );
 }

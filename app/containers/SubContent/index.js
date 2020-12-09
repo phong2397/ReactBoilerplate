@@ -7,6 +7,7 @@
 import React from 'react';
 import {
   AppBar,
+  Box,
   IconButton,
   makeStyles,
   Toolbar,
@@ -28,7 +29,12 @@ import saga from './saga';
 const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
-    height: '60vh',
+    height: '100vh',
+  },
+  appbar: {},
+  title: {
+    alignItems: 'center',
+    flexGrow: 1,
   },
 }));
 export function SubContent({ title, children, handleBack }) {
@@ -37,17 +43,28 @@ export function SubContent({ title, children, handleBack }) {
   const classes = useStyles();
   return (
     <div>
-      <AppBar position="fixed">
+      <AppBar className={classes.appbar} position="fixed">
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleBack}
+          <Box position="fixed">
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleBack}
+            >
+              <KeyboardBackspaceOutlined />
+            </IconButton>
+          </Box>
+
+          <Typography
+            position="fixed"
+            className={classes.title}
+            variant="h6"
+            align="center"
+            display="block"
           >
-            <KeyboardBackspaceOutlined />
-          </IconButton>
-          <Typography variant="h6">{title}</Typography>
+            {title}
+          </Typography>
         </Toolbar>
       </AppBar>
       {/* <AppbarDetail title="Test" /> */}

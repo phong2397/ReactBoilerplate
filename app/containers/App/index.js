@@ -23,8 +23,6 @@ import FaqPage from 'containers/FaqPage/Loadable';
 import AnswerPage from 'containers/AnswerPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-// import Header from 'components/Header';
-// import Footer from 'components/Footer';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
