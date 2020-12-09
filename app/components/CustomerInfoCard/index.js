@@ -9,7 +9,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-function CustomerInfoCard({ customerId, customerName, companyName, amount }) {
+function CustomerInfoCard({
+  customerId,
+  customerName,
+  companyName,
+  amount,
+  feeAmount,
+}) {
   return (
     <Card variant="outlined" square>
       <CardContent>
@@ -55,6 +61,14 @@ function CustomerInfoCard({ customerId, customerName, companyName, amount }) {
               <b>{amount}</b>
             </Box>
           </Box>
+          <Box display="flex">
+            <Box p={1} flexGrow={1}>
+              Phí
+            </Box>
+            <Box p={1}>
+              <b>{feeAmount}</b>
+            </Box>
+          </Box>
         </div>
       </CardContent>
     </Card>
@@ -66,6 +80,7 @@ CustomerInfoCard.propTypes = {
   customerName: PropTypes.string,
   companyName: PropTypes.string,
   amount: PropTypes.number,
+  feeAmount: PropTypes.number,
 };
 
 export default CustomerInfoCard;

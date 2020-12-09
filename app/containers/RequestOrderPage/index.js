@@ -29,6 +29,7 @@ import {
   makeSelectAccNo,
   makeSelectAmount,
   makeSelectBankName,
+  makeSelectFeeAmount,
 } from '../HomePage/selectors';
 import BankCard from '../../components/BankCard';
 import SecondaryLayout from '../../components/SecondaryLayout';
@@ -50,6 +51,7 @@ export function RequestOrderPage({
   customerName,
   companyName,
   amount,
+  feeAmount,
   bankName,
   accNo,
   accName,
@@ -99,6 +101,7 @@ export function RequestOrderPage({
             customerName={customerName}
             companyName={companyName}
             amount={amount}
+            feeAmount={feeAmount}
           />
           <Box p={1} />
           <BankCard bankName={bankName} accNo={accNo} accName={accName} />
@@ -131,7 +134,8 @@ RequestOrderPage.propTypes = {
   customerId: PropTypes.string,
   customerName: PropTypes.string,
   companyName: PropTypes.string,
-  amount: PropTypes.string,
+  amount: PropTypes.number,
+  feeAmount: PropTypes.number,
   bankName: PropTypes.string,
   accNo: PropTypes.string,
   accName: PropTypes.string,
@@ -145,6 +149,7 @@ const mapStateToProps = createStructuredSelector({
   customerName: makeSelectCustomerName(),
   companyName: makeSelectCompanyName(),
   amount: makeSelectAmount(),
+  feeAmount: makeSelectFeeAmount(),
   requestOrderPage: makeSelectRequestOrderPage(),
   bankName: makeSelectBankName(),
   accNo: makeSelectAccNo(),

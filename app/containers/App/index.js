@@ -21,7 +21,6 @@ import ProfileInfoPage from 'containers/ProfileInfoPage/Loadable';
 import DocumentPage from 'containers/DocumentPage/Loadable';
 import FaqPage from 'containers/FaqPage/Loadable';
 import AnswerPage from 'containers/AnswerPage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 // import Header from 'components/Header';
@@ -101,7 +100,6 @@ export default function App() {
 
           <Route path="/faq" component={FaqPage} />
           <Route path="/question/:id" component={AnswerPage} />
-          <Route path="/features" component={FeaturePage} />
 
           <Route path="" component={NotFoundPage} />
         </Switch>
