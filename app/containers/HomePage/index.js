@@ -83,12 +83,12 @@ export function HomePage({
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
-          Mức lớn nhất bạn có thể ứng: {convertWithCommas(creditAmount)}đ
+          Mức lớn nhất bạn có thể ứng {convertWithCommas(creditAmount)}đ
         </Typography>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
-          Số tiền lương được ứng:
+          Số tiền lương được ứng
         </Typography>
         <Typography color="primary" variant="h3" align="center">
           <b>{convertWithCommas(selectedAmount)}đ</b>
