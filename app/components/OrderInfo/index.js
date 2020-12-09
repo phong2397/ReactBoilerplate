@@ -32,10 +32,7 @@ function OrderInfo(props) {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography color="textSecondary" align="right" gutterBottom>
-              {' '}
-              VNĐ{' '}
-            </Typography>
+            <Typography color="textSecondary" align="right" gutterBottom />
           </Grid>
           <Divider />
 

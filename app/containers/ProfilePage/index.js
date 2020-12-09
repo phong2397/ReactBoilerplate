@@ -5,9 +5,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -24,14 +23,13 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import FolderIcon from '@material-ui/icons/Folder';
 import ArrowForward from '@material-ui/icons/ArrowForwardIos';
 
 import makeSelectProfilePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 
 export function ProfilePage() {
   useInjectReducer({ key: 'profilePage', reducer });
@@ -106,7 +104,7 @@ export function ProfilePage() {
 }
 
 ProfilePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -5,9 +5,8 @@
  */
 
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -19,7 +18,6 @@ import Document from 'components/Document';
 import makeSelectDocumentPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 
 export function DocumentPage() {
   useInjectReducer({ key: 'documentPage', reducer });
@@ -44,7 +42,7 @@ export function DocumentPage() {
 }
 
 DocumentPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

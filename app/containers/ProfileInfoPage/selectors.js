@@ -22,5 +22,80 @@ const makeSelectProfileInfoPage = () =>
     substate => substate,
   );
 
+const makeSelectCustomerName = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.customerName,
+  );
+const makeSelectCustomerId = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.customerId,
+  );
+const makeSelectCompanyName = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.companyName,
+  );
+const makeSelectCreditAmount = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.creditAmount,
+  );
+const makeSelectIdCard = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.idCard,
+  );
+const makeSelectCustomerAddress = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.customerAddress,
+  );
+const makeSelectIdCardIssueDate = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.idCardIssueDate,
+  );
+const makeSelectIdCardIssuePlace = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.idCardIssuePlace,
+  );
+const makeSelectBankName = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.bankName,
+  );
+const makeSelectAccountNumber = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.accountNumber,
+  );
+const makeSelectAccountName = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.accountName,
+  );
+const makeSelectListImages = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.listImages,
+  );
+
 export default makeSelectProfileInfoPage;
-export { selectProfileInfoPageDomain };
+export {
+  selectProfileInfoPageDomain,
+  makeSelectCustomerName,
+  makeSelectCustomerId,
+  makeSelectCompanyName,
+  makeSelectCreditAmount,
+  makeSelectIdCard,
+  makeSelectCustomerAddress,
+  makeSelectIdCardIssueDate,
+  makeSelectIdCardIssuePlace,
+  makeSelectBankName,
+  makeSelectAccountNumber,
+  makeSelectAccountName,
+  makeSelectListImages,
+};
