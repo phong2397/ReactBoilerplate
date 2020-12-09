@@ -5,20 +5,20 @@
  */
 
 import React, { memo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
   GridList,
   GridListTile,
   GridListTileBar,
   IconButton,
-  CameraAlt,
+  Button,
 } from '@material-ui/core';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { CameraAlt } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { useForm } from 'react-hook-form';
+
+import PropTypes from 'prop-types';
 
 const tileData = [
   {
@@ -34,101 +34,193 @@ const tileData = [
   },
 ];
 
-function ProfileForm(props) {
+const useStyles = makeStyles(theme => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '100%',
+    },
+    padding: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  grid: {
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
+}));
+
+function ProfileForm({
+  customerName,
+  customerId,
+  companyName,
+  creditAmount,
+  idCard,
+  customerAddress,
+  idCardIssueDate,
+  idCardIssuePlace,
+  bankName,
+  accountNumber,
+  accountName,
+}) {
+  const classes = useStyles();
+
+  const { register, handleSubmit } = useForm(); // initialize the hook
+  const onSubmit = data => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  };
+
   return (
     <div>
-      {/* <FormattedMessage {...messages.header} /> */}
-      <form noValidate autoComplete="off">
+      <form
+        id="form-profile"
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div>
           <TextField
             id="customer-name"
+            name="customer-name"
             label="Họ và tên"
-            defaultValue={props.customerName}
+            defaultValue={customerName}
             variant="filled"
+            inputRef={register({ required: true })}
           />
+
           <TextField
             id="customer-id"
+            name="customer-id"
             label="Mã nhân viên"
-            defaultValue={props.customerId}
+            defaultValue={customerId}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="company-name"
+            name="company-name"
             label="Làm việc tại"
-            defaultValue={props.companyName}
+            defaultValue={companyName}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="credit"
+            name="credit"
             label="Hạn mức lương"
-            defaultValue={props.creditAmount}
+            defaultValue={creditAmount}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="id-card"
-            label="Chứng minh nhân dân/Căn cước công dân"
-            defaultValue={props.idCard}
+            name="id-card"
+            label="CMND/CCCD"
+            defaultValue={idCard}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="address"
+            name="address"
             label="Địa chỉ"
-            defaultValue={props.customerAddress}
+            defaultValue={customerAddress}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="issue-date"
+            name="issue-date"
             label="Ngày cấp"
-            defaultValue={props.idCardIssueDate}
+            defaultValue={idCardIssueDate}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="issue-place"
+            name="issue-place"
             label="Nơi cấp"
-            defaultValue={props.idCardIssuePlace}
+            defaultValue={idCardIssuePlace}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="bank-name"
+            name="bank-name"
             label="Ngân hàng"
-            defaultValue={props.bankName}
+            defaultValue={bankName}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="account-number"
+            name="account-number"
             label="Số tài khoản"
-            defaultValue={props.accountNumber}
+            defaultValue={accountNumber}
             variant="filled"
+            inputRef={register({ required: true })}
           />
           <TextField
             id="account-name"
+            name="account-name"
             label="Chủ tài khoản"
-            defaultValue={props.accountName}
+            defaultValue={accountName}
             variant="filled"
+            inputRef={register({ required: true })}
           />
 
           {/* Image */}
           <GridList cols={1} rows={1}>
             {tileData.map((tile, index) => (
-              <GridListTile key={index}>
-                {/* <img src={tile.img} alt={tile.title} /> */}
+              // eslint-disable-next-line react/no-array-index-key
+              <GridListTile key={`grid-${index}`}>
+                <img src={tile.img} alt={tile.title} />
                 <GridListTileBar
                   title={tile.title}
-                  // actionIcon={
-                  //   <IconButton aria-label={`info about ${tile.title}`} >
-                  //     <CameraAlt />
-                  //   </IconButton>
-                  // }
+                  actionIcon={
+                    <IconButton
+                      aria-label={`info about ${tile.title}`}
+                      className={classes.icon}
+                    >
+                      <CameraAlt />
+                    </IconButton>
+                  }
                 />
               </GridListTile>
             ))}
           </GridList>
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={onSubmit}
+            className={classes.button}
+          >
+            Cập nhật
+          </Button>
         </div>
       </form>
     </div>
   );
 }
 
-ProfileForm.propTypes = {};
+ProfileForm.propTypes = {
+  customerName: PropTypes.string,
+  customerId: PropTypes.string,
+  companyName: PropTypes.string,
+  creditAmount: PropTypes.number,
+  idCard: PropTypes.string,
+  customerAddress: PropTypes.string,
+  idCardIssueDate: PropTypes.string,
+  idCardIssuePlace: PropTypes.string,
+  bankName: PropTypes.string,
+  accountNumber: PropTypes.string,
+  accountName: PropTypes.string,
+};
 
 export default memo(ProfileForm);

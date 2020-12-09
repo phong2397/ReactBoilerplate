@@ -21,5 +21,28 @@ const makeSelectProfilePage = () =>
     substate => substate,
   );
 
+const makeSelectProfileInfoPage = () =>
+  createSelector(
+    selectProfilePageDomain,
+    substate => substate,
+  );
+
+const makeSelectProfileHistoryPage = () =>
+  createSelector(
+    selectProfilePageDomain,
+    substate => substate,
+  );
+
+const makeSelectProfileDocumentPage = () =>
+  createSelector(
+    selectProfilePageDomain,
+    substate => substate,
+  );
+
 export default makeSelectProfilePage;
-export { selectProfilePageDomain };
+export {
+  selectProfilePageDomain,
+  makeSelectProfileInfoPage,
+  makeSelectProfileHistoryPage,
+  makeSelectProfileDocumentPage,
+};

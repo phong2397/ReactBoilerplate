@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import PropTypes from 'prop-types';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import {
@@ -27,7 +27,20 @@ import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
 
-export function OrderDetailPage() {
+export function OrderDetailPage({
+  initStatus,
+  orderId,
+  orderAmount,
+  requestTime,
+  approveStatus,
+  approveTime,
+  disburseStatus,
+  disburseTime,
+  disburseLabel,
+  accountNo,
+  accountName,
+  bankName,
+}) {
   useInjectReducer({ key: 'orderDetailPage', reducer });
   useInjectSaga({ key: 'orderDetailPage', saga });
 
@@ -42,10 +55,10 @@ export function OrderDetailPage() {
           </TimelineSeparator>
           <TimelineContent>
             <OrderInitStatus
-              statusTag="Khởi tạo"
-              orderId="#0012"
-              amount="1,000,000đ"
-              requestTime="02/12/2020"
+              statusTag={initStatus}
+              orderId={orderId}
+              amount={orderAmount}
+              requestTime={requestTime}
             />
           </TimelineContent>
         </TimelineItem>
@@ -58,8 +71,8 @@ export function OrderDetailPage() {
           </TimelineSeparator>
           <TimelineContent>
             <OrderAppraiseStatus
-              statusTag="Yêu cầu được chấp nhận"
-              resolveTime="20/11/2020 11h30"
+              statusTag={approveStatus}
+              resolveTime={approveTime}
             />
           </TimelineContent>
         </TimelineItem>
@@ -72,11 +85,12 @@ export function OrderDetailPage() {
           </TimelineSeparator>
           <TimelineContent>
             <OrderDisbursementStatus
-              statusTag="Đơn giải ngân"
-              label=""
-              accName="BUI LE HUYNH"
-              accNo="13079390001"
-              bankName="SCB - Ngân hàng thương mại cổ phần Sài Gòn"
+              statusTag={disburseStatus}
+              disburseTime={disburseTime}
+              label={disburseLabel}
+              accName={accountName}
+              accNo={accountNo}
+              bankName={bankName}
             />
           </TimelineContent>
         </TimelineItem>
@@ -87,6 +101,18 @@ export function OrderDetailPage() {
 
 OrderDetailPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  initStatus: PropTypes.string,
+  orderId: PropTypes.string,
+  orderAmount: PropTypes.number,
+  requestTime: PropTypes.string,
+  approveStatus: PropTypes.string,
+  approveTime: PropTypes.string,
+  disburseStatus: PropTypes.string,
+  disburseTime: PropTypes.string,
+  accountNo: PropTypes.string,
+  accountName: PropTypes.string,
+  bankName: PropTypes.string,
+  disburseLabel: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
