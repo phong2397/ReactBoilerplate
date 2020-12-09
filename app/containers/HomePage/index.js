@@ -116,7 +116,7 @@ export function HomePage({
           variant="contained"
           color="primary"
           component={Link}
-          to="/verify"
+          to="/requestOrder"
         >
           <b>Yêu cầu ứng lương</b>
         </Button>

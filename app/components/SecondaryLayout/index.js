@@ -4,16 +4,34 @@
  *
  */
 
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Container } from '@material-ui/core';
+import {
+  AppBar,
+  Container,
+  IconButton,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
+import { KeyboardBackspaceOutlined } from '@material-ui/icons';
 
-import AppbarDetail from '../AppBarDetail';
-function SecondaryLayout({ children }) {
+function SecondaryLayout({ children, title }) {
   return (
     <div>
-      <AppbarDetail title="Test" />
-      <Box m={10} />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => console.log('Test')}
+          >
+            <KeyboardBackspaceOutlined />
+          </IconButton>
+          <Typography variant="h6">{title}</Typography>
+        </Toolbar>
+      </AppBar>
+      {/* <AppbarDetail title="Test" /> */}
       <Container maxWidth="sm">{children}</Container>
     </div>
   );
@@ -21,6 +39,7 @@ function SecondaryLayout({ children }) {
 
 SecondaryLayout.propTypes = {
   children: PropTypes.any,
+  title: PropTypes.string,
 };
 
-export default memo(SecondaryLayout);
+export default SecondaryLayout;

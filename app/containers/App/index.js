@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
+import RequestOrderPage from 'containers/RequestOrderPage/Loadable';
 import HistoryPage from 'containers/HistoryPage/Loadable';
 import OrderDetailPage from 'containers/OrderDetailPage/Loadable';
 import ProfilePage from 'containers/ProfilePage/Loadable';
@@ -27,9 +28,11 @@ import LoginPage from 'containers/LoginPage/Loadable';
 // import Footer from 'components/Footer';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+
 import GlobalStyle from '../../global-styles';
 import MainLayout from '../../components/MainLayout';
 import PrivateRoute from '../../components/PrivateRoute';
+// import SecondaryLayout from '../../components/SecondaryLayout';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -73,6 +76,12 @@ export default function App() {
       faqPage={FaqPage}
     />
   );
+
+  // const requestOrderPage = () => (
+  //   <SecondaryLayout>
+  //     <RequestOrderPage />
+  //   </SecondaryLayout>
+  // );
   return (
     <AppWrapper>
       <Helmet titleTemplate="%s - Salary Advance" defaultTitle="Salary Advance">
@@ -82,6 +91,7 @@ export default function App() {
         <Switch>
           <Route path="/login" component={LoginPage} />
           <PrivateRoute exact path="/" component={mainLayout} />
+          <PrivateRoute path="/requestOrder" component={RequestOrderPage} />
           <Route path="/orders/1" component={OrderDetailPage} />
 
           <Route path="/profile" component={ProfilePage} />
