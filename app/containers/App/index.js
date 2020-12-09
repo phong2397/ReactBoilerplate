@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import { Switch, Route } from 'react-router-dom';
-
+import Main from 'containers/Main/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import RequestOrderPage from 'containers/RequestOrderPage/Loadable';
 import HistoryPage from 'containers/HistoryPage/Loadable';
@@ -29,10 +29,8 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 import GlobalStyle from '../../global-styles';
-import MainLayout from '../../components/MainLayout';
-import PrivateRoute from '../../components/PrivateRoute';
-// import SecondaryLayout from '../../components/SecondaryLayout';
 
+import PrivateRoute from '../../components/PrivateRoute';
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
   margin: 0 auto;
@@ -69,13 +67,8 @@ const theme = createMuiTheme({
 });
 export default function App() {
   const mainLayout = () => (
-    <MainLayout
-      homePage={HomePage}
-      profilePage={ProfilePage}
-      faqPage={FaqPage}
-    />
+    <Main homePage={HomePage} profilePage={ProfilePage} faqPage={FaqPage} />
   );
-
   // const requestOrderPage = () => (
   //   <SecondaryLayout>
   //     <RequestOrderPage />
@@ -91,11 +84,11 @@ export default function App() {
           <Route path="/login" component={LoginPage} />
           <PrivateRoute exact path="/" component={mainLayout} />
           <PrivateRoute path="/requestOrder" component={RequestOrderPage} />
-          <Route path="/orders/1" component={OrderDetailPage} />
-
-          <Route path="/profile" component={ProfilePage} />
-          <Route path="/profileinfo" component={ProfileInfoPage} />
+          <PrivateRoute path="/profileinfo" component={ProfileInfoPage} />
           <Route path="/history" component={HistoryPage} />
+          <Route path="/orders/1" component={OrderDetailPage} />
+          <Route path="/profileinfo" component={ProfileInfoPage} />
+
           <Route path="/documents" component={DocumentPage} />
 
           <Route path="/faq" component={FaqPage} />

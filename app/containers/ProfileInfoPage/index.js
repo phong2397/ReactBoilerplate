@@ -43,23 +43,12 @@ import makeSelectProfileInfoPage, {
 import { updateDataProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
-
-const tileData = [
-  {
-    img: 'https://viknews.com/vi/wp-content/uploads/2019/04/lam-lai-cmnd5.jpg',
-    title: 'Chững minh nhân dân (mặt trước)',
-    author: 'author',
-  },
-  {
-    img:
-      'https://cms.luatvietnam.vn/uploaded/Images/Original/2019/10/25/tay-not-ruoi-xoa-seo-co-phai-lam-lai-chung-minh-nhan-dan_2510140542.jpg',
-    title: 'Chững minh nhân dân (mặt sau)',
-    author: 'author 2',
-  },
-];
+import { tileData } from './data';
+import SubContent from '../SubContent/Loadable';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    marginTop: theme.spacing(6),
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
       width: '100%',
@@ -100,7 +89,7 @@ export function ProfileInfoPage({
   };
 
   return (
-    <div>
+    <SubContent title="Thông tin người dùng">
       <form
         id="form-profile"
         className={classes.root}
@@ -115,7 +104,9 @@ export function ProfileInfoPage({
             label="Họ và tên"
             defaultValue={customerName}
             variant="filled"
-            inputRef={register({ required: 'Họ và tên không được để trống' })}
+            inputRef={register({
+              required: 'Họ và tên không được để trống',
+            })}
             error={!!errors.customerName}
             helperText={errors.customerName ? errors.customerName.message : ''}
           />
@@ -161,7 +152,9 @@ export function ProfileInfoPage({
             label="CMND/CCCD"
             defaultValue={idCard}
             variant="filled"
-            inputRef={register({ required: 'CMND/CCCD không được để trống' })}
+            inputRef={register({
+              required: 'CMND/CCCD không được để trống',
+            })}
             error={!!errors.idCard}
             helperText={errors.idCard ? errors.idCard.message : ''}
           />
@@ -181,7 +174,9 @@ export function ProfileInfoPage({
             label="Ngày cấp"
             defaultValue={idCardIssueDate}
             variant="filled"
-            inputRef={register({ required: 'Ngày cấp không được để trống' })}
+            inputRef={register({
+              required: 'Ngày cấp không được để trống',
+            })}
             error={!!errors.issueDate}
             helperText={errors.issueDate ? errors.issueDate.message : ''}
           />
@@ -201,7 +196,9 @@ export function ProfileInfoPage({
             label="Ngân hàng"
             defaultValue={bankName}
             variant="filled"
-            inputRef={register({ required: 'Ngân hàng không được để trống' })}
+            inputRef={register({
+              required: 'Ngân hàng không được để trống',
+            })}
             error={!!errors.bankName}
             helperText={errors.bankName ? errors.bankName.message : ''}
           />
@@ -267,7 +264,7 @@ export function ProfileInfoPage({
           </Button>
         </div>
       </form>
-    </div>
+    </SubContent>
   );
 }
 

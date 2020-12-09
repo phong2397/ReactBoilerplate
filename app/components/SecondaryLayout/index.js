@@ -25,14 +25,9 @@ function SecondaryLayout({ children, title }) {
   const classes = useStyles();
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => console.log('Test')}
-          >
+          <IconButton edge="start" color="inherit" aria-label="menu">
             <KeyboardBackspaceOutlined />
           </IconButton>
           <Typography variant="h6">{title}</Typography>

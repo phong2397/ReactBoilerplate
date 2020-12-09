@@ -5,9 +5,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -20,14 +19,13 @@ import { Link } from 'react-router-dom';
 import makeSelectHistoryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-// import messages from './messages';
-
+import SubContent from '../SubContent/Loadable';
 export function HistoryPage() {
   useInjectReducer({ key: 'historyPage', reducer });
   useInjectSaga({ key: 'historyPage', saga });
 
   return (
-    <div>
+    <SubContent title="Lịch sử yêu cầu">
       <List>
         <ListItem button component={Link} to="/orders/1">
           <OrderInfo
@@ -47,12 +45,12 @@ export function HistoryPage() {
           />
         </ListItem>
       </List>
-    </div>
+    </SubContent>
   );
 }
 
 HistoryPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
