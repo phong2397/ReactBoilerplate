@@ -4,11 +4,10 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
@@ -42,7 +41,7 @@ import makeSelectHomePage, {
 import CustomizedSlider from '../../components/CustomizeSlider';
 import FeeToolTip from '../../components/FeeTooltip';
 import BankCard from '../../components/BankCard';
-import { changeSelectAmount } from './actions';
+import { changeSelectAmount, loadingProductConfig } from './actions';
 
 function convertWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -52,7 +51,6 @@ const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       marginTop: theme.spacing(8),
-      // margin: theme.spacing(3),
       padding: theme.spacing(1),
       minHeight: '80vh',
     },
@@ -75,9 +73,13 @@ export function HomePage({
   accName,
   onChangeSlider,
   rate,
+  loadProduct,
 }) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
+  useEffect(() => {
+    loadProduct();
+  });
   const classes = useStyles();
   return (
     <Grid container className={classes.root}>
@@ -99,6 +101,7 @@ export function HomePage({
             step={step}
             max={creditAmount}
             defaultValue={defaultAmount}
+            value={selectedAmount}
             onChange={onChangeSlider}
           />
         </Box>
@@ -136,6 +139,7 @@ HomePage.propTypes = {
   accNo: PropTypes.string,
   accName: PropTypes.string,
   rate: PropTypes.number,
+  loadProduct: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -155,6 +159,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     onChangeSlider: (evt, newValue) => dispatch(changeSelectAmount(newValue)),
+    loadProduct: () => dispatch(loadingProductConfig()),
   };
 }
 

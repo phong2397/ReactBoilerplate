@@ -24,7 +24,6 @@ const useStyles = makeStyles({
     width: '100%',
     minHeight: '5vh',
     position: 'fixed',
-    top: 0,
     backgroundColor: '#3cb88c',
   },
 });

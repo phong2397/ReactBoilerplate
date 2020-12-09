@@ -43,7 +43,7 @@ function FeeToolTip({ amount, rate }) {
               <Typography color="inherit">Chi tiết</Typography>
               <b>Phí </b>
               <em>
-                {`= ${convertWithCommas(amount)}đ * ${(rate * 100).toFixed(
+                {`= ${convertWithCommas(amount)}đ * ${rate.toFixed(
                   1,
                 )}%(TIền phí này được sử dụng để quản lý ứng dụng)`}
               </em>

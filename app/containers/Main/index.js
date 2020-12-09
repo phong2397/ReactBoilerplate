@@ -6,11 +6,16 @@
 
 import React, { memo } from 'react';
 import {
+  AppBar,
   BottomNavigation,
   BottomNavigationAction,
   createStyles,
+  IconButton,
   makeStyles,
+  Toolbar,
+  Typography,
 } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import {
   AccountCircleOutlined,
   AttachMoney,
@@ -27,21 +32,23 @@ import makeSelectMain, { makeSelectValue } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import TabPanel from '../../components/TabPanel';
-import { AppBarMenu } from '../../components/AppBarMenu';
+
 import { changeTab } from './actions';
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       width: '100%',
-      position: 'fixed',
-      bottom: 0,
       backgroundColor: '#3cb88c',
     },
     actionItem: {
       '&$selected': {
         color: '#fff',
       },
+    },
+    stickToBottom: {
+      width: '100%',
+      backgroundColor: '#3cb88c',
     },
     selected: {},
   }),
@@ -58,7 +65,14 @@ export function Main({ homePage, profilePage, faqPage, value, handleChange }) {
   const classes = useStyles();
   return (
     <div>
-      <AppBarMenu />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6">Salary Advance</Typography>
+        </Toolbar>
+      </AppBar>
       <div>
         <TabPanel value={value} index={0}>
           {homePage}
@@ -70,40 +84,47 @@ export function Main({ homePage, profilePage, faqPage, value, handleChange }) {
           {faqPage}
         </TabPanel>
       </div>
-      <BottomNavigation
-        showLabels
-        className={classes.root}
-        value={value}
-        onChange={handleChange}
+      <AppBar
+        position="fixed"
+        color="primary"
+        style={{ top: 'auto', bottom: 0 }}
       >
-        <BottomNavigationAction
-          classes={{
-            root: classes.actionItem,
-            selected: classes.selected,
-          }}
-          label="Yêu cầu"
-          icon={<AttachMoney />}
-          {...a11yProps(0)}
-        />
-        <BottomNavigationAction
-          classes={{
-            root: classes.actionItem,
-            selected: classes.selected,
-          }}
-          label="Hồ sơ"
-          icon={<AccountCircleOutlined />}
-          {...a11yProps(1)}
-        />
-        <BottomNavigationAction
-          classes={{
-            root: classes.actionItem,
-            selected: classes.selected,
-          }}
-          label="Câu Hỏi"
-          icon={<EventOutlined />}
-          {...a11yProps(2)}
-        />
-      </BottomNavigation>
+        <BottomNavigation
+          showLabels
+          value={value}
+          className={classes.stickToBottom}
+          onChange={handleChange}
+        >
+          <BottomNavigationAction
+            classes={{
+              root: classes.actionItem,
+              selected: classes.selected,
+            }}
+            label="Yêu cầu"
+            icon={<AttachMoney />}
+            {...a11yProps(0)}
+          />
+
+          <BottomNavigationAction
+            classes={{
+              root: classes.actionItem,
+              selected: classes.selected,
+            }}
+            label="Hồ sơ"
+            icon={<AccountCircleOutlined />}
+            {...a11yProps(1)}
+          />
+          <BottomNavigationAction
+            classes={{
+              root: classes.actionItem,
+              selected: classes.selected,
+            }}
+            label="Câu Hỏi"
+            icon={<EventOutlined />}
+            {...a11yProps(2)}
+          />
+        </BottomNavigation>
+      </AppBar>
     </div>
   );
 }

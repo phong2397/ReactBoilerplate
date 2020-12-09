@@ -10,6 +10,7 @@ import {
   SEND_ORDER_REQUEST,
   CONFIRM_ORDER,
   CLOSE_MODAL,
+  SEND_ORDER_SUCCESS,
 } from './constants';
 
 export function defaultAction() {
@@ -34,7 +35,20 @@ export function confirmOrderAction() {
 }
 
 export function sendOrderRequestAction() {
+  console.log('SEND ORDER REQUEST');
   return {
     type: SEND_ORDER_REQUEST,
+  };
+}
+export function sendOrderSuccess(response) {
+  return {
+    type: SEND_ORDER_SUCCESS,
+    response,
+  };
+}
+export function sendOrderError(error) {
+  return {
+    type: SEND_ORDER_SUCCESS,
+    error,
   };
 }

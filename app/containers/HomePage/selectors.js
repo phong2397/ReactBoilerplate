@@ -57,7 +57,11 @@ const makeSelectAccNo = () =>
     selectHomePageDomain,
     homeState => homeState.accNo,
   );
-
+const makeSelectCustomePhone = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.phone,
+  );
 const makeSelectBankName = () =>
   createSelector(
     selectHomePageDomain,
@@ -69,7 +73,11 @@ const makeSelectAccName = () =>
     selectHomePageDomain,
     homeState => homeState.accName,
   );
-
+const makeSelectCompanyCode = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.companyCode,
+  );
 export default makeSelectHomePage;
 export {
   selectHomePageDomain,
@@ -82,4 +90,6 @@ export {
   makeSelectAccNo,
   makeSelectBankName,
   makeSelectAccName,
+  makeSelectCustomePhone,
+  makeSelectCompanyCode,
 };
