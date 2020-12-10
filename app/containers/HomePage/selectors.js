@@ -20,6 +20,11 @@ const makeSelectHomePage = () =>
     selectHomePageDomain,
     substate => substate,
   );
+const makeSelectLoading = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.loading,
+  );
 const makeSelectCreditAmount = () =>
   createSelector(
     selectHomePageDomain,
@@ -81,6 +86,7 @@ const makeSelectCompanyCode = () =>
 export default makeSelectHomePage;
 export {
   selectHomePageDomain,
+  makeSelectLoading,
   makeSelectCreditAmount,
   makeSelectAmount,
   makeSelectStep,

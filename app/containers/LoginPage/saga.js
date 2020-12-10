@@ -11,6 +11,7 @@ import {
   loadLoginSuccess,
 } from './actions';
 import { saveAccessToken } from '../../utils/storage';
+// import { loadDataProfileSuccess } from '../ProfileInfoPage/actions';
 
 /**
  * Github repos request/response handler
@@ -53,6 +54,8 @@ export function* doLogin() {
   const otp = yield select(makeSelectOtp());
   const { systemtrace } = data;
   const { tel } = data;
+  // CheckExist
+
   const requestURL = `/smsgateway/api/v1/`;
   const parameters = {
     method: 'POST',
@@ -75,8 +78,13 @@ export function* doLogin() {
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.ResponseCode === '000') {
+      // const responseProfile = yield call(
+      //   request,
+      //   `/api/v1/customers/profile/${tel}`,
+      // );
       // SAVE TOKEN
       saveAccessToken(response.Data);
+      // yield put(loadDataProfileSuccess(responseProfile));
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));

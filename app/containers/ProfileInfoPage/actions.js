@@ -5,9 +5,9 @@
  */
 
 import {
-  REQUEST_UPDATE_DATA_PROFILE,
-  REQUEST_UPDATE_DATA_PROFILE_SUCCESS,
-  REQUEST_UPDATE_DATA_PROFILE_ERROR,
+  LOAD_DATA_PROFILE,
+  LOAD_DATA_PROFILE_SUCCESS,
+  LOAD_DATA_PROFILE_ERROR,
   DEFAULT_ACTION,
 } from './constants';
 
@@ -17,23 +17,44 @@ export function defaultAction() {
   };
 }
 
-export function updateDataProfile(value) {
+export function loadDataProfile() {
+  console.log('LOAD DATA 1');
   return {
-    type: REQUEST_UPDATE_DATA_PROFILE,
-    value,
+    type: LOAD_DATA_PROFILE,
   };
 }
 
-export function requestUpdateDataProfileSuccess(value) {
+export function loadDataProfileSuccess(response) {
   return {
-    type: REQUEST_UPDATE_DATA_PROFILE_SUCCESS,
-    value,
+    type: LOAD_DATA_PROFILE_SUCCESS,
+    response,
   };
 }
 
-export function requestUpdateDataProfileError(value) {
+export function loadDataProfileError(error) {
   return {
-    type: REQUEST_UPDATE_DATA_PROFILE_ERROR,
-    value,
+    type: LOAD_DATA_PROFILE_ERROR,
+    error,
   };
 }
+
+// export function requestUpdateDataProfile(value) {
+//   return {
+//     type: REQUEST_UPDATE_DATA_PROFILE,
+//     value,
+//   };
+// }
+
+// export function requestUpdateDataProfileSuccess(value) {
+//   return {
+//     type: REQUEST_UPDATE_DATA_PROFILE_SUCCESS,
+//     value,
+//   };
+// }
+
+// export function requestUpdateDataProfileError(value) {
+//   return {
+//     type: REQUEST_UPDATE_DATA_PROFILE_ERROR,
+//     value,
+//   };
+// }

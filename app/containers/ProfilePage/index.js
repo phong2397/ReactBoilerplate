@@ -41,7 +41,7 @@ export function ProfilePage({ onClickSignOut }) {
     <Box mt={8} p={2}>
       <List spacing={12}>
         {/* User info */}
-        <ListItem button component={Link} to="/profileinfo">
+        <ListItem button component={Link} to="/profile">
           <ListItemAvatar>
             <Avatar>
               <PersonIcon />
@@ -96,7 +96,7 @@ export function ProfilePage({ onClickSignOut }) {
       <Button
         fullWidth
         variant="contained"
-        color="inherit"
+        color="secondary"
         onClick={onClickSignOut}
       >
         Đăng xuất

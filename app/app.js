@@ -16,7 +16,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-
+import { ThemeProvider } from '@material-ui/core';
 // Import root app
 import App from 'containers/App';
 
@@ -28,6 +28,7 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
 import configureStore from './configureStore';
+import theme from './theme';
 
 // Import i18n messages
 // import { translationMessages } from './i18n';
@@ -49,9 +50,11 @@ const MOUNT_NODE = document.getElementById('app');
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
+      <ThemeProvider theme={theme}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </ThemeProvider>
     </Provider>,
     MOUNT_NODE,
   );

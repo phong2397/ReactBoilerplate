@@ -37,6 +37,7 @@ import makeSelectHomePage, {
   makeSelectFeeAmount,
   makeSelectStep,
   makeSelectRate,
+  makeSelectLoading,
 } from './selectors';
 import CustomizedSlider from '../../components/CustomizeSlider';
 import FeeToolTip from '../../components/FeeTooltip';
@@ -63,6 +64,7 @@ const useStyles = makeStyles(theme =>
 );
 
 export function HomePage({
+  loading,
   creditAmount,
   selectedAmount,
   step,
@@ -78,7 +80,7 @@ export function HomePage({
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
   useEffect(() => {
-    loadProduct();
+    if (loading) loadProduct();
   });
   const classes = useStyles();
   return (
@@ -129,6 +131,7 @@ export function HomePage({
 }
 
 HomePage.propTypes = {
+  loading: PropTypes.bool,
   creditAmount: PropTypes.number,
   selectedAmount: PropTypes.number,
   step: PropTypes.number,
@@ -143,6 +146,7 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
   homePage: makeSelectHomePage(),
   creditAmount: makeSelectCreditAmount(),
   selectedAmount: makeSelectAmount(),
@@ -157,7 +161,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
     onChangeSlider: (evt, newValue) => dispatch(changeSelectAmount(newValue)),
     loadProduct: () => dispatch(loadingProductConfig()),
   };

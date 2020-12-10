@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   createStyles,
+  Fab,
   IconButton,
   makeStyles,
   TextField,
@@ -18,6 +19,7 @@ import {
   KeyboardBackspaceOutlined,
   SmartphoneOutlined,
   Textsms,
+  LiveHelp,
 } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
@@ -92,6 +94,10 @@ const useStyles = makeStyles(theme =>
       // background: "rgb(60, 184, 140)",
       background:
         'linear - gradient(90deg, rgba(60, 184, 140, 1) 0 %, rgba(44, 176, 208, 1) 75 %)',
+    },
+    fab: {
+      position: 'fixed',
+      bottom: theme.spacing(2),
     },
   }),
 );
@@ -274,6 +280,9 @@ export function LoginPage({
           </div>
         </Route>
       </Switch>
+      <Fab className={classes.fab} color="primary" aria-label="help">
+        <LiveHelp />
+      </Fab>
     </div>
   );
 }

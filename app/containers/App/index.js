@@ -24,8 +24,6 @@ import AnswerPage from 'containers/AnswerPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-
 import GlobalStyle from '../../global-styles';
 
 import PrivateRoute from '../../components/PrivateRoute';
@@ -36,33 +34,7 @@ const AppWrapper = styled.div`
   min-height: 100%;
   flex-direction: column;
 `;
-const theme = createMuiTheme({
-  palette: {
-    secondary: {
-      main: '#3cb88c',
-    },
-    primary: {
-      main: '#3cb88c',
-      contrastText: '#fff',
-    },
-    info: {
-      main: '#E8E8E8',
-    },
-  },
-  typography: {
-    // Use the system font instead of the default Roboto font.
-    fontFamily: ['"Lato"', 'sans-serif'].join(','),
-  },
-  overrides: {
-    MuiTimelineItem: {
-      missingOppositeContent: {
-        '&:before': {
-          display: 'none',
-        },
-      },
-    },
-  },
-});
+
 export default function App() {
   const mainLayout = () => (
     <Main homePage={HomePage} profilePage={ProfilePage} faqPage={FaqPage} />
@@ -77,25 +49,19 @@ export default function App() {
       <Helmet titleTemplate="%s - Salary Advance" defaultTitle="Salary Advance">
         <meta name="description" content="A Salary Advance application" />
       </Helmet>
-      <ThemeProvider theme={theme}>
-        <Switch>
-          <Route path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/" component={mainLayout} />
-          <PrivateRoute path="/requestOrder" component={RequestOrderPage} />
-          <PrivateRoute path="/profileinfo" component={ProfileInfoPage} />
-          <Route path="/history" component={HistoryPage} />
-          <Route path="/orders/1" component={OrderDetailPage} />
-          <Route path="/profileinfo" component={ProfileInfoPage} />
-
-          <Route path="/documents" component={DocumentPage} />
-
-          <Route path="/faq" component={FaqPage} />
-          <Route path="/question/:id" component={AnswerPage} />
-
-          <Route path="" component={NotFoundPage} />
-        </Switch>
-      </ThemeProvider>
-      {/* <Footer /> */}
+      <Switch>
+        <Route path="/login" component={LoginPage} />
+        <PrivateRoute exact path="/" component={mainLayout} />
+        <PrivateRoute path="/requestOrder" component={RequestOrderPage} />
+        <PrivateRoute path="/profile" component={ProfileInfoPage} />
+        <Route path="/history" component={HistoryPage} />
+        <Route path="/orders/1" component={OrderDetailPage} />
+        {/* <Route path="/profileinfo" component={ProfileInfoPage} /> */}
+        <Route path="/documents" component={DocumentPage} />
+        <Route path="/faq" component={FaqPage} />
+        <Route path="/question/:id" component={AnswerPage} />
+        <Route path="" component={NotFoundPage} />
+      </Switch>
       <GlobalStyle />
     </AppWrapper>
   );

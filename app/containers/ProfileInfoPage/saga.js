@@ -1,72 +1,71 @@
-import { call, put, select } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
+import { loadDataProfileError, loadDataProfileSuccess } from './actions';
+import { LOAD_DATA_PROFILE } from './constants';
 
-import {
-  makeSelectAccountName,
-  makeSelectAccountNumber,
-  makeSelectBankName,
-  makeSelectCompanyName,
-  makeSelectCreditAmount,
-  makeSelectCustomerAddress,
-  makeSelectCustomerId,
-  makeSelectCustomerName,
-  makeSelectIdCard,
-  makeSelectIdCardIssueDate,
-  makeSelectIdCardIssuePlace,
-  makeSelectListImages,
-} from './selectors';
+export function* loadProfile() {
+  console.log('LOAD DATA 2');
+  const phone = '0973154950';
+  try {
+    const requestURL = `/customers/profile/${phone}`;
+    const response = yield call(request, requestURL);
+    console.log(response);
+    // yield put(push('/profileinfo'));
+    yield put(loadDataProfileSuccess(response));
+  } catch (err) {
+    yield put(loadDataProfileError(err));
+  }
+}
 
-import { updateDataProfile, requestUpdateDataProfileError } from './actions';
+// export function* requestUpdate(customerPhone) {
+//   // const companyId = yield select(makeSelectCompanyId());
+//   const accountName = yield select(makeSelectAccountName());
+//   const accountNumber = yield select(makeSelectAccountNumber());
+//   const bankName = yield select(makeSelectBankName());
+//   const companyName = yield select(makeSelectCompanyName());
+//   const creditAmount = yield select(makeSelectCreditAmount());
+//   const customerAddress = yield select(makeSelectCustomerAddress());
+//   const customerId = yield select(makeSelectCustomerId());
+//   const customerName = yield select(makeSelectCustomerName());
+//   const idCard = yield select(makeSelectIdCard());
+//   const idCardIssueDate = yield select(makeSelectIdCardIssueDate());
+//   const idCardIssuePlace = yield select(makeSelectIdCardIssuePlace());
+
+//   const requestURL = `/api/v1/customers/updateProfile/${customerPhone}`;
+//   const parameters = {
+//     method: 'PUT',
+//     headers: new Headers({
+//       'Content-Type': 'application/json',
+//     }),
+//     body: JSON.stringify({
+//       name: customerName,
+//       code: customerId,
+//       workAt: companyName,
+//       // eslint-disable-next-line object-shorthand
+//       bankName: bankName,
+//       accName: accountName,
+//       accNo: accountNumber,
+//       salary: creditAmount,
+//       address: customerAddress,
+//       id: idCard,
+//       idDate: idCardIssueDate,
+//       idLocation: idCardIssuePlace,
+//     }),
+//   };
+
+//   try {
+//     const response = yield call(request, requestURL, parameters);
+//     if (response.ResponseCode === '000') {
+//       yield put(push('/profileinfo'));
+//       yield put(requestUpdateDataProfile(response));
+//     } else yield put(requestUpdateDataProfileError(response));
+//   } catch (err) {
+//     yield put(requestUpdateDataProfileError(err));
+//   }
+// }
 // Individual exports for testing
 export default function* profileInfoPageSaga() {
   // See example in containers/HomePage/saga.js
-}
-
-export function* requestUpdate() {
-  // const companyId = yield select(makeSelectCompanyId());
-  const accountName = yield select(makeSelectAccountName());
-  const accountNumber = yield select(makeSelectAccountNumber());
-  const bankName = yield select(makeSelectBankName());
-  const companyName = yield select(makeSelectCompanyName());
-  const creditAmount = yield select(makeSelectCreditAmount());
-  const customerAddress = yield select(makeSelectCustomerAddress());
-  const customerId = yield select(makeSelectCustomerId());
-  const customerName = yield select(makeSelectCustomerName());
-  const idCard = yield select(makeSelectIdCard());
-  const idCardIssueDate = yield select(makeSelectIdCardIssueDate());
-  const idCardIssuePlace = yield select(makeSelectIdCardIssuePlace());
-  const listImages = yield select(makeSelectListImages());
-
-  const requestURL = `/api/v1/profile`;
-  const parameters = {
-    method: 'POST',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify({
-      accountName,
-      accountNumber,
-      bankName,
-      companyName,
-      creditAmount,
-      customerAddress,
-      customerId,
-      customerName,
-      idCard,
-      idCardIssueDate,
-      idCardIssuePlace,
-      listImages,
-    }),
-  };
-
-  try {
-    const response = yield call(request, requestURL, parameters);
-    if (response.ResponseCode === '000') {
-      yield put(push('/profileinfo'));
-      yield put(updateDataProfile(response));
-    } else yield put(requestUpdateDataProfileError(response));
-  } catch (err) {
-    yield put(requestUpdateDataProfileError(err));
-  }
+  console.log('IS THIS LOAD ?');
+  yield takeLatest(LOAD_DATA_PROFILE, loadProfile);
 }

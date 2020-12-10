@@ -5,18 +5,19 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import {
   TextField,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  IconButton,
   Button,
+  Box,
+  ButtonBase,
+  Typography,
+  List,
+  ListItem,
 } from '@material-ui/core';
 
 import { CameraAlt } from '@material-ui/icons';
@@ -39,11 +40,11 @@ import makeSelectProfileInfoPage, {
   makeSelectAccountNumber,
   makeSelectAccountName,
   makeSelectListImages,
+  makeSelectLoading,
 } from './selectors';
-import { updateDataProfile } from './actions';
+import { loadDataProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
-import { tileData } from './data';
 import SubContent from '../SubContent/Loadable';
 
 const useStyles = makeStyles(theme => ({
@@ -53,8 +54,6 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1),
       width: '100%',
     },
-    padding: theme.spacing(2),
-    marginRight: theme.spacing(2),
   },
   grid: {
     flexWrap: 'wrap',
@@ -63,8 +62,71 @@ const useStyles = makeStyles(theme => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
+  image: {
+    position: 'relative',
+    height: 200,
+    width: '100% !important',
+    '&:hover, &$focusVisible': {
+      zIndex: 1,
+      '& $imageBackdrop': {
+        opacity: 0.15,
+      },
+      '& $imageMarked': {
+        opacity: 0,
+      },
+      '& $imageTitle': {
+        border: '4px solid currentColor',
+      },
+    },
+  },
+  focusVisible: {},
+  imageButton: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.white,
+  },
+  imageSrc: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 40%',
+  },
+  imageBackdrop: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  },
+  imageTitle: {
+    position: 'relative',
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) +
+      6}px`,
+  },
+  imageMarked: {
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: 'absolute',
+    bottom: -2,
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
+  },
 }));
 export function ProfileInfoPage({
+  loading,
   customerName,
   customerId,
   companyName,
@@ -76,18 +138,22 @@ export function ProfileInfoPage({
   bankName,
   accountNumber,
   accountName,
+  loadProfile,
   onSubmitUpdateProfile,
 }) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
-
+  useEffect(() => {
+    console.log(loading);
+    if (loading) loadProfile();
+  });
   const classes = useStyles();
 
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmitUpdate = data => {
     onSubmitUpdateProfile(data);
   };
-
+  console.log('Customer Name', customerName);
   return (
     <SubContent title="Thông tin người dùng">
       <form
@@ -97,12 +163,12 @@ export function ProfileInfoPage({
         autoComplete="off"
         onSubmit={handleSubmit(onSubmitUpdate)}
       >
-        <div>
+        <Box pt={1.5} pr={2} component="div">
           <TextField
             id="customerName"
             name="customerName"
             label="Họ và tên"
-            defaultValue={customerName}
+            value={customerName}
             variant="filled"
             inputRef={register({
               required: 'Họ và tên không được để trống',
@@ -114,7 +180,7 @@ export function ProfileInfoPage({
             id="customerId"
             name="customerId"
             label="Mã nhân viên"
-            defaultValue={customerId}
+            value={customerId}
             variant="filled"
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
@@ -126,7 +192,7 @@ export function ProfileInfoPage({
             id="companyName"
             name="companyName"
             label="Làm việc tại"
-            defaultValue={companyName}
+            value={companyName}
             variant="filled"
             inputRef={register({
               required: 'Nơi làm việc không được để trống',
@@ -138,7 +204,7 @@ export function ProfileInfoPage({
             id="credit"
             name="credit"
             label="Hạn mức lương"
-            defaultValue={creditAmount}
+            value={creditAmount}
             variant="filled"
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
@@ -150,7 +216,7 @@ export function ProfileInfoPage({
             id="idCard"
             name="idCard"
             label="CMND/CCCD"
-            defaultValue={idCard}
+            value={idCard}
             variant="filled"
             inputRef={register({
               required: 'CMND/CCCD không được để trống',
@@ -162,7 +228,7 @@ export function ProfileInfoPage({
             id="address"
             name="address"
             label="Địa chỉ"
-            defaultValue={customerAddress}
+            value={customerAddress}
             variant="filled"
             inputRef={register({ required: 'Địa chỉ không được để trống' })}
             error={!!errors.address}
@@ -172,7 +238,7 @@ export function ProfileInfoPage({
             id="issueDate"
             name="issueDate"
             label="Ngày cấp"
-            defaultValue={idCardIssueDate}
+            value={idCardIssueDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
@@ -184,7 +250,7 @@ export function ProfileInfoPage({
             id="issuePlace"
             name="issuePlace"
             label="Nơi cấp"
-            defaultValue={idCardIssuePlace}
+            value={idCardIssuePlace}
             variant="filled"
             inputRef={register({ required: 'Nơi cấp không được để trống' })}
             error={!!errors.issuePlace}
@@ -194,7 +260,7 @@ export function ProfileInfoPage({
             id="bankName"
             name="bankName"
             label="Ngân hàng"
-            defaultValue={bankName}
+            value={bankName}
             variant="filled"
             inputRef={register({
               required: 'Ngân hàng không được để trống',
@@ -206,7 +272,7 @@ export function ProfileInfoPage({
             id="accountNumber"
             name="accountNumber"
             label="Số tài khoản"
-            defaultValue={accountNumber}
+            value={accountNumber}
             variant="filled"
             inputRef={register({
               required: 'Số tài khoản không được để trống',
@@ -220,7 +286,7 @@ export function ProfileInfoPage({
             id="accountName"
             name="accountName"
             label="Chủ tài khoản"
-            defaultValue={accountName}
+            value={accountName}
             variant="filled"
             inputRef={register({
               required: 'Chủ tài khoản không được để trống',
@@ -228,41 +294,76 @@ export function ProfileInfoPage({
             error={!!errors.accountName}
             helperText={errors.accountName ? errors.accountName.message : ''}
           />
+        </Box>
+        {/* Image */}
+        <List>
+          <ListItem>
+            <ButtonBase
+              focusRipple
+              className={classes.image}
+              focusVisibleClassName={classes.focusVisible}
+            >
+              <span
+                className={classes.imageSrc}
+                style={{
+                  backgroundImage: `url(https://viknews.com/vi/wp-content/uploads/2019/04/lam-lai-cmnd5.jpg)`,
+                }}
+              />
+              <span className={classes.imageBackdrop} />
+              <span className={classes.imageButton}>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  className={classes.imageTitle}
+                >
+                  <CameraAlt />
+                  <div>Chứng minh nhân dân (mặt trước)</div>
+                  {/* <span>Mặt trước</span> */}
+                  <input type="file" hidden />
+                </Typography>
+              </span>
+            </ButtonBase>
+          </ListItem>
+          <ListItem>
+            <ButtonBase
+              focusRipple
+              className={classes.image}
+              focusVisibleClassName={classes.focusVisible}
+            >
+              <span
+                className={classes.imageSrc}
+                style={{
+                  backgroundImage: `url(https://cms.luatvietnam.vn/uploaded/Images/Original/2019/10/25/tay-not-ruoi-xoa-seo-co-phai-lam-lai-chung-minh-nhan-dan_2510140542.jpg)`,
+                }}
+              />
+              <span className={classes.imageBackdrop} />
+              <span className={classes.imageButton}>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  className={classes.imageTitle}
+                >
+                  <CameraAlt />
+                  <div>Chứng minh nhân dân (mặt sau)</div>
+                  {/* <span>Mặt trước</span> */}
+                  <input type="file" hidden />
+                </Typography>
+              </span>
+            </ButtonBase>
+          </ListItem>
+        </List>
 
-          {/* Image */}
-          <GridList cols={1} rows={1}>
-            {tileData.map((tile, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <GridListTile key={`grid-${index}`}>
-                <img src={tile.img} alt={tile.title} />
-                <GridListTileBar
-                  title={tile.title}
-                  actionIcon={
-                    <IconButton
-                      aria-label={`info about ${tile.title}`}
-                      className={classes.icon}
-                      onClick={() => {
-                        console.log(`CLICK RUN ${index}`);
-                      }}
-                    >
-                      <CameraAlt />
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-          </GridList>
-
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            fullWidth
-            className={classes.button}
-          >
-            Cập nhật
-          </Button>
-        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          fullWidth
+          className={classes.button}
+        >
+          Cập nhật
+        </Button>
       </form>
     </SubContent>
   );
@@ -271,6 +372,7 @@ export function ProfileInfoPage({
 ProfileInfoPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
   customerName: PropTypes.string,
+  loading: PropTypes.bool,
   customerId: PropTypes.string,
   companyName: PropTypes.string,
   creditAmount: PropTypes.number,
@@ -282,9 +384,11 @@ ProfileInfoPage.propTypes = {
   accountNumber: PropTypes.string,
   accountName: PropTypes.string,
   onSubmitUpdateProfile: PropTypes.func,
+  loadProfile: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
   profileInfoPage: makeSelectProfileInfoPage(),
   customerName: makeSelectCustomerName(),
   customerId: makeSelectCustomerId(),
@@ -302,7 +406,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUpdateProfile: event => dispatch(updateDataProfile(event)),
+    loadProfile: () => dispatch(loadDataProfile()),
   };
 }
 

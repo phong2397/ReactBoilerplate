@@ -36,13 +36,13 @@ export function AnswerPage({ match }) {
         <Typography gutterBottom variant="h5" component="h2">
           Câu hỏi
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
           {item.question}
         </Typography>
         <Typography variant="subtitle2" gutterBottom>
-          Trả lời:
+          <b>Trả lời</b>
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body1" component="p">
           {item.answer}
         </Typography>
       </Box>

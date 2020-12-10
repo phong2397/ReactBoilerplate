@@ -14,6 +14,12 @@ module.exports = (app, options) => {
     '/api/',
     createProxyMiddleware({ target: 'http://13.212.189.237:3333' }),
   );
+  app.use(
+    '/customers/profile',
+    createProxyMiddleware({
+      target: 'http://13.212.189.237:3033/api/v1',
+    }),
+  );
 
   if (isProd) {
     const addProdMiddlewares = require('./addProdMiddlewares');

@@ -11,14 +11,15 @@ import {
 } from './constants';
 
 export const initialState = {
+  loading: true,
   creditAmount: 0,
   selectedAmount: 0,
   step: 100000,
-  rate: 0.014,
+  rate: 0,
   defaultAmount: 0,
   feeAmount: 0,
   bankName: 'SCB',
-  accNo: '0000 1234 5678 0112',
+  accNo: '100100132448',
   accName: 'Nguyen Van A',
   phone: '0987654321',
   companyCode: 'SGFintech',
@@ -31,7 +32,9 @@ const homePageReducer = (state = initialState, action) =>
       case DEFAULT_ACTION:
         break;
       case LOAD_PRODUCT_SUCCESS:
+        draft.loading = false;
         draft.creditAmount = action.config.productAmountMax;
+
         draft.rate = action.config.productRate;
         draft.defaultAmount = action.config.productAmountMax;
         draft.selectedAmount = action.config.productAmountMax;
@@ -44,6 +47,7 @@ const homePageReducer = (state = initialState, action) =>
           ((action.value * draft.rate) / 100).toFixed(0),
         );
         draft.selectedAmount = action.value;
+        break;
     }
   });
 

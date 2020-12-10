@@ -5,33 +5,44 @@
  *
  */
 import produce from 'immer';
-import { DEFAULT_ACTION, REQUEST_UPDATE_DATA_PROFILE } from './constants';
+import { DEFAULT_ACTION, LOAD_DATA_PROFILE_SUCCESS } from './constants';
 
 export const initialState = {
-  customerName: 'Nguyen Van A',
-  customerId: 'SGF123',
-  companyName: 'Công ty TNHH MTV SGFintech',
-  creditAmount: 50000000,
-  idCard: '135792468',
-  customerAddress: '22 xóm cây Dừa, Bình Dương',
-  idCardIssueDate: '13/11/2009',
-  idCardIssuePlace: 'CA Bình Dương',
-  bankName: 'SCB',
-  accountNumber: '13072320001',
-  accountName: 'Nguyen Van A ',
-  listImages: {},
+  loading: true,
+  customerName: '',
+  customerId: '',
+  companyName: '',
+  creditAmount: 0,
+  idCard: '',
+  customerAddress: '',
+  idCardIssueDate: '',
+  idCardIssuePlace: '',
+  bankName: '',
+  accountNumber: '',
+  accountName: '',
+  listImages: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const profileInfoPageReducer = (state = initialState, action) =>
   produce(state, draft => {
+    console.log(action);
     switch (action.type) {
       case DEFAULT_ACTION:
         break;
-      case REQUEST_UPDATE_DATA_PROFILE:
-        console.log('REQUEST UPDATE');
-        console.log('ACTION: ', action);
-        draft.data = action.data;
+      case LOAD_DATA_PROFILE_SUCCESS:
+        draft.loading = false;
+        draft.customerName = action.response.customer_name;
+        draft.customerId = action.response.customer_code;
+        draft.companyName = action.response.company_name;
+        draft.creditAmount = action.response.customer_salary;
+        draft.idCard = action.response.customer_id;
+        draft.customerAddress = action.response.customer_address;
+        draft.idCardIssueDate = action.response.customer_id_date;
+        draft.idCardIssuePlace = action.response.customer_id_location;
+        draft.bankName = action.response.customer_bank_name;
+        draft.accountNumber = action.response.customer_bank_acc;
+        draft.accountName = action.response.customer_bank;
         break;
     }
   });

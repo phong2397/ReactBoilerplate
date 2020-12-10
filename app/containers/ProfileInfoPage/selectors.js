@@ -14,18 +14,32 @@ const selectProfileInfoPageDomain = state =>
 
 /**
  * Default selector used by ProfileInfoPage
- */
-
+//  */
+//   customerName,
+//   customerId,
+//   companyName,
+//   creditAmount,
+//   idCard,
+//   customerAddress,
+//   idCardIssueDate,
+//   idCardIssuePlace,
+//   bankName,
+//   accountNumber,
+//   accountName,
 const makeSelectProfileInfoPage = () =>
   createSelector(
     selectProfileInfoPageDomain,
     substate => substate,
   );
-
 const makeSelectCustomerName = () =>
   createSelector(
     selectProfileInfoPageDomain,
     profileState => profileState.customerName,
+  );
+const makeSelectLoading = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.loading,
   );
 const makeSelectCustomerId = () =>
   createSelector(
@@ -86,6 +100,7 @@ const makeSelectListImages = () =>
 export default makeSelectProfileInfoPage;
 export {
   selectProfileInfoPageDomain,
+  makeSelectLoading,
   makeSelectCustomerName,
   makeSelectCustomerId,
   makeSelectCompanyName,
