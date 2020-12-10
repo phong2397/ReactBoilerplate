@@ -42,7 +42,7 @@ import makeSelectProfileInfoPage, {
   makeSelectListImages,
   makeSelectLoading,
 } from './selectors';
-import { loadDataProfile } from './actions';
+import { loadDataProfile, requestUpdateDataProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
@@ -139,7 +139,7 @@ export function ProfileInfoPage({
   accountNumber,
   accountName,
   loadProfile,
-  onSubmitUpdateProfile,
+  requestUpdate,
 }) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
@@ -150,8 +150,8 @@ export function ProfileInfoPage({
   const classes = useStyles();
 
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const onSubmitUpdate = data => {
-    onSubmitUpdateProfile(data);
+  const onSubmitUpdate = () => {
+    requestUpdate('0973154950');
   };
   console.log('Customer Name', customerName);
   return (
@@ -383,8 +383,9 @@ ProfileInfoPage.propTypes = {
   bankName: PropTypes.string,
   accountNumber: PropTypes.string,
   accountName: PropTypes.string,
-  onSubmitUpdateProfile: PropTypes.func,
+  // onSubmitUpdateProfile: PropTypes.func,
   loadProfile: PropTypes.func,
+  requestUpdate: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -407,6 +408,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     loadProfile: () => dispatch(loadDataProfile()),
+    requestUpdate: () => dispatch(requestUpdateDataProfile()),
   };
 }
 
