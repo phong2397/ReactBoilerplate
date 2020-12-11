@@ -4,12 +4,7 @@
  *
  */
 
-import {
-  LOAD_DATA_PROFILE,
-  LOAD_DATA_PROFILE_SUCCESS,
-  LOAD_DATA_PROFILE_ERROR,
-  DEFAULT_ACTION,
-} from './constants';
+import { LOAD_DATA_PROFILE, DEFAULT_ACTION } from './constants';
 
 export function defaultAction() {
   return {
@@ -17,23 +12,9 @@ export function defaultAction() {
   };
 }
 
-export function loadDataProfile() {
+export function loadProfile() {
   return {
     type: LOAD_DATA_PROFILE,
-  };
-}
-
-export function loadDataProfileSuccess(response) {
-  return {
-    type: LOAD_DATA_PROFILE_SUCCESS,
-    response,
-  };
-}
-
-export function loadDataProfileError(error) {
-  return {
-    type: LOAD_DATA_PROFILE_ERROR,
-    error,
   };
 }
 
