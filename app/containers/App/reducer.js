@@ -8,13 +8,15 @@
  */
 
 import produce from 'immer';
-import { ON_LOAD_APP } from './constants';
+import { getProfile } from '../../utils/storage';
+import { LOAD_PROFILE_SUCESS, ON_LOAD_APP } from './constants';
 
 // The initial state of the App
 export const initialState = {
   loading: false,
   error: false,
   isAuthenticated: false,
+  currentProfile: getProfile(),
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -27,11 +29,9 @@ const appReducer = (state = initialState, action) =>
       //   draft.userData.repositories = false;
       //   break;
 
-      // case LOAD_REPOS_SUCCESS:
-      //   draft.userData.repositories = action.repos;
-      //   draft.loading = false;
-      //   draft.currentUser = action.username;
-      //   break;
+      case LOAD_PROFILE_SUCESS:
+        draft.currentProfile = action.customer;
+        break;
 
       case ON_LOAD_APP:
         draft.loading = true;

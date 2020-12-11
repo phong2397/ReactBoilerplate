@@ -1,11 +1,11 @@
 import { push } from 'connected-react-router';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
+import { makeSelectCurrentProfile } from '../App/selectors';
 import {
   makeSelectAmount,
-  makeSelectCompanyCode,
   makeSelectCustomePhone,
-  makeSelectRate,
+  makeSelectProductConfig,
 } from '../HomePage/selectors';
 import {
   closeModalAction,
@@ -30,12 +30,9 @@ export function* sendOrder() {
   try {
     const requestURL = '/api/orders/';
     const borrow = yield select(makeSelectAmount());
-    const companyCode = yield select(makeSelectCompanyCode());
-
     const customerPhone = yield select(makeSelectCustomePhone());
-
-    const interestRate = yield select(makeSelectRate());
-
+    const customer = yield select(makeSelectCurrentProfile());
+    const productConfig = yield select(makeSelectProductConfig());
     const parameters = {
       method: 'POST',
       headers: new Headers({
@@ -44,12 +41,12 @@ export function* sendOrder() {
         'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
       }),
       body: JSON.stringify({
-        companyCode,
+        companyCode: customer.companyName,
         customerPhone,
         borrow,
         timeBorrow: '1',
-        interestRate,
-        feeBorrow: 0,
+        interestRate: productConfig.productRate,
+        feeBorrow: productConfig.productFee,
       }),
     };
     console.log('PARAMETERS ', parameters);

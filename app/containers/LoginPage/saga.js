@@ -10,8 +10,9 @@ import {
   requestOtpError,
   loadLoginSuccess,
 } from './actions';
-import { saveAccessToken } from '../../utils/storage';
-// import { loadDataProfileSuccess } from '../ProfileInfoPage/actions';
+import { saveAccessToken, saveProfile } from '../../utils/storage';
+import { loadedProfile } from '../App/actions';
+// import { loadProfileSuccess } from '../ProfileInfoPage/actions';
 
 /**
  * Github repos request/response handler
@@ -49,14 +50,14 @@ export function* requestOtp() {
   }
 }
 export function* doLogin() {
-  // const companyId = yield select(makeSelectCompanyId());
   const data = yield select(makeSelectData());
   const otp = yield select(makeSelectOtp());
   const { systemtrace } = data;
   const { tel } = data;
   // CheckExist
-
   const requestURL = `/smsgateway/api/v1/`;
+  // const requesProfileURL = `/customers/profile/${tel}`;
+  const requesProfileURL = `/customers/profile/0973154950`;
   const parameters = {
     method: 'POST',
     headers: new Headers({
@@ -77,14 +78,26 @@ export function* doLogin() {
   };
   try {
     const response = yield call(request, requestURL, parameters);
+    const responseProfile = yield call(request, requesProfileURL);
+    const profile = {
+      customerName: responseProfile.customer_name,
+      customerId: responseProfile.customer_code,
+      companyName: responseProfile.company_name,
+      creditAmount: responseProfile.customer_salary,
+      idCard: responseProfile.customer_id,
+      customerAddress: responseProfile.customer_address,
+      idCardIssueDate: responseProfile.customer_id_date,
+      idCardIssuePlace: responseProfile.customer_id_location,
+      bankName: responseProfile.customer_bank_name,
+      accountNumber: responseProfile.customer_bank_acc,
+      accountName: responseProfile.customer_bank,
+    };
+    yield put(loadedProfile(profile));
     if (response.ResponseCode === '000') {
-      // const responseProfile = yield call(
-      //   request,
-      //   `/api/v1/customers/profile/${tel}`,
-      // );
       // SAVE TOKEN
+      saveProfile(profile);
       saveAccessToken(response.Data);
-      // yield put(loadDataProfileSuccess(responseProfile));
+      // yield put(loadProfileSuccess(responseProfile));
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));

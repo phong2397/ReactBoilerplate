@@ -5,48 +5,45 @@
  *
  */
 import produce from 'immer';
-import { parseDateString } from '../../utils/formater';
-import { DEFAULT_ACTION, LOAD_DATA_PROFILE_SUCCESS } from './constants';
+import {
+  DEFAULT_ACTION,
+  LOAD_EDITABLE_PROFILE,
+  UPDATE_PROFILE_SUCCESS,
+} from './constants';
 
 export const initialState = {
   loading: true,
-  customerName: '',
-  customerId: '',
-  companyName: '',
-  creditAmount: 0,
-  idCard: '',
-  customerAddress: '',
-  idCardIssueDate: '',
-  idCardIssuePlace: '',
-  bankName: '',
-  accountNumber: '',
-  accountName: '',
-  listImages: '',
+  customer: {
+    customerName: '',
+    customerId: '',
+    companyName: '',
+    creditAmount: 0,
+    idCard: '',
+    customerAddress: '',
+    idCardIssueDate: '',
+    idCardIssuePlace: '',
+    bankName: '',
+    accountNumber: '',
+    accountName: '',
+    listImages: '',
+  },
+  editableProfile: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const profileInfoPageReducer = (state = initialState, action) =>
   produce(state, draft => {
+    console.log(state);
     console.log(action);
     switch (action.type) {
       case DEFAULT_ACTION:
         break;
-      case LOAD_DATA_PROFILE_SUCCESS:
+      case LOAD_EDITABLE_PROFILE:
         draft.loading = false;
-        draft.customerName = action.response.customer_name;
-        draft.customerId = action.response.customer_code;
-        draft.companyName = action.response.company_name;
-        draft.creditAmount = action.response.customer_salary;
-        draft.idCard = action.response.customer_id;
-        draft.customerAddress = action.response.customer_address;
-        draft.idCardIssueDate = parseDateString(
-          action.response.customer_id_date,
-        );
-        draft.idCardIssuePlace = action.response.customer_id_location;
-        draft.bankName = action.response.customer_bank_name;
-        draft.accountNumber = action.response.customer_bank_acc;
-        draft.accountName = action.response.customer_bank;
+        draft.editableProfile = action.profile;
         break;
+      case UPDATE_PROFILE_SUCCESS:
+        draft.editableProfile = action.newProfile;
     }
   });
 

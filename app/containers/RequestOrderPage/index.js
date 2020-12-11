@@ -14,26 +14,16 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectRequestOrderPage, {
-  makeSelectCompanyName,
-  makeSelectCustomerId,
-  makeSelectCustomerName,
-  makeSelectOpenModal,
-} from './selectors';
+import makeSelectRequestOrderPage, { makeSelectOpenModal } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import CustomerInfoCard from '../../components/CustomerInfoCard';
-
-import {
-  makeSelectAccName,
-  makeSelectAccNo,
-  makeSelectAmount,
-  makeSelectBankName,
-  makeSelectFeeAmount,
-} from '../HomePage/selectors';
+import { ShowRule } from '../../components/Rule';
+import { makeSelectAmount, makeSelectFeeAmount } from '../HomePage/selectors';
 import BankCard from '../../components/BankCard';
 import { confirmOrderAction, sendOrderRequestAction } from './actions';
 import SubContent from '../SubContent/Loadable';
+import { makeSelectCurrentProfile } from '../App/selectors';
 const useStyles = makeStyles(theme => ({
   paper: {
     top: `50%`,
@@ -47,14 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 export function RequestOrderPage({
-  customerId,
-  customerName,
-  companyName,
+  customer,
   amount,
   feeAmount,
-  bankName,
-  accNo,
-  accName,
   openModal,
   confirmOrder,
   sendOrderRequest,
@@ -97,14 +82,21 @@ export function RequestOrderPage({
       <SubContent title="Gửi yêu cầu ứng lương">
         <Box pt={3} margin={1}>
           <CustomerInfoCard
-            customerId={customerId}
-            customerName={customerName}
-            companyName={companyName}
+            customerId={customer.customerId}
+            customerName={customer.customerName}
+            companyName={customer.companyName}
             amount={amount}
             feeAmount={feeAmount}
           />
           <Box p={1} />
-          <BankCard bankName={bankName} accNo={accNo} accName={accName} />
+          <BankCard
+            bankName={customer.bankName}
+            accNo={customer.accountNumber}
+            accName={customer.accountName}
+          />
+
+          <ShowRule />
+
           <Box pt={2}>
             <Button
               fullWidth
@@ -130,29 +122,19 @@ export function RequestOrderPage({
 }
 
 RequestOrderPage.propTypes = {
-  customerId: PropTypes.string,
-  customerName: PropTypes.string,
-  companyName: PropTypes.string,
+  customer: PropTypes.object,
   amount: PropTypes.number,
   feeAmount: PropTypes.number,
-  bankName: PropTypes.string,
-  accNo: PropTypes.string,
-  accName: PropTypes.string,
   openModal: PropTypes.bool,
   confirmOrder: PropTypes.func,
   sendOrderRequest: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  customerId: makeSelectCustomerId(),
-  customerName: makeSelectCustomerName(),
-  companyName: makeSelectCompanyName(),
+  customer: makeSelectCurrentProfile(),
   amount: makeSelectAmount(),
   feeAmount: makeSelectFeeAmount(),
   requestOrderPage: makeSelectRequestOrderPage(),
-  bankName: makeSelectBankName(),
-  accNo: makeSelectAccNo(),
-  accName: makeSelectAccName(),
   openModal: makeSelectOpenModal(),
 });
 

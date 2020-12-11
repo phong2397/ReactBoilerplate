@@ -27,25 +27,12 @@ import { useForm } from 'react-hook-form';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import makeSelectProfileInfoPage, {
-  makeSelectCustomerName,
-  makeSelectCustomerId,
-  makeSelectCompanyName,
-  makeSelectCreditAmount,
-  makeSelectIdCard,
-  makeSelectCustomerAddress,
-  makeSelectIdCardIssueDate,
-  makeSelectIdCardIssuePlace,
-  makeSelectBankName,
-  makeSelectAccountNumber,
-  makeSelectAccountName,
-  makeSelectListImages,
-  makeSelectLoading,
-} from './selectors';
-import { loadDataProfile, requestUpdateDataProfile } from './actions';
+import { makeSelectLoading } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
+import { makeSelectCurrentProfile } from '../App/selectors';
+import { loadEditableProfile, requestUpdateProfile } from './actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -126,34 +113,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 export function ProfileInfoPage({
+  customer,
   loading,
-  customerName,
-  customerId,
-  companyName,
-  creditAmount,
-  idCard,
-  customerAddress,
-  idCardIssueDate,
-  idCardIssuePlace,
-  bankName,
-  accountNumber,
-  accountName,
-  loadProfile,
-  requestUpdate,
+  loadCurrentProfile,
+  onSubmitUpdateProfile,
 }) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
   useEffect(() => {
-    console.log(loading);
-    if (loading) loadProfile();
+    if (loading) {
+      loadCurrentProfile(customer);
+    }
   });
   const classes = useStyles();
 
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const onSubmitUpdate = () => {
-    requestUpdate('0973154950');
+  console.log('CUSTOMER ', customer);
+  const onSubmit = data => {
+    onSubmitUpdateProfile(data);
   };
-  console.log('Customer Name', customerName);
   return (
     <SubContent title="Thông tin người dùng">
       <form
@@ -161,14 +139,14 @@ export function ProfileInfoPage({
         className={classes.root}
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(onSubmitUpdate)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Box pt={1.5} pr={2} component="div">
           <TextField
             id="customerName"
             name="customerName"
             label="Họ và tên"
-            value={customerName}
+            defaultValue={customer.customerName}
             variant="filled"
             inputRef={register({
               required: 'Họ và tên không được để trống',
@@ -180,7 +158,7 @@ export function ProfileInfoPage({
             id="customerId"
             name="customerId"
             label="Mã nhân viên"
-            value={customerId}
+            defaultValue={customer.customerId}
             variant="filled"
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
@@ -192,7 +170,7 @@ export function ProfileInfoPage({
             id="companyName"
             name="companyName"
             label="Làm việc tại"
-            value={companyName}
+            defaultValue={customer.companyName}
             variant="filled"
             inputRef={register({
               required: 'Nơi làm việc không được để trống',
@@ -201,22 +179,22 @@ export function ProfileInfoPage({
             helperText={errors.companyName ? errors.companyName.message : ''}
           />
           <TextField
-            id="credit"
-            name="credit"
+            id="creditAmount"
+            name="creditAmount"
             label="Hạn mức lương"
-            value={creditAmount}
+            defaultValue={customer.creditAmount}
             variant="filled"
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
             })}
-            error={!!errors.credit}
-            helperText={errors.credit ? errors.credit.message : ''}
+            error={!!errors.creditAmount}
+            helperText={errors.creditAmount ? errors.creditAmount.message : ''}
           />
           <TextField
             id="idCard"
             name="idCard"
             label="CMND/CCCD"
-            value={idCard}
+            defaultValue={customer.idCard}
             variant="filled"
             inputRef={register({
               required: 'CMND/CCCD không được để trống',
@@ -225,20 +203,22 @@ export function ProfileInfoPage({
             helperText={errors.idCard ? errors.idCard.message : ''}
           />
           <TextField
-            id="address"
-            name="address"
+            id="customerAddress"
+            name="customerAddress"
             label="Địa chỉ"
-            value={customerAddress}
+            defaultValue={customer.customerAddress}
             variant="filled"
             inputRef={register({ required: 'Địa chỉ không được để trống' })}
-            error={!!errors.address}
-            helperText={errors.address ? errors.address.message : ''}
+            error={!!errors.customerAddress}
+            helperText={
+              errors.customerAddress ? errors.customerAddress.message : ''
+            }
           />
           <TextField
             id="issueDate"
             name="issueDate"
             label="Ngày cấp"
-            value={idCardIssueDate}
+            defaultValue={customer.idCardIssueDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
@@ -247,20 +227,22 @@ export function ProfileInfoPage({
             helperText={errors.issueDate ? errors.issueDate.message : ''}
           />
           <TextField
-            id="issuePlace"
-            name="issuePlace"
+            id="idCardIssuePlace"
+            name="idCardIssuePlace"
             label="Nơi cấp"
-            value={idCardIssuePlace}
+            defaultValue={customer.idCardIssuePlace}
             variant="filled"
             inputRef={register({ required: 'Nơi cấp không được để trống' })}
-            error={!!errors.issuePlace}
-            helperText={errors.issuePlace ? errors.issuePlace.message : ''}
+            error={!!errors.idCardIssuePlace}
+            helperText={
+              errors.idCardIssuePlace ? errors.idCardIssuePlace.message : ''
+            }
           />
           <TextField
             id="bankName"
             name="bankName"
             label="Ngân hàng"
-            value={bankName}
+            defaultValue={customer.bankName}
             variant="filled"
             inputRef={register({
               required: 'Ngân hàng không được để trống',
@@ -272,7 +254,7 @@ export function ProfileInfoPage({
             id="accountNumber"
             name="accountNumber"
             label="Số tài khoản"
-            value={accountNumber}
+            defaultValue={customer.accountNumber}
             variant="filled"
             inputRef={register({
               required: 'Số tài khoản không được để trống',
@@ -286,7 +268,7 @@ export function ProfileInfoPage({
             id="accountName"
             name="accountName"
             label="Chủ tài khoản"
-            value={accountName}
+            defaultValue={customer.accountName}
             variant="filled"
             inputRef={register({
               required: 'Chủ tài khoản không được để trống',
@@ -371,44 +353,24 @@ export function ProfileInfoPage({
 
 ProfileInfoPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
-  customerName: PropTypes.string,
   loading: PropTypes.bool,
-  customerId: PropTypes.string,
-  companyName: PropTypes.string,
-  creditAmount: PropTypes.number,
-  idCard: PropTypes.string,
-  customerAddress: PropTypes.string,
-  idCardIssueDate: PropTypes.string,
-  idCardIssuePlace: PropTypes.string,
-  bankName: PropTypes.string,
-  accountNumber: PropTypes.string,
-  accountName: PropTypes.string,
-  // onSubmitUpdateProfile: PropTypes.func,
-  loadProfile: PropTypes.func,
-  requestUpdate: PropTypes.func,
+  customer: PropTypes.object,
+  loadCurrentProfile: PropTypes.func,
+  onSubmitUpdateProfile: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
-  profileInfoPage: makeSelectProfileInfoPage(),
-  customerName: makeSelectCustomerName(),
-  customerId: makeSelectCustomerId(),
-  companyName: makeSelectCompanyName(),
-  creditAmount: makeSelectCreditAmount(),
-  idCard: makeSelectIdCard(),
-  customerAddress: makeSelectCustomerAddress(),
-  idCardIssueDate: makeSelectIdCardIssueDate(),
-  idCardIssuePlace: makeSelectIdCardIssuePlace(),
-  bankName: makeSelectBankName(),
-  accountNumber: makeSelectAccountNumber(),
-  accountName: makeSelectAccountName(),
-  listImages: makeSelectListImages(),
+  customer: makeSelectCurrentProfile(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadProfile: () => dispatch(loadDataProfile()),
-    requestUpdate: () => dispatch(requestUpdateDataProfile()),
+    loadCurrentProfile: customer => dispatch(loadEditableProfile(customer)),
+    onSubmitUpdateProfile: newProfile => {
+      console.log('REQUEST UPDATE NEW PROFILE ', newProfile);
+      dispatch(requestUpdateProfile(newProfile));
+    },
   };
 }
 

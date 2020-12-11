@@ -1,12 +1,14 @@
 import { push } from 'connected-react-router';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 // import moment from 'moment';
-import { deleteAccessToken } from '../../utils/storage';
+import { deleteAccessToken, removeProifle } from '../../utils/storage';
 import { REQUEST_LOGOUT } from '../App/constants';
+import { makeSelectCurrentProfile } from '../App/selectors';
 import { loadedProductConfig, loadProductError } from './actions';
 import { LOAD_PRODUCT_CONFIG } from './constants';
 export function* logout() {
+  removeProifle();
   deleteAccessToken();
   yield put(push('/login'));
 }
@@ -14,7 +16,20 @@ export function* loadProductSaga() {
   try {
     const requestURL = '/api/products/default';
     const response = yield call(request, requestURL);
-    yield put(loadedProductConfig(response.message));
+    const currentProfile = yield select(makeSelectCurrentProfile());
+    const config = {
+      productCode: response.message.productCode,
+      productName: response.message.productName,
+      productStatus: response.message.productStatus,
+      productAmountMax:
+        currentProfile.creditAmount >= response.productAmountMax
+          ? response.productAmountMax
+          : currentProfile.creditAmount,
+      productAmountMin: response.message.productAmountMin,
+      productFee: response.message.productFee,
+      productRate: response.message.productRate,
+    };
+    yield put(loadedProductConfig(config));
   } catch (err) {
     yield put(loadProductError(err));
   }

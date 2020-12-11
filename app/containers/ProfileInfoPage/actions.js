@@ -6,12 +6,12 @@
 
 import {
   LOAD_DATA_PROFILE,
-  LOAD_DATA_PROFILE_SUCCESS,
-  LOAD_DATA_PROFILE_ERROR,
-  REQUEST_UPDATE_DATA_PROFILE,
-  REQUEST_UPDATE_DATA_PROFILE_SUCCESS,
-  REQUEST_UPDATE_DATA_PROFILE_ERROR,
   DEFAULT_ACTION,
+  LOAD_EDITABLE_PROFILE,
+  UPDATE_PROFILE,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_ERROR,
+  LOAD_EDITED_PROFILE,
 } from './constants';
 
 export function defaultAction() {
@@ -20,46 +20,39 @@ export function defaultAction() {
   };
 }
 
-export function loadDataProfile() {
-  console.log('LOAD DATA 1');
+export function loadProfile() {
   return {
     type: LOAD_DATA_PROFILE,
   };
 }
-
-export function loadDataProfileSuccess(response) {
+export function loadEditableProfile(profile) {
   return {
-    type: LOAD_DATA_PROFILE_SUCCESS,
+    type: LOAD_EDITABLE_PROFILE,
+    profile,
+  };
+}
+export function loadEditedProfile(editedProfile) {
+  return {
+    type: LOAD_EDITED_PROFILE,
+    editedProfile,
+  };
+}
+export function requestUpdateProfile(newProfile) {
+  return {
+    type: UPDATE_PROFILE,
+    newProfile,
+  };
+}
+export function updateProfileSuccess(response) {
+  return {
+    type: UPDATE_PROFILE_SUCCESS,
     response,
   };
 }
 
-export function loadDataProfileError(error) {
+export function updateProfileError(error) {
   return {
-    type: LOAD_DATA_PROFILE_ERROR,
+    type: UPDATE_PROFILE_ERROR,
     error,
-  };
-}
-
-export function requestUpdateDataProfile(value) {
-  console.log('REQUEST PROFILE DATA 1');
-
-  return {
-    type: REQUEST_UPDATE_DATA_PROFILE,
-    value,
-  };
-}
-
-export function requestUpdateDataProfileSuccess(value) {
-  return {
-    type: REQUEST_UPDATE_DATA_PROFILE_SUCCESS,
-    value,
-  };
-}
-
-export function requestUpdateDataProfileError(value) {
-  return {
-    type: REQUEST_UPDATE_DATA_PROFILE_ERROR,
-    value,
   };
 }

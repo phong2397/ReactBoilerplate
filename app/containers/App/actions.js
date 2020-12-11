@@ -15,7 +15,7 @@
  *    }
  */
 
-import { REQUEST_LOGOUT } from './constants';
+import { LOAD_PROFILE_SUCESS, REQUEST_LOGOUT } from './constants';
 
 /**
  * Load the repositories, this action starts the request saga
@@ -30,7 +30,13 @@ import { REQUEST_LOGOUT } from './constants';
  *
  * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
  */
-
+export function loadedProfile(customer) {
+  console.log('LOAD ?');
+  return {
+    type: LOAD_PROFILE_SUCESS,
+    customer,
+  };
+}
 export function doLogout() {
   return {
     type: REQUEST_LOGOUT,

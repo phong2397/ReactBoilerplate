@@ -14,3 +14,4 @@ export const ON_LOAD_APP_ERROR = 'boilerplate/App/ON_LOAD_APP_ERROR';
 export const AUTHENTICATED = 'boilerplate/App/AUTHENTICATED';
 export const UNAUTHENTICATED = 'boilerplate/App/UNAUTHENTICATED';
 export const REQUEST_LOGOUT = 'boilerplate/App/REQUEST_LOGOUT';
+export const LOAD_PROFILE_SUCESS = 'boilerplate/App/LOAD_PROFILE_SUCESS';
