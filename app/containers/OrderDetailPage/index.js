@@ -22,24 +22,21 @@ import {
 import OrderInitStatus from 'components/OrderInitStatus';
 import OrderAppraiseStatus from 'components/OrderAppraiseStatus';
 import OrderDisbursementStatus from 'components/OrderDisbursementStatus';
-import makeSelectOrderDetailPage from './selectors';
+import makeSelectOrderDetailPage, {
+  makeSelectOrderInitStage,
+  makeSelectOrderAppraisalStage,
+  makeSelectOrderDisbursementStage,
+  // makeSelectOrderRepaymentStage,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
 
 export function OrderDetailPage({
-  initStatus,
-  orderId,
-  orderAmount,
-  requestTime,
-  approveStatus,
-  approveTime,
-  disburseStatus,
-  disburseTime,
-  disburseLabel,
-  accountNo,
-  accountName,
-  bankName,
+  initStage,
+  appraisalStage,
+  disbursementStage,
+  // repaymentStage,
 }) {
   useInjectReducer({ key: 'orderDetailPage', reducer });
   useInjectSaga({ key: 'orderDetailPage', saga });
@@ -55,10 +52,10 @@ export function OrderDetailPage({
           </TimelineSeparator>
           <TimelineContent>
             <OrderInitStatus
-              statusTag={initStatus}
-              orderId={orderId}
-              amount={orderAmount}
-              requestTime={requestTime}
+              statusTag={initStage.status}
+              orderId={initStage.orderId}
+              amount={initStage.amount}
+              requestTime={initStage.requestTime}
             />
           </TimelineContent>
         </TimelineItem>
@@ -71,8 +68,8 @@ export function OrderDetailPage({
           </TimelineSeparator>
           <TimelineContent>
             <OrderAppraiseStatus
-              statusTag={approveStatus}
-              resolveTime={approveTime}
+              statusTag={appraisalStage.status}
+              resolveTime={appraisalStage.approveTime}
             />
           </TimelineContent>
         </TimelineItem>
@@ -85,12 +82,12 @@ export function OrderDetailPage({
           </TimelineSeparator>
           <TimelineContent>
             <OrderDisbursementStatus
-              statusTag={disburseStatus}
-              disburseTime={disburseTime}
-              label={disburseLabel}
-              accName={accountName}
-              accNo={accountNo}
-              bankName={bankName}
+              statusTag={disbursementStage.status}
+              disburseTime={disbursementStage.disburseTime}
+              label={disbursementStage.disburseLabel}
+              accName={disbursementStage.accountName}
+              accNo={disbursementStage.accountNo}
+              bankName={disbursementStage.bankName}
             />
           </TimelineContent>
         </TimelineItem>
@@ -101,22 +98,18 @@ export function OrderDetailPage({
 
 OrderDetailPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
-  initStatus: PropTypes.string,
-  orderId: PropTypes.string,
-  orderAmount: PropTypes.number,
-  requestTime: PropTypes.string,
-  approveStatus: PropTypes.string,
-  approveTime: PropTypes.string,
-  disburseStatus: PropTypes.string,
-  disburseTime: PropTypes.string,
-  accountNo: PropTypes.string,
-  accountName: PropTypes.string,
-  bankName: PropTypes.string,
-  disburseLabel: PropTypes.string,
+  initStage: PropTypes.object,
+  appraisalStage: PropTypes.object,
+  disbursementStage: PropTypes.object,
+  // repaymentStage: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   orderDetailPage: makeSelectOrderDetailPage(),
+  initStage: makeSelectOrderInitStage(),
+  appraisalStage: makeSelectOrderAppraisalStage(),
+  disbursementStage: makeSelectOrderDisbursementStage(),
+  // repaymentStage: makeSelectOrderRepaymentStage(),
 });
 
 function mapDispatchToProps(dispatch) {

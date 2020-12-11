@@ -22,5 +22,35 @@ const makeSelectOrderDetailPage = () =>
     substate => substate,
   );
 
+const makeSelectOrderInitStage = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.initialState,
+  );
+
+const makeSelectOrderAppraisalStage = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.initialState,
+  );
+
+const makeSelectOrderDisbursementStage = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.initialState,
+  );
+
+const makeSelectOrderRepaymentStage = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.initialState,
+  );
+
 export default makeSelectOrderDetailPage;
-export { selectOrderDetailPageDomain };
+export {
+  selectOrderDetailPageDomain,
+  makeSelectOrderInitStage,
+  makeSelectOrderAppraisalStage,
+  makeSelectOrderDisbursementStage,
+  makeSelectOrderRepaymentStage,
+};
