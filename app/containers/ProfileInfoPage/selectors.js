@@ -36,6 +36,11 @@ const makeSelectCustomer = () =>
     selectProfileInfoPageDomain,
     profileState => profileState.customer,
   );
+const makeSelectProfileInfo = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.editableProfile,
+  );
 const makeSelectCustomerName = () =>
   createSelector(
     selectProfileInfoPageDomain,
@@ -106,6 +111,7 @@ export default makeSelectProfileInfoPage;
 export {
   selectProfileInfoPageDomain,
   makeSelectLoading,
+  makeSelectProfileInfo,
   makeSelectCustomer,
   makeSelectCustomerName,
   makeSelectCustomerId,

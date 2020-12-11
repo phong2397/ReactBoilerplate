@@ -11,6 +11,7 @@ import {
   CONFIRM_ORDER,
   CLOSE_MODAL,
   SEND_ORDER_SUCCESS,
+  SEND_ORDER_ERROR,
 } from './constants';
 
 export function defaultAction() {
@@ -48,7 +49,7 @@ export function sendOrderSuccess(response) {
 }
 export function sendOrderError(error) {
   return {
-    type: SEND_ORDER_SUCCESS,
+    type: SEND_ORDER_ERROR,
     error,
   };
 }

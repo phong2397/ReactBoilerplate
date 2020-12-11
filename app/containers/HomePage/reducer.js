@@ -29,7 +29,7 @@ export const initialState = {
   // bankName: 'SCB',
   // accNo: '100100132448',
   // accName: 'Nguyen Van A',
-  // phone: '0987654321',
+  phone: '0987654321',
   // companyCode: 'SGFintech',
 };
 

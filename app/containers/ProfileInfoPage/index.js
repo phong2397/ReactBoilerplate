@@ -5,7 +5,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -28,11 +28,11 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
 import { makeSelectLoading } from './selectors';
-import { loadProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
 import { makeSelectCurrentProfile } from '../App/selectors';
+import { loadEditableProfile, requestUpdateProfile } from './actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -112,16 +112,26 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('opacity'),
   },
 }));
-export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
+export function ProfileInfoPage({
+  customer,
+  loading,
+  loadCurrentProfile,
+  onSubmitUpdateProfile,
+}) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
+  useEffect(() => {
+    if (loading) {
+      loadCurrentProfile(customer);
+    }
+  });
   const classes = useStyles();
 
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const onSubmitUpdate = data => {
+  console.log('CUSTOMER ', customer);
+  const onSubmit = data => {
     onSubmitUpdateProfile(data);
   };
-  console.log('Customer Name', customer.customerName);
   return (
     <SubContent title="Thông tin người dùng">
       <form
@@ -129,14 +139,14 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
         className={classes.root}
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(onSubmitUpdate)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Box pt={1.5} pr={2} component="div">
           <TextField
             id="customerName"
             name="customerName"
             label="Họ và tên"
-            value={customer.customerName}
+            defaultValue={customer.customerName}
             variant="filled"
             inputRef={register({
               required: 'Họ và tên không được để trống',
@@ -148,7 +158,7 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             id="customerId"
             name="customerId"
             label="Mã nhân viên"
-            value={customer.customerId}
+            defaultValue={customer.customerId}
             variant="filled"
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
@@ -160,7 +170,7 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             id="companyName"
             name="companyName"
             label="Làm việc tại"
-            value={customer.companyName}
+            defaultValue={customer.companyName}
             variant="filled"
             inputRef={register({
               required: 'Nơi làm việc không được để trống',
@@ -169,22 +179,22 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             helperText={errors.companyName ? errors.companyName.message : ''}
           />
           <TextField
-            id="credit"
-            name="credit"
+            id="creditAmount"
+            name="creditAmount"
             label="Hạn mức lương"
-            value={customer.creditAmount}
+            defaultValue={customer.creditAmount}
             variant="filled"
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
             })}
-            error={!!errors.credit}
-            helperText={errors.credit ? errors.credit.message : ''}
+            error={!!errors.creditAmount}
+            helperText={errors.creditAmount ? errors.creditAmount.message : ''}
           />
           <TextField
             id="idCard"
             name="idCard"
             label="CMND/CCCD"
-            value={customer.idCard}
+            defaultValue={customer.idCard}
             variant="filled"
             inputRef={register({
               required: 'CMND/CCCD không được để trống',
@@ -193,20 +203,22 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             helperText={errors.idCard ? errors.idCard.message : ''}
           />
           <TextField
-            id="address"
-            name="address"
+            id="customerAddress"
+            name="customerAddress"
             label="Địa chỉ"
-            value={customer.customerAddress}
+            defaultValue={customer.customerAddress}
             variant="filled"
             inputRef={register({ required: 'Địa chỉ không được để trống' })}
-            error={!!errors.address}
-            helperText={errors.address ? errors.address.message : ''}
+            error={!!errors.customerAddress}
+            helperText={
+              errors.customerAddress ? errors.customerAddress.message : ''
+            }
           />
           <TextField
             id="issueDate"
             name="issueDate"
             label="Ngày cấp"
-            value={customer.idCardIssueDate}
+            defaultValue={customer.idCardIssueDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
@@ -215,20 +227,22 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             helperText={errors.issueDate ? errors.issueDate.message : ''}
           />
           <TextField
-            id="issuePlace"
-            name="issuePlace"
+            id="idCardIssuePlace"
+            name="idCardIssuePlace"
             label="Nơi cấp"
-            value={customer.idCardIssuePlace}
+            defaultValue={customer.idCardIssuePlace}
             variant="filled"
             inputRef={register({ required: 'Nơi cấp không được để trống' })}
-            error={!!errors.issuePlace}
-            helperText={errors.issuePlace ? errors.issuePlace.message : ''}
+            error={!!errors.idCardIssuePlace}
+            helperText={
+              errors.idCardIssuePlace ? errors.idCardIssuePlace.message : ''
+            }
           />
           <TextField
             id="bankName"
             name="bankName"
             label="Ngân hàng"
-            value={customer.bankName}
+            defaultValue={customer.bankName}
             variant="filled"
             inputRef={register({
               required: 'Ngân hàng không được để trống',
@@ -240,7 +254,7 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             id="accountNumber"
             name="accountNumber"
             label="Số tài khoản"
-            value={customer.accountNumber}
+            defaultValue={customer.accountNumber}
             variant="filled"
             inputRef={register({
               required: 'Số tài khoản không được để trống',
@@ -254,7 +268,7 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
             id="accountName"
             name="accountName"
             label="Chủ tài khoản"
-            value={customer.accountName}
+            defaultValue={customer.accountName}
             variant="filled"
             inputRef={register({
               required: 'Chủ tài khoản không được để trống',
@@ -339,7 +353,9 @@ export function ProfileInfoPage({ customer, onSubmitUpdateProfile }) {
 
 ProfileInfoPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   customer: PropTypes.object,
+  loadCurrentProfile: PropTypes.func,
   onSubmitUpdateProfile: PropTypes.func,
 };
 
@@ -350,7 +366,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadProfileData: () => dispatch(loadProfile()),
+    loadCurrentProfile: customer => dispatch(loadEditableProfile(customer)),
+    onSubmitUpdateProfile: newProfile => {
+      console.log('REQUEST UPDATE NEW PROFILE ', newProfile);
+      dispatch(requestUpdateProfile(newProfile));
+    },
   };
 }
 

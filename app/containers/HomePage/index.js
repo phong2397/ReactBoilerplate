@@ -75,8 +75,12 @@ export function HomePage({
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
   console.log('Product config', productConfig);
+  console.log('CUSTOMER LOAD', customer);
   useEffect(() => {
-    if (loading) loadProduct();
+    if (loading) {
+      console.log('LOAD PRODUCT CONFIG ?');
+      loadProduct();
+    }
   });
   const classes = useStyles();
   return (
@@ -100,14 +104,14 @@ export function HomePage({
             step={step}
             max={customer.creditAmount}
             defaultValue={productConfig.defaultAmount}
-            value={selectedAmount}
+            value={Number(selectedAmount)}
             onChange={onChangeSlider}
           />
         </Box>
         <Typography variant="subtitle2" align="center" display="block">
           Phí: {convertWithCommas(feeAmount)}đ
           <FeeToolTip
-            amount={selectedAmount}
+            amount={Number(selectedAmount)}
             rate={productConfig.productRate}
           />
         </Typography>
@@ -142,7 +146,7 @@ HomePage.propTypes = {
   step: PropTypes.number,
   onChangeSlider: PropTypes.func,
   feeAmount: PropTypes.number,
-  loadProduct: PropTypes.func,
+  loadProduct: PropTypes.func.isRequired,
 };
 // customerName: action.customer.customer_name,
 // customerId: action.customer.customer_code,
