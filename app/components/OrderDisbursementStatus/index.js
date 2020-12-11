@@ -15,35 +15,35 @@ import PropTypes from 'prop-types';
 function disburseStatus(label, accName, accNo, bankName) {
   return (
     <div>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Tài khoản nhận tiền
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{label}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Chủ tài khoản
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{accName}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Số tài khoản
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{accNo}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingBottom={1} paddingLeft={2} flexGrow={1}>
           Ngân hàng
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{bankName}</b>
         </Box>
       </Box>

@@ -22,11 +22,12 @@ import {
 import OrderInitStatus from 'components/OrderInitStatus';
 import OrderAppraiseStatus from 'components/OrderAppraiseStatus';
 import OrderDisbursementStatus from 'components/OrderDisbursementStatus';
+import OrderRepaymentStatus from 'components/OrderRepaymentStatus';
 import makeSelectOrderDetailPage, {
   makeSelectOrderInitStage,
   makeSelectOrderAppraisalStage,
   makeSelectOrderDisbursementStage,
-  // makeSelectOrderRepaymentStage,
+  makeSelectOrderRepaymentStage,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -36,7 +37,7 @@ export function OrderDetailPage({
   initStage,
   appraisalStage,
   disbursementStage,
-  // repaymentStage,
+  repaymentStage,
 }) {
   useInjectReducer({ key: 'orderDetailPage', reducer });
   useInjectSaga({ key: 'orderDetailPage', saga });
@@ -54,8 +55,8 @@ export function OrderDetailPage({
             <OrderInitStatus
               statusTag={initStage.status}
               orderId={initStage.orderId}
-              amount={initStage.amount}
-              requestTime={initStage.requestTime}
+              amount={initStage.orderAmount}
+              requestTime={initStage.submitTime}
             />
           </TimelineContent>
         </TimelineItem>
@@ -91,6 +92,20 @@ export function OrderDetailPage({
             />
           </TimelineContent>
         </TimelineItem>
+
+        {/* Repayment Status */}
+        <TimelineItem>
+          <TimelineSeparator>
+            <TimelineDot />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent>
+            <OrderRepaymentStatus
+              statusTag={repaymentStage.status}
+              repayTime={repaymentStage.repayTime}
+            />
+          </TimelineContent>
+        </TimelineItem>
       </Timeline>
     </div>
   );
@@ -101,7 +116,7 @@ OrderDetailPage.propTypes = {
   initStage: PropTypes.object,
   appraisalStage: PropTypes.object,
   disbursementStage: PropTypes.object,
-  // repaymentStage: PropTypes.object,
+  repaymentStage: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -109,7 +124,7 @@ const mapStateToProps = createStructuredSelector({
   initStage: makeSelectOrderInitStage(),
   appraisalStage: makeSelectOrderAppraisalStage(),
   disbursementStage: makeSelectOrderDisbursementStage(),
-  // repaymentStage: makeSelectOrderRepaymentStage(),
+  repaymentStage: makeSelectOrderRepaymentStage(),
 });
 
 function mapDispatchToProps(dispatch) {

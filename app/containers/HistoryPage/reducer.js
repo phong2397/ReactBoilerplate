@@ -11,7 +11,7 @@ export const initialState = {
     {
       orderId: '0010',
       orderStatus: 'Đang chờ giải ngân',
-      orderAmount: '5000000',
+      orderAmount: 5000000,
       submitTime: '31/11/2012 14h56',
     },
     {

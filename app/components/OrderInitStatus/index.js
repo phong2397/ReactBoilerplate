@@ -17,27 +17,27 @@ import { Box } from '@material-ui/core';
 function initStatus(orderId, amount, requestTime) {
   return (
     <div>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Mã đơn yêu cầu
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{orderId}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Số tiền
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{amount}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingBottom={1} paddingLeft={2} flexGrow={1}>
           Gửi lúc
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingBottom={1} paddingRight={2}>
           <b>{requestTime}</b>
         </Box>
       </Box>

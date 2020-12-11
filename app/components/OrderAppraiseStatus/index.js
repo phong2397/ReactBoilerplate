@@ -8,20 +8,14 @@ import React, { memo } from 'react';
 import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
-
 function appraiseStatus(resolveTime) {
   return (
     <div>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box p={2} flexGrow={1}>
           Thời gian xử lý
         </Box>
-        <Box p={1}>
+        <Box p={2}>
           <b>{resolveTime}</b>
         </Box>
       </Box>
