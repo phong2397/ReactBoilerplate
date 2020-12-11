@@ -4,7 +4,7 @@ import request from 'utils/request';
 import {
   loadDataProfileError,
   loadDataProfileSuccess,
-  requestUpdateDataProfile,
+  requestUpdateDataProfileSuccess,
   requestUpdateDataProfileError,
 } from './actions';
 import { LOAD_DATA_PROFILE, REQUEST_UPDATE_DATA_PROFILE } from './constants';
@@ -52,7 +52,7 @@ export function* requestUpdate() {
 
   console.log('SAGA REQUEST UPDATE');
   const phone = '0973154950';
-  const requestURL = `customers/updateProfile/${phone}`;
+  const requestURL = `/customers/profile/${phone}`;
   const parameters = {
     method: 'PUT',
     headers: new Headers({
@@ -79,9 +79,9 @@ export function* requestUpdate() {
   try {
     const response = yield call(request, requestURL, parameters);
     console.log(`UPDATE RESPONSE: `, response);
-    if (response.ResponseCode === '000') {
-      yield put(push('/profileinfo'));
-      yield put(requestUpdateDataProfile(response));
+    if (response.code === 200) {
+      yield put(push('/profile'));
+      yield put(requestUpdateDataProfileSuccess(response));
     } else yield put(requestUpdateDataProfileError(response));
   } catch (err) {
     yield put(requestUpdateDataProfileError(err));
@@ -90,7 +90,6 @@ export function* requestUpdate() {
 // Individual exports for testing
 export default function* profileInfoPageSaga() {
   // See example in containers/HomePage/saga.js
-  console.log('IS THIS LOAD ?');
   yield takeLatest(LOAD_DATA_PROFILE, loadProfile);
   yield takeLatest(REQUEST_UPDATE_DATA_PROFILE, requestUpdate);
 }

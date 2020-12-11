@@ -5,6 +5,7 @@
  *
  */
 import produce from 'immer';
+import { parseDateString } from '../../utils/formater';
 import { DEFAULT_ACTION, LOAD_DATA_PROFILE_SUCCESS } from './constants';
 
 export const initialState = {
@@ -38,7 +39,9 @@ const profileInfoPageReducer = (state = initialState, action) =>
         draft.creditAmount = action.response.customer_salary;
         draft.idCard = action.response.customer_id;
         draft.customerAddress = action.response.customer_address;
-        draft.idCardIssueDate = action.response.customer_id_date;
+        draft.idCardIssueDate = parseDateString(
+          action.response.customer_id_date,
+        );
         draft.idCardIssuePlace = action.response.customer_id_location;
         draft.bankName = action.response.customer_bank_name;
         draft.accountNumber = action.response.customer_bank_acc;
