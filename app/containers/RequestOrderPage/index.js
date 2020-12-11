@@ -23,7 +23,7 @@ import makeSelectRequestOrderPage, {
 import reducer from './reducer';
 import saga from './saga';
 import CustomerInfoCard from '../../components/CustomerInfoCard';
-
+import { ShowRule } from '../../components/Rule';
 import {
   makeSelectAccName,
   makeSelectAccNo,
@@ -105,6 +105,9 @@ export function RequestOrderPage({
           />
           <Box p={1} />
           <BankCard bankName={bankName} accNo={accNo} accName={accName} />
+
+          <ShowRule />
+
           <Box pt={2}>
             <Button
               fullWidth
