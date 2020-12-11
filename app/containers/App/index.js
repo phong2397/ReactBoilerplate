@@ -55,7 +55,7 @@ export default function App() {
         <PrivateRoute path="/requestOrder" component={RequestOrderPage} />
         <PrivateRoute path="/profile" component={ProfileInfoPage} />
         <Route path="/history" component={HistoryPage} />
-        <Route path="/orders/1" component={OrderDetailPage} />
+        <Route path="/orders/:id" component={OrderDetailPage} />
         {/* <Route path="/profileinfo" component={ProfileInfoPage} /> */}
         <Route path="/documents" component={DocumentPage} />
         <Route path="/faq" component={FaqPage} />

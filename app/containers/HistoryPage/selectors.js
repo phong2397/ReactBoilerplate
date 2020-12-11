@@ -21,5 +21,11 @@ const makeSelectHistoryPage = () =>
     substate => substate,
   );
 
+const makeSelectListOrders = () =>
+  createSelector(
+    selectHistoryPageDomain,
+    substate => substate.listOrders,
+  );
+
 export default makeSelectHistoryPage;
-export { selectHistoryPageDomain };
+export { selectHistoryPageDomain, makeSelectListOrders };
