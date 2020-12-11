@@ -18,7 +18,6 @@ export function defaultAction() {
 }
 
 export function loadDataProfile() {
-  console.log('LOAD DATA 1');
   return {
     type: LOAD_DATA_PROFILE,
   };
@@ -27,7 +26,7 @@ export function loadDataProfile() {
 export function loadDataProfileSuccess(response) {
   return {
     type: LOAD_DATA_PROFILE_SUCCESS,
-    response,
+    customer: response,
   };
 }
 

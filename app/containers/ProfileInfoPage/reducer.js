@@ -9,18 +9,20 @@ import { DEFAULT_ACTION, LOAD_DATA_PROFILE_SUCCESS } from './constants';
 
 export const initialState = {
   loading: true,
-  customerName: '',
-  customerId: '',
-  companyName: '',
-  creditAmount: 0,
-  idCard: '',
-  customerAddress: '',
-  idCardIssueDate: '',
-  idCardIssuePlace: '',
-  bankName: '',
-  accountNumber: '',
-  accountName: '',
-  listImages: '',
+  customer: {
+    customerName: '',
+    customerId: '',
+    companyName: '',
+    creditAmount: 0,
+    idCard: '',
+    customerAddress: '',
+    idCardIssueDate: '',
+    idCardIssuePlace: '',
+    bankName: '',
+    accountNumber: '',
+    accountName: '',
+    listImages: '',
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -32,17 +34,19 @@ const profileInfoPageReducer = (state = initialState, action) =>
         break;
       case LOAD_DATA_PROFILE_SUCCESS:
         draft.loading = false;
-        draft.customerName = action.response.customer_name;
-        draft.customerId = action.response.customer_code;
-        draft.companyName = action.response.company_name;
-        draft.creditAmount = action.response.customer_salary;
-        draft.idCard = action.response.customer_id;
-        draft.customerAddress = action.response.customer_address;
-        draft.idCardIssueDate = action.response.customer_id_date;
-        draft.idCardIssuePlace = action.response.customer_id_location;
-        draft.bankName = action.response.customer_bank_name;
-        draft.accountNumber = action.response.customer_bank_acc;
-        draft.accountName = action.response.customer_bank;
+        draft.customer = {
+          customerName: action.customer.customer_name,
+          customerId: action.customer.customer_code,
+          companyName: action.customer.company_name,
+          creditAmount: action.customer.customer_salary,
+          idCard: action.customer.customer_id,
+          customerAddress: action.customer.customer_address,
+          idCardIssueDate: action.customer.customer_id_date,
+          idCardIssuePlace: action.customer.customer_id_location,
+          bankName: action.customer.customer_bank_name,
+          accountNumber: action.customer.customer_bank_acc,
+          accountName: action.customer.customer_bank,
+        };
         break;
     }
   });

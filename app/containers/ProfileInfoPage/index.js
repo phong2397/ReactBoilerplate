@@ -27,21 +27,7 @@ import { useForm } from 'react-hook-form';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import makeSelectProfileInfoPage, {
-  makeSelectCustomerName,
-  makeSelectCustomerId,
-  makeSelectCompanyName,
-  makeSelectCreditAmount,
-  makeSelectIdCard,
-  makeSelectCustomerAddress,
-  makeSelectIdCardIssueDate,
-  makeSelectIdCardIssuePlace,
-  makeSelectBankName,
-  makeSelectAccountNumber,
-  makeSelectAccountName,
-  makeSelectListImages,
-  makeSelectLoading,
-} from './selectors';
+import { makeSelectLoading, makeSelectCustomer } from './selectors';
 import { loadDataProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -127,17 +113,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export function ProfileInfoPage({
   loading,
-  customerName,
-  customerId,
-  companyName,
-  creditAmount,
-  idCard,
-  customerAddress,
-  idCardIssueDate,
-  idCardIssuePlace,
-  bankName,
-  accountNumber,
-  accountName,
+  customer,
   loadProfile,
   onSubmitUpdateProfile,
 }) {
@@ -153,7 +129,7 @@ export function ProfileInfoPage({
   const onSubmitUpdate = data => {
     onSubmitUpdateProfile(data);
   };
-  console.log('Customer Name', customerName);
+  console.log('Customer Name', customer.customerName);
   return (
     <SubContent title="Thông tin người dùng">
       <form
@@ -168,7 +144,7 @@ export function ProfileInfoPage({
             id="customerName"
             name="customerName"
             label="Họ và tên"
-            value={customerName}
+            value={customer.customerName}
             variant="filled"
             inputRef={register({
               required: 'Họ và tên không được để trống',
@@ -180,7 +156,7 @@ export function ProfileInfoPage({
             id="customerId"
             name="customerId"
             label="Mã nhân viên"
-            value={customerId}
+            value={customer.customerId}
             variant="filled"
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
@@ -192,7 +168,7 @@ export function ProfileInfoPage({
             id="companyName"
             name="companyName"
             label="Làm việc tại"
-            value={companyName}
+            value={customer.companyName}
             variant="filled"
             inputRef={register({
               required: 'Nơi làm việc không được để trống',
@@ -204,7 +180,7 @@ export function ProfileInfoPage({
             id="credit"
             name="credit"
             label="Hạn mức lương"
-            value={creditAmount}
+            value={customer.creditAmount}
             variant="filled"
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
@@ -216,7 +192,7 @@ export function ProfileInfoPage({
             id="idCard"
             name="idCard"
             label="CMND/CCCD"
-            value={idCard}
+            value={customer.idCard}
             variant="filled"
             inputRef={register({
               required: 'CMND/CCCD không được để trống',
@@ -228,7 +204,7 @@ export function ProfileInfoPage({
             id="address"
             name="address"
             label="Địa chỉ"
-            value={customerAddress}
+            value={customer.customerAddress}
             variant="filled"
             inputRef={register({ required: 'Địa chỉ không được để trống' })}
             error={!!errors.address}
@@ -238,7 +214,7 @@ export function ProfileInfoPage({
             id="issueDate"
             name="issueDate"
             label="Ngày cấp"
-            value={idCardIssueDate}
+            value={customer.idCardIssueDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
@@ -250,7 +226,7 @@ export function ProfileInfoPage({
             id="issuePlace"
             name="issuePlace"
             label="Nơi cấp"
-            value={idCardIssuePlace}
+            value={customer.idCardIssuePlace}
             variant="filled"
             inputRef={register({ required: 'Nơi cấp không được để trống' })}
             error={!!errors.issuePlace}
@@ -260,7 +236,7 @@ export function ProfileInfoPage({
             id="bankName"
             name="bankName"
             label="Ngân hàng"
-            value={bankName}
+            value={customer.bankName}
             variant="filled"
             inputRef={register({
               required: 'Ngân hàng không được để trống',
@@ -272,7 +248,7 @@ export function ProfileInfoPage({
             id="accountNumber"
             name="accountNumber"
             label="Số tài khoản"
-            value={accountNumber}
+            value={customer.accountNumber}
             variant="filled"
             inputRef={register({
               required: 'Số tài khoản không được để trống',
@@ -286,7 +262,7 @@ export function ProfileInfoPage({
             id="accountName"
             name="accountName"
             label="Chủ tài khoản"
-            value={accountName}
+            value={customer.accountName}
             variant="filled"
             inputRef={register({
               required: 'Chủ tài khoản không được để trống',
@@ -371,37 +347,15 @@ export function ProfileInfoPage({
 
 ProfileInfoPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
-  customerName: PropTypes.string,
   loading: PropTypes.bool,
-  customerId: PropTypes.string,
-  companyName: PropTypes.string,
-  creditAmount: PropTypes.number,
-  idCard: PropTypes.string,
-  customerAddress: PropTypes.string,
-  idCardIssueDate: PropTypes.string,
-  idCardIssuePlace: PropTypes.string,
-  bankName: PropTypes.string,
-  accountNumber: PropTypes.string,
-  accountName: PropTypes.string,
+  customer: PropTypes.object,
   onSubmitUpdateProfile: PropTypes.func,
   loadProfile: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
-  profileInfoPage: makeSelectProfileInfoPage(),
-  customerName: makeSelectCustomerName(),
-  customerId: makeSelectCustomerId(),
-  companyName: makeSelectCompanyName(),
-  creditAmount: makeSelectCreditAmount(),
-  idCard: makeSelectIdCard(),
-  customerAddress: makeSelectCustomerAddress(),
-  idCardIssueDate: makeSelectIdCardIssueDate(),
-  idCardIssuePlace: makeSelectIdCardIssuePlace(),
-  bankName: makeSelectBankName(),
-  accountNumber: makeSelectAccountNumber(),
-  accountName: makeSelectAccountName(),
-  listImages: makeSelectListImages(),
+  customer: makeSelectCustomer(),
 });
 
 function mapDispatchToProps(dispatch) {
