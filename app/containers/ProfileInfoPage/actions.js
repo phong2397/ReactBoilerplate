@@ -17,20 +17,20 @@ export function defaultAction() {
   };
 }
 
-export function loadDataProfile() {
+export function loadProfile() {
   return {
     type: LOAD_DATA_PROFILE,
   };
 }
 
-export function loadDataProfileSuccess(response) {
+export function loadProfileSuccess(response) {
   return {
     type: LOAD_DATA_PROFILE_SUCCESS,
     customer: response,
   };
 }
 
-export function loadDataProfileError(error) {
+export function loadProfileError(error) {
   return {
     type: LOAD_DATA_PROFILE_ERROR,
     error,

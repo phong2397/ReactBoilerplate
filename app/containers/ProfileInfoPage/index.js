@@ -27,11 +27,12 @@ import { useForm } from 'react-hook-form';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import { makeSelectLoading, makeSelectCustomer } from './selectors';
-import { loadDataProfile } from './actions';
+import { makeSelectLoading } from './selectors';
+import { loadProfile } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
+import { makeSelectProfile } from '../LoginPage/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -114,14 +115,14 @@ const useStyles = makeStyles(theme => ({
 export function ProfileInfoPage({
   loading,
   customer,
-  loadProfile,
+  loadProfileData,
   onSubmitUpdateProfile,
 }) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
   useEffect(() => {
     console.log(loading);
-    if (loading) loadProfile();
+    if (loading) loadProfileData();
   });
   const classes = useStyles();
 
@@ -350,17 +351,17 @@ ProfileInfoPage.propTypes = {
   loading: PropTypes.bool,
   customer: PropTypes.object,
   onSubmitUpdateProfile: PropTypes.func,
-  loadProfile: PropTypes.func,
+  loadProfileData: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
-  customer: makeSelectCustomer(),
+  customer: makeSelectProfile(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadProfile: () => dispatch(loadDataProfile()),
+    loadProfileData: () => dispatch(loadProfile()),
   };
 }
 

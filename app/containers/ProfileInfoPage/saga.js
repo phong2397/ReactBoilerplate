@@ -1,21 +1,7 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import request from 'utils/request';
-import { loadDataProfileError, loadDataProfileSuccess } from './actions';
-import { LOAD_DATA_PROFILE } from './constants';
-
-export function* loadProfile() {
-  console.log('LOAD DATA 2');
-  const phone = '0973154950';
-  try {
-    const requestURL = `/customers/profile/${phone}`;
-    const response = yield call(request, requestURL);
-    console.log(response);
-    // yield put(push('/profileinfo'));
-    yield put(loadDataProfileSuccess(response));
-  } catch (err) {
-    yield put(loadDataProfileError(err));
-  }
-}
+// import { call, put, takeLatest } from 'redux-saga/effects';
+// import request from 'utils/request';
+// import { loadProfileError, loadProfileSuccess } from './actions';
+// import { LOAD_DATA_PROFILE } from './constants';
 
 // export function* requestUpdate(customerPhone) {
 //   // const companyId = yield select(makeSelectCompanyId());
@@ -66,6 +52,5 @@ export function* loadProfile() {
 // Individual exports for testing
 export default function* profileInfoPageSaga() {
   // See example in containers/HomePage/saga.js
-  console.log('IS THIS LOAD ?');
-  yield takeLatest(LOAD_DATA_PROFILE, loadProfile);
+  // yield takeLatest(LOAD_DATA_PROFILE, loadProfile);
 }

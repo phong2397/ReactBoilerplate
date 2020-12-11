@@ -11,7 +11,8 @@ import {
   loadLoginSuccess,
 } from './actions';
 import { saveAccessToken } from '../../utils/storage';
-// import { loadDataProfileSuccess } from '../ProfileInfoPage/actions';
+import { loadProfileSuccess } from '../ProfileInfoPage/actions';
+// import { loadProfileSuccess } from '../ProfileInfoPage/actions';
 
 /**
  * Github repos request/response handler
@@ -49,14 +50,14 @@ export function* requestOtp() {
   }
 }
 export function* doLogin() {
-  // const companyId = yield select(makeSelectCompanyId());
   const data = yield select(makeSelectData());
   const otp = yield select(makeSelectOtp());
   const { systemtrace } = data;
   const { tel } = data;
   // CheckExist
-
   const requestURL = `/smsgateway/api/v1/`;
+  const phone = '0973154950';
+  const requesProfileURL = `/customers/profile/${phone}`;
   const parameters = {
     method: 'POST',
     headers: new Headers({
@@ -77,14 +78,12 @@ export function* doLogin() {
   };
   try {
     const response = yield call(request, requestURL, parameters);
+    const responseProfile = yield call(request, requesProfileURL);
+    yield put(loadProfileSuccess(responseProfile));
     if (response.ResponseCode === '000') {
-      // const responseProfile = yield call(
-      //   request,
-      //   `/api/v1/customers/profile/${tel}`,
-      // );
       // SAVE TOKEN
       saveAccessToken(response.Data);
-      // yield put(loadDataProfileSuccess(responseProfile));
+      // yield put(loadProfileSuccess(responseProfile));
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));
