@@ -25,6 +25,11 @@ const makeSelectLoading = () =>
     selectHomePageDomain,
     homeState => homeState.loading,
   );
+const makeSelectProductConfig = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.productConfig,
+  );
 const makeSelectCreditAmount = () =>
   createSelector(
     selectHomePageDomain,
@@ -87,6 +92,7 @@ export default makeSelectHomePage;
 export {
   selectHomePageDomain,
   makeSelectLoading,
+  makeSelectProductConfig,
   makeSelectCreditAmount,
   makeSelectAmount,
   makeSelectStep,

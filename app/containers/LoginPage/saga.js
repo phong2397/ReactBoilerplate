@@ -10,8 +10,8 @@ import {
   requestOtpError,
   loadLoginSuccess,
 } from './actions';
-import { saveAccessToken } from '../../utils/storage';
-import { loadProfileSuccess } from '../ProfileInfoPage/actions';
+import { saveAccessToken, saveProfile } from '../../utils/storage';
+import { loadedProfile } from '../App/actions';
 // import { loadProfileSuccess } from '../ProfileInfoPage/actions';
 
 /**
@@ -56,8 +56,8 @@ export function* doLogin() {
   const { tel } = data;
   // CheckExist
   const requestURL = `/smsgateway/api/v1/`;
-  const phone = '0973154950';
-  const requesProfileURL = `/customers/profile/${phone}`;
+  // const requesProfileURL = `/customers/profile/${tel}`;
+  const requesProfileURL = `/customers/profile/0973154950`;
   const parameters = {
     method: 'POST',
     headers: new Headers({
@@ -79,9 +79,23 @@ export function* doLogin() {
   try {
     const response = yield call(request, requestURL, parameters);
     const responseProfile = yield call(request, requesProfileURL);
-    yield put(loadProfileSuccess(responseProfile));
+    const profile = {
+      customerName: responseProfile.customer_name,
+      customerId: responseProfile.customer_code,
+      companyName: responseProfile.company_name,
+      creditAmount: responseProfile.customer_salary,
+      idCard: responseProfile.customer_id,
+      customerAddress: responseProfile.customer_address,
+      idCardIssueDate: responseProfile.customer_id_date,
+      idCardIssuePlace: responseProfile.customer_id_location,
+      bankName: responseProfile.customer_bank_name,
+      accountNumber: responseProfile.customer_bank_acc,
+      accountName: responseProfile.customer_bank,
+    };
+    yield put(loadedProfile(profile));
     if (response.ResponseCode === '000') {
       // SAVE TOKEN
+      saveProfile(profile);
       saveAccessToken(response.Data);
       // yield put(loadProfileSuccess(responseProfile));
       yield put(push('/'));
