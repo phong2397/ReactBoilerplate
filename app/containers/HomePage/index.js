@@ -74,11 +74,8 @@ export function HomePage({
 }) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
-  console.log('Product config', productConfig);
-  console.log('CUSTOMER LOAD', customer);
   useEffect(() => {
     if (loading) {
-      console.log('LOAD PRODUCT CONFIG ?');
       loadProduct();
     }
   });
@@ -96,13 +93,13 @@ export function HomePage({
           Số tiền lương được ứng
         </Typography>
         <Typography color="primary" variant="h3" align="center">
-          <b>{convertWithCommas(selectedAmount)}đ</b>
+          <b>{convertWithCommas(Number(selectedAmount))}đ</b>
         </Typography>
         <Box px={3}>
           <CustomizedSlider
             min={productConfig.productAmountMin}
             step={step}
-            max={customer.creditAmount}
+            max={Number(customer.creditAmount)}
             defaultValue={productConfig.defaultAmount}
             value={Number(selectedAmount)}
             onChange={onChangeSlider}

@@ -28,7 +28,7 @@ export function* requestUpdate(action) {
       workAt: newProfile.companyName,
       id: newProfile.idCard,
       idLocation: newProfile.idCardIssuePlace,
-      idDate: newProfile.issueDate,
+      idDate: newProfile.idCardIssueDate,
     }),
   };
   // accountName: 'Nguyen Van A';
