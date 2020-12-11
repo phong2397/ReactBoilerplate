@@ -215,16 +215,18 @@ export function ProfileInfoPage({
             }
           />
           <TextField
-            id="issueDate"
-            name="issueDate"
+            id="idCardIssueDate"
+            name="idCardIssueDate"
             label="Ngày cấp"
             defaultValue={customer.idCardIssueDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
             })}
-            error={!!errors.issueDate}
-            helperText={errors.issueDate ? errors.issueDate.message : ''}
+            error={!!errors.idCardIssueDate}
+            helperText={
+              errors.idCardIssueDate ? errors.idCardIssueDate.message : ''
+            }
           />
           <TextField
             id="idCardIssuePlace"
