@@ -10,7 +10,7 @@ export const initialState = {
   initStage: {
     orderId: '0010',
     status: 'Khởi tạo',
-    orderAmount: '5000000',
+    orderAmount: 5000000,
     submitTime: '20/11/2020 8h30',
   },
   appraisalStage: {

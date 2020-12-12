@@ -28,6 +28,7 @@ function OrderRepaymentStatus(props) {
     <div>
       <Box
         component="div"
+        style={{ backgroundColor: `${props.stateColor}` }}
         p={1}
         display="inline"
         bgcolor="primary.main"
@@ -36,7 +37,7 @@ function OrderRepaymentStatus(props) {
         {props.statusTag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box component="div" bgcolor="info.main">
+      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
         {repaymentStatus(props.repayTime)}
       </Box>
     </div>
@@ -46,6 +47,7 @@ function OrderRepaymentStatus(props) {
 OrderRepaymentStatus.propTypes = {
   statusTag: PropTypes.string,
   repayTime: PropTypes.string,
+  stateColor: PropTypes.string,
 };
 
 export default memo(OrderRepaymentStatus);

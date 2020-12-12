@@ -56,7 +56,7 @@ function OrderDisbursementStatus(props) {
     <div>
       <Box
         component="div"
-        style={{ backgroundColor: 'grey' }}
+        style={{ backgroundColor: `${props.stateColor}` }}
         p={1}
         display="inline"
         bgcolor="primary.main"
@@ -66,7 +66,7 @@ function OrderDisbursementStatus(props) {
         {props.statusTag}{' '}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box component="div" bgcolor="info.main">
+      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
         {disburseStatus(
           props.label,
           props.accName,
@@ -84,6 +84,7 @@ OrderDisbursementStatus.propTypes = {
   accNo: PropTypes.string,
   bankName: PropTypes.string,
   statusTag: PropTypes.string,
+  stateColor: PropTypes.string,
 };
 
 export default memo(OrderDisbursementStatus);

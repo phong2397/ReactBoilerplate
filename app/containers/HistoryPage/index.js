@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -16,15 +16,25 @@ import OrderInfo from 'components/OrderInfo';
 import { Box, List, ListItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-import makeSelectHistoryPage, { makeSelectListOrders } from './selectors';
+import { loadingOrders } from './actions';
+import makeSelectHistoryPage, {
+  makeSelectListOrders,
+  makeSelectLoading,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
-export function HistoryPage({ listOrders }) {
+export function HistoryPage({ loading, listOrders, loadOrders }) {
   useInjectReducer({ key: 'historyPage', reducer });
   useInjectSaga({ key: 'historyPage', saga });
 
   console.log('LIST ORDER: ', listOrders);
+  useEffect(() => {
+    if (loading) {
+      console.log('LOAD PRODUCT CONFIG ?');
+      loadOrders();
+    }
+  });
 
   return (
     <SubContent title="Lịch sử yêu cầu">
@@ -38,10 +48,10 @@ export function HistoryPage({ listOrders }) {
               to={`/orders/${order.orderId}`}
             >
               <OrderInfo
-                orderId={order.orderId}
+                orderId={order.orderIdDisplay}
                 orderStatus={order.orderStatus}
                 orderAmount={order.orderAmount}
-                submitTime={order.orderSubmit}
+                submitTime={order.submitTime}
               />
             </ListItem>
           ))}
@@ -53,10 +63,13 @@ export function HistoryPage({ listOrders }) {
 
 HistoryPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   listOrders: PropTypes.array,
+  loadOrders: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
   historyPage: makeSelectHistoryPage(),
   listOrders: makeSelectListOrders(),
 });
@@ -64,6 +77,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    loadOrders: () => dispatch(loadingOrders()),
+    // loadOrders: () => console.log('STEP 1'),
   };
 }
 

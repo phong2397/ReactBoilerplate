@@ -31,6 +31,11 @@ import makeSelectOrderDetailPage, {
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import {
+  // STATE_WAITING,
+  STATE_SUCCESS,
+  STATE_ERROR,
+} from '../../utils/stateColorConst';
 // import messages from './messages';
 
 export function OrderDetailPage({
@@ -48,11 +53,12 @@ export function OrderDetailPage({
         {/* Init status */}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot style={{ backgroundColor: '#33cc33' }} />
+            <TimelineDot style={{ backgroundColor: `${STATE_SUCCESS}` }} />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <OrderInitStatus
+              stateColor={STATE_SUCCESS}
               statusTag={initStage.status}
               orderId={initStage.orderId}
               amount={initStage.orderAmount}
@@ -64,11 +70,12 @@ export function OrderDetailPage({
         {/* Approve status */}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot style={{ backgroundColor: '#33cc33' }} />
+            <TimelineDot style={{ backgroundColor: `${STATE_SUCCESS}` }} />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <OrderAppraiseStatus
+              stateColor={STATE_SUCCESS}
               statusTag={appraisalStage.status}
               resolveTime={appraisalStage.approveTime}
             />
@@ -78,11 +85,12 @@ export function OrderDetailPage({
         {/* Diabussement Status */}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot />
+            <TimelineDot style={{ backgroundColor: `${STATE_SUCCESS}` }} />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <OrderDisbursementStatus
+              stateColor={STATE_SUCCESS}
               statusTag={disbursementStage.status}
               disburseTime={disbursementStage.disburseTime}
               label={disbursementStage.disburseLabel}
@@ -96,11 +104,12 @@ export function OrderDetailPage({
         {/* Repayment Status */}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot />
+            <TimelineDot style={{ backgroundColor: `${STATE_ERROR}` }} />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <OrderRepaymentStatus
+              stateColor={STATE_ERROR}
               statusTag={repaymentStage.status}
               repayTime={repaymentStage.repayTime}
             />

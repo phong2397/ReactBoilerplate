@@ -29,6 +29,7 @@ function OrderAppraiseStatus(props) {
       <Box
         component="div"
         p={1}
+        style={{ backgroundColor: `${props.stateColor}` }}
         display="inline"
         bgcolor="primary.main"
         color="primary.contrastText"
@@ -36,7 +37,7 @@ function OrderAppraiseStatus(props) {
         {props.statusTag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box component="div" bgcolor="info.main">
+      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
         {appraiseStatus(props.resolveTime)}
       </Box>
     </div>
@@ -46,6 +47,7 @@ function OrderAppraiseStatus(props) {
 OrderAppraiseStatus.propTypes = {
   resolveTime: PropTypes.string,
   statusTag: PropTypes.string,
+  stateColor: PropTypes.string,
 };
 
 export default memo(OrderAppraiseStatus);
