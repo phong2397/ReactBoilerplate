@@ -43,8 +43,8 @@ const homePageReducer = (state = initialState, action) =>
         console.log(action);
         draft.loading = false;
         draft.productConfig = action.config;
-        draft.defaultAmount = draft.productConfig.productAmountMax;
-        draft.selectedAmount = draft.productConfig.productAmountMax;
+        draft.defaultAmount = Number(draft.productConfig.productAmountMax);
+        draft.selectedAmount = Number(draft.productConfig.productAmountMax);
         draft.feeAmount = Number(
           (
             (draft.productConfig.productAmountMax *
