@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
   AppBar,
   Box,
@@ -14,7 +14,7 @@ import {
   makeStyles,
   Toolbar,
 } from '@material-ui/core';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -23,10 +23,11 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import Document from 'components/Document';
 
-import makeSelectDocumentPage from './selectors';
+import makeSelectDocumentPage, { makeSelectDocuments } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
+import { loadDocument } from './actions';
 const useStyles = makeStyles(theme => ({
   text: {
     padding: theme.spacing(2, 2, 0),
@@ -51,9 +52,26 @@ const useStyles = makeStyles(theme => ({
     left: 0,
   },
 }));
-export function DocumentPage() {
+// const convertCategoryId = id => {
+//   switch (id) {
+//     case 0:
+//       break;
+//     case 1:
+//       break;
+//     case 2:
+//       break;
+//     case 3:
+//       break;
+//     default:
+//       break;
+//   }
+// };
+export function DocumentPage({ loading, requestLoadDocument }) {
   useInjectReducer({ key: 'documentPage', reducer });
   useInjectSaga({ key: 'documentPage', saga });
+  useEffect(() => {
+    if (loading) requestLoadDocument();
+  });
   const classes = useStyles();
   return (
     <SubContent title="Danh sách tài liệu">
@@ -64,6 +82,7 @@ export function DocumentPage() {
             <Button variant="contained" color="primary">
               Tải lên
             </Button>
+            requestLoadDocument
           </Toolbar>
         </AppBar>
         <List>
@@ -89,15 +108,19 @@ export function DocumentPage() {
 
 DocumentPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  requestLoadDocument: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   documentPage: makeSelectDocumentPage(),
+  documents: makeSelectDocuments(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    requestLoadDocument: () => dispatch(loadDocument()),
   };
 }
 

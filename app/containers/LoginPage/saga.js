@@ -77,20 +77,6 @@ export function* doLogin() {
     }),
   };
   try {
-    // const data = {
-    //   customerName: 'Nguyen Van F',
-    //   customerCode: 'SGF123',
-    //   companyName: 'SGFintech',
-    //   companyCode: 'SGF123',
-    //   customerSalary: 5000000,
-    //   accountName: 'Nguyen Van A',
-    //   bankAcc: '12091129099283',
-    //   bankName: 'SCB',
-    //   customerAddress: '12 Hau Giang Quan 6',
-    //   customerIdentity: '026062666',
-    //   identityLocation: 'CA TPHCM',
-    //   identityDate: '2020-12-01T00:00:00.000Z',
-    // };
     const response = yield call(request, requestURL, parameters);
     const responseProfile = yield call(request, requesProfileURL);
     const profile = {
@@ -111,7 +97,6 @@ export function* doLogin() {
       // SAVE TOKEN
       saveProfile(profile);
       saveAccessToken(response.Data);
-      // yield put(loadProfileSuccess(responseProfile));
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));

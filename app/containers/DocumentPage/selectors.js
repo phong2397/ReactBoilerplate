@@ -14,7 +14,11 @@ const selectDocumentPageDomain = state => state.documentPage || initialState;
 /**
  * Default selector used by DocumentPage
  */
-
+const makeSelectDocuments = () =>
+  createSelector(
+    selectDocumentPageDomain,
+    documentState => documentState.documents,
+  );
 const makeSelectDocumentPage = () =>
   createSelector(
     selectDocumentPageDomain,
@@ -22,4 +26,4 @@ const makeSelectDocumentPage = () =>
   );
 
 export default makeSelectDocumentPage;
-export { selectDocumentPageDomain };
+export { selectDocumentPageDomain, makeSelectDocuments };
