@@ -31,7 +31,6 @@ export function HistoryPage({ loading, listOrders, loadOrders }) {
   console.log('LIST ORDER: ', listOrders);
   useEffect(() => {
     if (loading) {
-      console.log('LOAD PRODUCT CONFIG ?');
       loadOrders();
     }
   });

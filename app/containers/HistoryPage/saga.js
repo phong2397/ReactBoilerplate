@@ -7,7 +7,7 @@ import { loadOrdersError, loadOrdersSuccess } from './actions';
 export function* loadOrderSaga() {
   console.log('SAGA LOAD ORDER');
   try {
-    const requestURL = '/orders/0973154950';
+    const requestURL = '/orders?phone=0973154950';
     const response = yield call(request, requestURL);
     console.log(response);
     yield put(loadOrdersSuccess(response));

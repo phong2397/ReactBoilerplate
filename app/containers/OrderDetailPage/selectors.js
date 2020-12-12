@@ -46,6 +46,12 @@ const makeSelectOrderRepaymentStage = () =>
     substate => substate.repaymentStage,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.loading,
+  );
+
 export default makeSelectOrderDetailPage;
 export {
   selectOrderDetailPageDomain,
@@ -53,4 +59,5 @@ export {
   makeSelectOrderAppraisalStage,
   makeSelectOrderDisbursementStage,
   makeSelectOrderRepaymentStage,
+  makeSelectLoading,
 };

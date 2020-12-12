@@ -4,9 +4,16 @@
  *
  */
 import produce from 'immer';
-import { DEFAULT_ACTION } from './constants';
+import { DEFAULT_ACTION, LOAD_ORDER_DETAIL_SUCCESS } from './constants';
+import {
+  formatInitStage,
+  formatAppraisalStage,
+  formatDisbursementStage,
+  formatRepaymentStage,
+} from './formater';
 
 export const initialState = {
+  loading: true,
   initStage: {
     orderId: '0010',
     status: 'Khởi tạo',
@@ -31,10 +38,18 @@ export const initialState = {
 
 /* eslint-disable default-case, no-param-reassign */
 const orderDetailPageReducer = (state = initialState, action) =>
-  produce(state, (/* draft */) => {
+  produce(state, draft => {
     switch (action.type) {
       case DEFAULT_ACTION:
         break;
+      case LOAD_ORDER_DETAIL_SUCCESS:
+        console.log('REDUCER ACTION: ', action);
+        draft.loading = false;
+        draft.initStage = formatInitStage(action.value);
+        draft.appraisalStage = formatAppraisalStage(action.value);
+        draft.disbursementStage = formatDisbursementStage(action.value);
+        draft.repaymentStage = formatRepaymentStage(action.value);
+        console.log('DRAFTS: ', draft);
     }
   });
 

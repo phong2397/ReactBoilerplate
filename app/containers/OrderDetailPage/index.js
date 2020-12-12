@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -23,11 +23,14 @@ import OrderInitStatus from 'components/OrderInitStatus';
 import OrderAppraiseStatus from 'components/OrderAppraiseStatus';
 import OrderDisbursementStatus from 'components/OrderDisbursementStatus';
 import OrderRepaymentStatus from 'components/OrderRepaymentStatus';
+
+import { loadingOrderDetail } from './actions';
 import makeSelectOrderDetailPage, {
   makeSelectOrderInitStage,
   makeSelectOrderAppraisalStage,
   makeSelectOrderDisbursementStage,
   makeSelectOrderRepaymentStage,
+  makeSelectLoading,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -36,16 +39,25 @@ import {
   STATE_SUCCESS,
   STATE_ERROR,
 } from '../../utils/stateColorConst';
-// import messages from './messages';
 
 export function OrderDetailPage({
+  loading,
   initStage,
   appraisalStage,
   disbursementStage,
   repaymentStage,
+  loadOrderDetail,
 }) {
   useInjectReducer({ key: 'orderDetailPage', reducer });
   useInjectSaga({ key: 'orderDetailPage', saga });
+
+  console.log('ORDER DETAIL 0');
+  useEffect(() => {
+    console.log('ORDER DETAIL LOADING', loading);
+    if (loading) {
+      loadOrderDetail();
+    }
+  });
 
   return (
     <div>
@@ -121,14 +133,16 @@ export function OrderDetailPage({
 }
 
 OrderDetailPage.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   initStage: PropTypes.object,
   appraisalStage: PropTypes.object,
   disbursementStage: PropTypes.object,
   repaymentStage: PropTypes.object,
+  loadOrderDetail: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
   orderDetailPage: makeSelectOrderDetailPage(),
   initStage: makeSelectOrderInitStage(),
   appraisalStage: makeSelectOrderAppraisalStage(),
@@ -139,6 +153,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    loadOrderDetail: () => dispatch(loadingOrderDetail()),
   };
 }
 
@@ -147,7 +162,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withConnect,
-  memo,
-)(OrderDetailPage);
+export default compose(withConnect)(OrderDetailPage);
