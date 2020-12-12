@@ -77,20 +77,34 @@ export function* doLogin() {
     }),
   };
   try {
+    // const data = {
+    //   customerName: 'Nguyen Van F',
+    //   customerCode: 'SGF123',
+    //   companyName: 'SGFintech',
+    //   companyCode: 'SGF123',
+    //   customerSalary: 5000000,
+    //   accountName: 'Nguyen Van A',
+    //   bankAcc: '12091129099283',
+    //   bankName: 'SCB',
+    //   customerAddress: '12 Hau Giang Quan 6',
+    //   customerIdentity: '026062666',
+    //   identityLocation: 'CA TPHCM',
+    //   identityDate: '2020-12-01T00:00:00.000Z',
+    // };
     const response = yield call(request, requestURL, parameters);
     const responseProfile = yield call(request, requesProfileURL);
     const profile = {
-      customerName: responseProfile.customer_name,
-      customerId: responseProfile.customer_code,
-      companyName: responseProfile.company_name,
-      creditAmount: responseProfile.customer_salary,
-      idCard: responseProfile.customer_id,
-      customerAddress: responseProfile.customer_address,
-      idCardIssueDate: responseProfile.customer_id_date,
-      idCardIssuePlace: responseProfile.customer_id_location,
-      bankName: responseProfile.customer_bank_name,
-      accountNumber: responseProfile.customer_bank_acc,
-      accountName: responseProfile.customer_bank,
+      customerName: responseProfile.customerName,
+      customerId: responseProfile.customerId,
+      companyName: responseProfile.companyName,
+      creditAmount: responseProfile.customerSalary,
+      idCard: responseProfile.customerIdentity,
+      customerAddress: responseProfile.customerAddress,
+      idCardIssueDate: responseProfile.identityDate,
+      idCardIssuePlace: responseProfile.identityLocation,
+      bankName: responseProfile.bankName,
+      accountNumber: responseProfile.bankAcc,
+      accountName: responseProfile.accountName,
     };
     yield put(loadedProfile(profile));
     if (response.ResponseCode === '000') {
