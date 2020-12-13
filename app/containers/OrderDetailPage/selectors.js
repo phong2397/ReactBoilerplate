@@ -52,6 +52,11 @@ const makeSelectLoading = () =>
     substate => substate.loading,
   );
 
+const makeSelectOrderId = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.orderId,
+  );
 export default makeSelectOrderDetailPage;
 export {
   selectOrderDetailPageDomain,
@@ -60,4 +65,5 @@ export {
   makeSelectOrderDisbursementStage,
   makeSelectOrderRepaymentStage,
   makeSelectLoading,
+  makeSelectOrderId,
 };

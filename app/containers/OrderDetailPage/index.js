@@ -30,18 +30,18 @@ import makeSelectOrderDetailPage, {
   makeSelectOrderAppraisalStage,
   makeSelectOrderDisbursementStage,
   makeSelectOrderRepaymentStage,
-  makeSelectLoading,
+  makeSelectOrderId,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {
-  // STATE_WAITING,
+  STATE_WAITING,
   STATE_SUCCESS,
-  STATE_ERROR,
+  // STATE_ERROR,
 } from '../../utils/stateColorConst';
 
 export function OrderDetailPage({
-  loading,
+  orderId,
   initStage,
   appraisalStage,
   disbursementStage,
@@ -52,9 +52,12 @@ export function OrderDetailPage({
   useInjectSaga({ key: 'orderDetailPage', saga });
 
   console.log('ORDER DETAIL 0');
+
   useEffect(() => {
-    console.log('ORDER DETAIL LOADING', loading);
-    if (loading) {
+    console.log('ORDER ID is ', orderId);
+    const splitedUrl = window.location.href.split('/');
+    const orderIdParams = splitedUrl[splitedUrl.length - 1];
+    if (orderId !== orderIdParams) {
       loadOrderDetail();
     }
   });
@@ -116,12 +119,12 @@ export function OrderDetailPage({
         {/* Repayment Status */}
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineDot style={{ backgroundColor: `${STATE_ERROR}` }} />
+            <TimelineDot style={{ backgroundColor: `${STATE_WAITING}` }} />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <OrderRepaymentStatus
-              stateColor={STATE_ERROR}
+              stateColor={STATE_WAITING}
               statusTag={repaymentStage.status}
               repayTime={repaymentStage.repayTime}
             />
@@ -133,7 +136,7 @@ export function OrderDetailPage({
 }
 
 OrderDetailPage.propTypes = {
-  loading: PropTypes.bool,
+  orderId: PropTypes.string,
   initStage: PropTypes.object,
   appraisalStage: PropTypes.object,
   disbursementStage: PropTypes.object,
@@ -142,7 +145,7 @@ OrderDetailPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
+  orderId: makeSelectOrderId(),
   orderDetailPage: makeSelectOrderDetailPage(),
   initStage: makeSelectOrderInitStage(),
   appraisalStage: makeSelectOrderAppraisalStage(),

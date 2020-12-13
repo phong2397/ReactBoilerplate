@@ -33,7 +33,7 @@ export function loadingOrderDetailSuccess(value) {
 }
 
 export function loadingOrderDetailError(error) {
-  console.log('STEP 3 load error');
+  console.log('STEP 3 Load error');
   return {
     type: LOAD_ORDER_DETAIL_ERROR,
     error,

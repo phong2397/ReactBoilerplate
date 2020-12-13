@@ -6,8 +6,15 @@ import { loadingOrderDetailSuccess, loadingOrderDetailError } from './actions';
 
 export function* loadOrderSaga() {
   console.log('SAGA LOAD ORDER DETAIL');
+  // console.log('GLOBAL URL: ', window.location.href);
+
+  // TODO: refactor this cheat get :orderId
+  const splitedUrl = window.location.href.split('/');
+  const orderId = splitedUrl[splitedUrl.length - 1];
+
   try {
-    const requestURL = '/orders/2';
+    const requestURL = `/orders/${orderId}`;
+    console.log('REQUEST URL: ', requestURL);
     const response = yield call(request, requestURL);
     console.log('Saga response: ', response);
     yield put(loadingOrderDetailSuccess(response));
