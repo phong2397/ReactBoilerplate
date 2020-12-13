@@ -24,6 +24,18 @@ function repaymentStatus(repayTime) {
 }
 
 function OrderRepaymentStatus(props) {
+  let tag;
+  switch (props.statusTag) {
+    case 'WAITING':
+      tag = 'Chờ Thanh Toán';
+      break;
+    case 'PAID':
+      tag = 'Đã Thanh Toán';
+      break;
+    default:
+      tag = 'Thanh Toán';
+      break;
+  }
   return (
     <div>
       <Box
@@ -34,12 +46,16 @@ function OrderRepaymentStatus(props) {
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {props.statusTag}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
-        {repaymentStatus(props.repayTime)}
-      </Box>
+      {!(props.statusTag === '' || props.statusTag === 'WAITING') ? (
+        <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
+          {repaymentStatus(props.repayTime)}
+        </Box>
+      ) : (
+        <span />
+      )}
     </div>
   );
 }

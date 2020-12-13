@@ -24,6 +24,22 @@ function appraiseStatus(resolveTime) {
 }
 
 function OrderAppraiseStatus(props) {
+  let tag;
+  switch (props.statusTag) {
+    case 'WAITING':
+      tag = 'Đang Chờ Xác Nhận';
+      break;
+    case 'PASS':
+      tag = 'Xác Nhận Thành Công';
+      break;
+    case 'DENI':
+      tag = 'Yêu Cầu Đã Bị Từ Chối';
+      break;
+    default:
+      tag = 'Xác Nhận';
+      break;
+  }
+
   return (
     <div>
       <Box
@@ -34,12 +50,16 @@ function OrderAppraiseStatus(props) {
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {props.statusTag}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
-        {appraiseStatus(props.resolveTime)}
-      </Box>
+      {!(props.statusTag === '' || props.statusTag === 'WAITING') ? (
+        <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
+          {appraiseStatus(props.resolveTime)}
+        </Box>
+      ) : (
+        <span />
+      )}
     </div>
   );
 }

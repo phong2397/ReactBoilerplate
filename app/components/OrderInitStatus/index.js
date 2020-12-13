@@ -46,6 +46,7 @@ function initStatus(orderId, amount, requestTime) {
 }
 
 function OrderInitStatus(props) {
+  const tag = props.statusTag === 'INIT' ? 'Đã Nhận Yêu Cầu' : ``;
   return (
     <div>
       <Box
@@ -56,7 +57,7 @@ function OrderInitStatus(props) {
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {props.statusTag}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
       <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">

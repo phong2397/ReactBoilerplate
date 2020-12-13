@@ -52,6 +52,21 @@ function disburseStatus(label, accName, accNo, bankName) {
 }
 
 function OrderDisbursementStatus(props) {
+  let tag;
+  switch (props.statusTag) {
+    case 'WAITING':
+      tag = 'Đang Chờ Giải Ngân';
+      break;
+    case 'SUCCESS':
+      tag = 'Giải Ngân Thành Công';
+      break;
+    case 'ERROR':
+      tag = 'Giải Ngân Không Thành Công';
+      break;
+    default:
+      tag = 'Giải Ngân';
+      break;
+  }
   return (
     <div>
       <Box
@@ -62,18 +77,21 @@ function OrderDisbursementStatus(props) {
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {' '}
-        {props.statusTag}{' '}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
-        {disburseStatus(
-          props.label,
-          props.accName,
-          props.accNo,
-          props.bankName,
-        )}
-      </Box>
+      {!(props.statusTag === '' || props.statusTag === 'WAITING') ? (
+        <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
+          {disburseStatus(
+            props.label,
+            props.accName,
+            props.accNo,
+            props.bankName,
+          )}
+        </Box>
+      ) : (
+        <span />
+      )}
     </div>
   );
 }
