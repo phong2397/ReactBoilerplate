@@ -10,7 +10,7 @@ import {
   requestOtpError,
   loadLoginSuccess,
 } from './actions';
-import { saveAccessToken, saveProfile } from '../../utils/storage';
+import { saveAccessToken, saveProfile, savePhone } from '../../utils/storage';
 import { loadedProfile } from '../App/actions';
 // import { loadProfileSuccess } from '../ProfileInfoPage/actions';
 
@@ -42,6 +42,7 @@ export function* requestOtp() {
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.ResponseCode === '000') {
+      savePhone(phone);
       yield put(push('/login/verify'));
       yield put(loadRequestOtp(response));
     } else yield put(requestOtpError(response));
