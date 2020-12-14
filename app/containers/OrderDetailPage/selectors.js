@@ -25,27 +25,38 @@ const makeSelectOrderDetailPage = () =>
 const makeSelectOrderInitStage = () =>
   createSelector(
     selectOrderDetailPageDomain,
-    substate => substate.initialState,
+    substate => substate.initStage,
   );
 
 const makeSelectOrderAppraisalStage = () =>
   createSelector(
     selectOrderDetailPageDomain,
-    substate => substate.initialState,
+    substate => substate.appraisalStage,
   );
 
 const makeSelectOrderDisbursementStage = () =>
   createSelector(
     selectOrderDetailPageDomain,
-    substate => substate.initialState,
+    substate => substate.disbursementStage,
   );
 
 const makeSelectOrderRepaymentStage = () =>
   createSelector(
     selectOrderDetailPageDomain,
-    substate => substate.initialState,
+    substate => substate.repaymentStage,
   );
 
+const makeSelectLoading = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.loading,
+  );
+
+const makeSelectOrderId = () =>
+  createSelector(
+    selectOrderDetailPageDomain,
+    substate => substate.orderId,
+  );
 export default makeSelectOrderDetailPage;
 export {
   selectOrderDetailPageDomain,
@@ -53,4 +64,6 @@ export {
   makeSelectOrderAppraisalStage,
   makeSelectOrderDisbursementStage,
   makeSelectOrderRepaymentStage,
+  makeSelectLoading,
+  makeSelectOrderId,
 };

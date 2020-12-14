@@ -15,35 +15,35 @@ import PropTypes from 'prop-types';
 function disburseStatus(label, accName, accNo, bankName) {
   return (
     <div>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Tài khoản nhận tiền
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{label}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Chủ tài khoản
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{accName}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Số tài khoản
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{accNo}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingBottom={1} paddingLeft={2} flexGrow={1}>
           Ngân hàng
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{bankName}</b>
         </Box>
       </Box>
@@ -52,28 +52,46 @@ function disburseStatus(label, accName, accNo, bankName) {
 }
 
 function OrderDisbursementStatus(props) {
+  let tag;
+  switch (props.statusTag) {
+    case 'WAITING':
+      tag = 'Đang Chờ Giải Ngân';
+      break;
+    case 'SUCCESS':
+      tag = 'Giải Ngân Thành Công';
+      break;
+    case 'ERROR':
+      tag = 'Giải Ngân Không Thành Công';
+      break;
+    default:
+      tag = 'Giải Ngân';
+      break;
+  }
   return (
     <div>
       <Box
         component="div"
-        style={{ backgroundColor: 'grey' }}
+        style={{ backgroundColor: `${props.stateColor}` }}
         p={1}
         display="inline"
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {' '}
-        {props.statusTag}{' '}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box component="div" bgcolor="info.main">
-        {disburseStatus(
-          props.label,
-          props.accName,
-          props.accNo,
-          props.bankName,
-        )}
-      </Box>
+      {!(props.statusTag === '' || props.statusTag === 'WAITING') ? (
+        <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
+          {disburseStatus(
+            props.label,
+            props.accName,
+            props.accNo,
+            props.bankName,
+          )}
+        </Box>
+      ) : (
+        <span />
+      )}
     </div>
   );
 }
@@ -84,6 +102,7 @@ OrderDisbursementStatus.propTypes = {
   accNo: PropTypes.string,
   bankName: PropTypes.string,
   statusTag: PropTypes.string,
+  stateColor: PropTypes.string,
 };
 
 export default memo(OrderDisbursementStatus);

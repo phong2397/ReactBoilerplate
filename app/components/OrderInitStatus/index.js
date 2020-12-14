@@ -17,27 +17,27 @@ import { Box } from '@material-ui/core';
 function initStatus(orderId, amount, requestTime) {
   return (
     <div>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Mã đơn yêu cầu
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{orderId}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingLeft={2} flexGrow={1}>
           Số tiền
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingRight={2}>
           <b>{amount}</b>
         </Box>
       </Box>
-      <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+      <Box display="flex">
+        <Box paddingTop={1} paddingBottom={1} paddingLeft={2} flexGrow={1}>
           Gửi lúc
         </Box>
-        <Box p={1}>
+        <Box paddingTop={1} paddingBottom={1} paddingRight={2}>
           <b>{requestTime}</b>
         </Box>
       </Box>
@@ -46,19 +46,21 @@ function initStatus(orderId, amount, requestTime) {
 }
 
 function OrderInitStatus(props) {
+  const tag = props.statusTag === 'INIT' ? 'Đã Nhận Yêu Cầu' : ``;
   return (
     <div>
       <Box
         component="div"
+        style={{ backgroundColor: `${props.stateColor}` }}
         p={1}
         display="inline"
         bgcolor="primary.main"
         color="primary.contrastText"
       >
-        {props.statusTag}
+        {tag}
       </Box>{' '}
       {/* statusTag: Tag trạng thái của log */}
-      <Box component="div" bgcolor="info.main">
+      <Box marginTop={1} marginBottom={3} component="div" bgcolor="info.main">
         {initStatus(props.orderId, props.amount, props.requestTime)}
       </Box>
     </div>
@@ -70,6 +72,7 @@ OrderInitStatus.propTypes = {
   amount: PropTypes.number,
   requestTime: PropTypes.string,
   statusTag: PropTypes.string,
+  stateColor: PropTypes.string,
 };
 
 export default memo(OrderInitStatus);
