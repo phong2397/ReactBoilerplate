@@ -19,6 +19,8 @@ import {
   TimelineDot,
   TimelineSeparator,
 } from '@material-ui/lab';
+import { Box } from '@material-ui/core';
+
 import OrderInitStatus from 'components/OrderInitStatus';
 import OrderAppraiseStatus from 'components/OrderAppraiseStatus';
 import OrderDisbursementStatus from 'components/OrderDisbursementStatus';
@@ -41,6 +43,8 @@ import {
   STATE_ERROR,
 } from '../../utils/stateColorConst';
 
+import SubContent from '../SubContent/Loadable';
+
 export function OrderDetailPage({
   orderId,
   initStage,
@@ -58,6 +62,8 @@ export function OrderDetailPage({
     console.log('ORDER ID is ', orderId);
     const splitedUrl = window.location.href.split('/');
     const orderIdParams = splitedUrl[splitedUrl.length - 1];
+
+    // TODO: MUST refactor condition load data, IT'S WRONG
     if (orderId !== orderIdParams) {
       loadOrderDetail();
     }
@@ -112,81 +118,83 @@ export function OrderDetailPage({
   }
 
   return (
-    <div>
-      <Timeline>
-        {/* Init status */}
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot style={{ backgroundColor: `${STATE_SUCCESS}` }} />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <OrderInitStatus
-              stateColor={STATE_SUCCESS}
-              statusTag={initStage.status}
-              orderId={initStage.orderId}
-              amount={initStage.orderAmount}
-              requestTime={initStage.submitTime}
-            />
-          </TimelineContent>
-        </TimelineItem>
+    <SubContent title="Chi Tiết Giao Dịch">
+      <Box mt={12}>
+        <Timeline>
+          {/* Init status */}
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot style={{ backgroundColor: `${STATE_SUCCESS}` }} />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <OrderInitStatus
+                stateColor={STATE_SUCCESS}
+                statusTag={initStage.status}
+                orderId={initStage.orderId}
+                amount={initStage.orderAmount}
+                requestTime={initStage.submitTime}
+              />
+            </TimelineContent>
+          </TimelineItem>
 
-        {/* Approve status */}
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot
-              style={{ backgroundColor: `${appraisalStageColor}` }}
-            />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <OrderAppraiseStatus
-              statusTag={appraisalStage.status}
-              resolveTime={appraisalStage.approveTime}
-              stateColor={appraisalStageColor}
-            />
-          </TimelineContent>
-        </TimelineItem>
+          {/* Approve status */}
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot
+                style={{ backgroundColor: `${appraisalStageColor}` }}
+              />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <OrderAppraiseStatus
+                statusTag={appraisalStage.status}
+                resolveTime={appraisalStage.approveTime}
+                stateColor={appraisalStageColor}
+              />
+            </TimelineContent>
+          </TimelineItem>
 
-        {/* Diabussement Status */}
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot
-              style={{ backgroundColor: `${disbursementStageColor}` }}
-            />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <OrderDisbursementStatus
-              stateColor={disbursementStageColor}
-              statusTag={disbursementStage.status}
-              disburseTime={disbursementStage.disburseTime}
-              label={disbursementStage.disburseLabel}
-              accName={disbursementStage.accountName}
-              accNo={disbursementStage.accountNo}
-              bankName={disbursementStage.bankName}
-            />
-          </TimelineContent>
-        </TimelineItem>
+          {/* Diabussement Status */}
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot
+                style={{ backgroundColor: `${disbursementStageColor}` }}
+              />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <OrderDisbursementStatus
+                stateColor={disbursementStageColor}
+                statusTag={disbursementStage.status}
+                disburseTime={disbursementStage.disburseTime}
+                label={disbursementStage.disburseLabel}
+                accName={disbursementStage.accountName}
+                accNo={disbursementStage.accountNo}
+                bankName={disbursementStage.bankName}
+              />
+            </TimelineContent>
+          </TimelineItem>
 
-        {/* Repayment Status */}
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot
-              style={{ backgroundColor: `${repaymentStageColor}` }}
-            />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <OrderRepaymentStatus
-              stateColor={repaymentStageColor}
-              statusTag={repaymentStage.status}
-              repayTime={repaymentStage.repayTime}
-            />
-          </TimelineContent>
-        </TimelineItem>
-      </Timeline>
-    </div>
+          {/* Repayment Status */}
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot
+                style={{ backgroundColor: `${repaymentStageColor}` }}
+              />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <OrderRepaymentStatus
+                stateColor={repaymentStageColor}
+                statusTag={repaymentStage.status}
+                repayTime={repaymentStage.repayTime}
+              />
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
+      </Box>
+    </SubContent>
   );
 }
 
