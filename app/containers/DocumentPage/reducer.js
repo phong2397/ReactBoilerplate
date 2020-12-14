@@ -18,6 +18,7 @@ const documentPageReducer = (state = initialState, action) =>
       case DEFAULT_ACTION:
         break;
       case LOAD_DOCUMENT_SUCCESS:
+        draft.loading = false;
         draft.documents = action.documents;
         break;
     }

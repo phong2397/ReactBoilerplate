@@ -23,7 +23,10 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import Document from 'components/Document';
 
-import makeSelectDocumentPage, { makeSelectDocuments } from './selectors';
+import makeSelectDocumentPage, {
+  makeSelectDocuments,
+  makeSelectLoadingDocument,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
@@ -66,11 +69,13 @@ const useStyles = makeStyles(theme => ({
 //       break;
 //   }
 // };
-export function DocumentPage({ loading, requestLoadDocument }) {
+export function DocumentPage({ loading, documents, requestLoadDocument }) {
   useInjectReducer({ key: 'documentPage', reducer });
   useInjectSaga({ key: 'documentPage', saga });
   useEffect(() => {
-    if (loading) requestLoadDocument();
+    if (loading) {
+      requestLoadDocument();
+    }
   });
   const classes = useStyles();
   return (
@@ -82,24 +87,26 @@ export function DocumentPage({ loading, requestLoadDocument }) {
             <Button variant="contained" color="primary">
               Tải lên
             </Button>
-            requestLoadDocument
           </Toolbar>
         </AppBar>
         <List>
-          <ListItem>
-            <Document
-              title="Bằng lái xe"
-              imageLink="https://daotaolaixeso3.edu.vn/uploaded/goc-tu-van/han-doi-bang-lai-xe-o-to/2-han-doi-bang-lai-xe-o-to.jpg"
-              author="Nguyen Van A"
-            />
-          </ListItem>
-          <ListItem>
+          {documents.map(document => (
+            <ListItem key={document.fileName}>
+              <Document
+                fileName={document.fileName}
+                img={document.img}
+                description={document.description}
+              />
+            </ListItem>
+          ))}
+
+          {/* <ListItem>
             <Document
               title="Bảo hiểm y tế "
               imageLink="https://vnn-imgs-f.vgcloud.vn/2019/09/05/12/bhyt.jpg"
               author="Nguyen Van A"
             />
-          </ListItem>
+          </ListItem> */}
         </List>
       </Box>
     </SubContent>
@@ -110,9 +117,11 @@ DocumentPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   requestLoadDocument: PropTypes.func,
+  documents: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoadingDocument(),
   documentPage: makeSelectDocumentPage(),
   documents: makeSelectDocuments(),
 });
