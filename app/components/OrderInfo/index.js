@@ -25,14 +25,14 @@ function OrderInfo(props) {
         <Grid container spacing={1}>
           {/* Ma don yeu cau */}
           <Grid item xs={6}>
-            <Typography color="body2" component="p">
+            <Typography variant="body1" component="p">
               {' '}
               Mã đơn yêu cầu{' '}
             </Typography>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography color="body2" align="right" component="p">
+            <Typography variant="body1" align="right" component="p">
               <b>{props.orderId}</b>
             </Typography>
           </Grid>
@@ -40,7 +40,7 @@ function OrderInfo(props) {
 
           {/* Trang thai */}
           <Grid item xs={6}>
-            <Typography color="body2"> Trạng thái </Typography>
+            <Typography variant="body1"> Trạng thái </Typography>
           </Grid>
 
           <Grid item xs={6}>
@@ -52,14 +52,14 @@ function OrderInfo(props) {
 
           {/*  So tien */}
           <Grid item xs={6}>
-            <Typography variant="body2" component="p">
+            <Typography variant="body1" component="p">
               {' '}
               Số tiền{' '}
             </Typography>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="body2" align="right" component="p">
+            <Typography variant="body1" align="right" component="p">
               {props.orderAmount}
             </Typography>
           </Grid>
@@ -67,7 +67,7 @@ function OrderInfo(props) {
 
           {/*  Ngay gui yeu cau */}
           <Grid item xs={6}>
-            <Typography variant="body2" component="p">
+            <Typography variant="body1" component="p">
               {' '}
               Ngày gửi{' '}
             </Typography>
