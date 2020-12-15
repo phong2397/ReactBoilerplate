@@ -2,21 +2,21 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import request from 'utils/request';
 import moment from 'moment';
-import { makeSelectData, makeSelectPhone, makeSelectOtp } from './selectors';
-import { REQUEST_LOGIN, REQUEST_OTP } from './constants';
+import {
+  makeSelectData,
+  makeSelectPhone,
+  makeSelectOtp,
+  makeSelectCompanyId,
+} from './selectors';
+import { CHECK_USER_EXIST, REQUEST_LOGIN, REQUEST_OTP } from './constants';
 import {
   loadRequestOtp,
   requestLoginError,
   requestOtpError,
   loadLoginSuccess,
+  requestOtpAction,
 } from './actions';
-import { saveAccessToken, saveProfile } from '../../utils/storage';
-import { loadedProfile } from '../App/actions';
-// import { loadProfileSuccess } from '../ProfileInfoPage/actions';
-
-/**
- * Github repos request/response handler
- */
+import { saveAccessToken, savePhone } from '../../utils/storage';
 export function* requestOtp() {
   // const companyId = yield select(makeSelectCompanyId());
   const phone = yield select(makeSelectPhone());
@@ -56,8 +56,6 @@ export function* doLogin() {
   const { tel } = data;
   // CheckExist
   const requestURL = `/smsgateway/api/v1/`;
-  // const requesProfileURL = `/customers/profile/${tel}`;
-  const requesProfileURL = `/customers/profile/0973154950`;
   const parameters = {
     method: 'POST',
     headers: new Headers({
@@ -78,24 +76,9 @@ export function* doLogin() {
   };
   try {
     const response = yield call(request, requestURL, parameters);
-    const responseProfile = yield call(request, requesProfileURL);
-    const profile = {
-      customerName: responseProfile.customerName,
-      customerId: responseProfile.customerId,
-      companyName: responseProfile.companyName,
-      creditAmount: responseProfile.customerSalary,
-      idCard: responseProfile.customerIdentity,
-      customerAddress: responseProfile.customerAddress,
-      idCardIssueDate: responseProfile.identityDate,
-      idCardIssuePlace: responseProfile.identityLocation,
-      bankName: responseProfile.bankName,
-      accountNumber: responseProfile.bankAcc,
-      accountName: responseProfile.accountName,
-    };
-    yield put(loadedProfile(profile));
     if (response.ResponseCode === '000') {
       // SAVE TOKEN
-      saveProfile(profile);
+      savePhone(tel);
       saveAccessToken(response.Data);
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
@@ -104,20 +87,43 @@ export function* doLogin() {
     yield put(requestLoginError(err));
   }
 }
-// /**
-//  * Root saga manages watcher lifecycle
-//  */
-// export default function* githubData() {
-//   // Watches for LOAD_REPOS actions and calls getRepos when one comes in.
-//   // By using `takeLatest` only the result of the latest API call is applied.
-//   // It returns task descriptor (just like fork) so we can continue execution
-//   // It will be cancelled automatically on component unmount
-//   yield takeLatest(LOAD_REPOS, getRepos);
-// }
-
-// Individual exports for testing
+export function* checkExistProfile() {
+  const companyId = yield select(makeSelectCompanyId());
+  const phone = yield select(makeSelectPhone());
+  // CheckExist
+  const requestURL = `/customergateway/api/v1/`;
+  const parameters = {
+    mode: 'cors', // no-cors, *cors, same-origin
+    referrerPolicy: 'origin',
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      // prettier-ignore
+      'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
+    }),
+    body: JSON.stringify({
+      RequestDateTime: `${moment().format('YYYYMMDDhhmms')}`,
+      RequestID: '{{$guid}}',
+      FunctionName: 'CHECKEXISTUSER',
+      Data: {
+        customerphone: phone,
+        companycode: companyId,
+      },
+    }),
+  };
+  try {
+    const response = yield call(request, requestURL, parameters);
+    if (response.ResponseCode === '000') {
+      yield put(requestOtpAction());
+    } else {
+      yield put(requestOtpError(response));
+    }
+  } catch (err) {
+    yield put(requestOtpError(err));
+  }
+}
 export default function* loginPageSaga() {
-  // See example in containers/HomePage/saga.js
+  yield takeLatest(CHECK_USER_EXIST, checkExistProfile);
   yield takeLatest(REQUEST_OTP, requestOtp);
   yield takeLatest(REQUEST_LOGIN, doLogin);
 }
