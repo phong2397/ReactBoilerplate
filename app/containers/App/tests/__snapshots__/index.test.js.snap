@@ -13,49 +13,23 @@ exports[`<App /> should render and match the snapshot 1`] = `
       name="description"
     />
   </HelmetWrapper>
+  <Header />
   <Switch>
     <Route
-      component={[Function]}
-      path="/login"
-    />
-    <PrivateRoute
       component={[Function]}
       exact={true}
       path="/"
     />
-    <PrivateRoute
-      component={[Function]}
-      path="/requestOrder"
-    />
-    <PrivateRoute
-      component={[Function]}
-      path="/profile"
-    />
     <Route
       component={[Function]}
-      path="/history"
-    />
-    <Route
-      component={[Function]}
-      path="/orders/:id"
-    />
-    <Route
-      component={[Function]}
-      path="/documents"
-    />
-    <Route
-      component={[Function]}
-      path="/faq"
-    />
-    <Route
-      component={[Function]}
-      path="/question/:id"
+      path="/features"
     />
     <Route
       component={[Function]}
       path=""
     />
   </Switch>
+  <Footer />
   <GlobalStyleComponent />
 </ForwardRef>
 `;

@@ -1,7 +1,7 @@
-// // import { selectMainDomain } from '../selectors';
+// import { selectMainDomain } from '../selectors';
 
-// describe('selectMainDomain', () => {
-//   it('Expect to have unit tests specified', () => {
-//     expect(true).toEqual(false);
-//   });
-// });
+describe('selectMainDomain', () => {
+  it('Expect to have unit tests specified', () => {
+    expect(true).toEqual(false);
+  });
+});

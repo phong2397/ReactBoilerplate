@@ -1,15 +1,15 @@
-// /**
-//  * Test sagas
-//  */
+/**
+ * Test sagas
+ */
 
-// /* eslint-disable redux-saga/yield-effects */
-// // import { take, call, put, select } from 'redux-saga/effects';
-// // import profilePageSaga from '../saga';
+/* eslint-disable redux-saga/yield-effects */
+// import { take, call, put, select } from 'redux-saga/effects';
+// import profilePageSaga from '../saga';
 
-// // const generator = profilePageSaga();
+// const generator = profilePageSaga();
 
-// describe('profilePageSaga Saga', () => {
-//   it('Expect to have unit tests specified', () => {
-//     expect(true).toEqual(false);
-//   });
-// });
+describe('profilePageSaga Saga', () => {
+  it('Expect to have unit tests specified', () => {
+    expect(true).toEqual(false);
+  });
+});
