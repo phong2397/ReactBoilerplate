@@ -5,71 +5,43 @@
  */
 
 import React, { memo } from 'react';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from '@material-ui/core/IconButton';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import PropTypes from 'prop-types';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+// import PropTypes from 'prop-types';
+// import styled from 'styled-components';
 
-const useStyles = makeStyles(() => ({
-  media: {
-    width: '100%',
-    height: 240,
-  },
-}));
-const convertDocumentType = id => {
-  switch (id) {
-    case 0:
-      return 'Giấy tờ khác';
-    case 1:
-      return 'CMND/CCCD';
-    case 2:
-      return 'BHYT/BHXH';
-    case 3:
-      return 'GPLX';
-    case 4:
-      return 'HDLD';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
-    default:
-      break;
-  }
-  return 'Unknow';
-};
-export function Document({ fileName, img, description, documentType }) {
-  const classes = useStyles();
+export function Document(props) {
   return (
-    <Card>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          component="img"
-          src={`data:image/png;base64, ${img}`}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {fileName}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" component="p">
-            {convertDocumentType(documentType)}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <div>
+      <GridList spacing={1} cols={1}>
+        <GridListTile key={props.imageLink} cols={1} rows={1}>
+          <img src={props.imageLink} alt={props.title} />
+          <GridListTileBar
+            title={props.title}
+            titlePosition="top"
+            actionIcon={
+              <IconButton aria-label={`star ${props.title}`}>
+                <StarBorderIcon />
+              </IconButton>
+            }
+            actionPosition="left"
+          />
+        </GridListTile>
+      </GridList>
+    </div>
   );
 }
 
 Document.propTypes = {
-  fileName: PropTypes.string,
-  description: PropTypes.string,
-  img: PropTypes.string,
-  documentType: PropTypes.any,
+  title: PropTypes.string,
+  imageLink: PropTypes.string,
 };
 
 export default memo(Document);
