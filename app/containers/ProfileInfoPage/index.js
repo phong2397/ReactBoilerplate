@@ -370,7 +370,6 @@ function mapDispatchToProps(dispatch) {
   return {
     loadCurrentProfile: customer => dispatch(loadEditableProfile(customer)),
     onSubmitUpdateProfile: newProfile => {
-      console.log('REQUEST UPDATE NEW PROFILE ', newProfile);
       dispatch(requestUpdateProfile(newProfile));
     },
   };
