@@ -43,7 +43,6 @@ export function* requestOtp() {
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.ResponseCode === '000') {
-      savePhone(phone);
       yield put(push('/login/verify'));
       yield put(loadRequestOtp(response));
     } else yield put(requestOtpError(response));
@@ -83,7 +82,7 @@ export function* doLogin() {
       savePhone(tel);
       saveAccessToken(response.Data);
       yield put(push('/'));
-      yield put(loadProfile());
+      yield put(loadProfile(tel));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));
   } catch (err) {

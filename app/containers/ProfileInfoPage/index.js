@@ -222,8 +222,8 @@ export function ProfileInfoPage({
             }
           />
           <TextField
-            id="idCardIssuePlace"
-            name="idCardIssuePlace"
+            id="customerIdLocation"
+            name="customerIdLocation"
             label="Nơi cấp"
             defaultValue={customer.customerIdLocation}
             variant="filled"

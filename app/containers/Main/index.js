@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import {
   AppBar,
   BottomNavigation,
@@ -36,7 +36,8 @@ import reducer from './reducer';
 import saga from './saga';
 import TabPanel from '../../components/TabPanel';
 
-import { changeTab, loadProfile } from './actions';
+import { changeTab } from './actions';
+import { makeSelectCurrentProfile } from '../App/selectors';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -62,20 +63,9 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-export function Main({
-  homePage,
-  profilePage,
-  faqPage,
-  value,
-  handleChange,
-  loading,
-  requestLoadProfile,
-}) {
+export function Main({ homePage, profilePage, faqPage, value, handleChange }) {
   useInjectReducer({ key: 'main', reducer });
   useInjectSaga({ key: 'main', saga });
-  useEffect(() => {
-    if (loading) requestLoadProfile();
-  });
   const classes = useStyles();
   return (
     <div>
@@ -158,13 +148,13 @@ const mapStateToProps = createStructuredSelector({
   main: makeSelectMain(),
   value: makeSelectValue(),
   loading: makeSelectLoading(),
+  customer: makeSelectCurrentProfile(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     handleChange: (evt, newValue) => dispatch(changeTab(newValue)),
-    requestLoadProfile: () => dispatch(loadProfile()),
   };
 }
 

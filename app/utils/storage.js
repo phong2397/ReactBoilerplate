@@ -7,7 +7,6 @@ export const deleteAccessToken = () => {
 export const getAccessToken = () => localStorage.getItem('accessToken');
 
 export const saveProfile = profile => {
-  console.log(profile);
   localStorage.setItem('profile', JSON.stringify(profile));
 };
 export const removeProifle = () => {
@@ -16,10 +15,7 @@ export const removeProifle = () => {
 export const updateProfile = newProfile => {
   localStorage.setItem('profile', JSON.stringify(newProfile));
 };
-export const getProfile = () => {
-  console.log('GET PROFILE ', localStorage.getItem('profile'));
-  return JSON.parse(localStorage.getItem('profile'));
-};
+export const getProfile = () => JSON.parse(localStorage.getItem('profile'));
 export const savePhone = phone => {
   localStorage.setItem('phone', phone);
 };

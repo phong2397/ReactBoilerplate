@@ -78,7 +78,7 @@ export function HomePage({
       loadProduct();
     }
   });
-  console.log(productConfig.defaultAmount);
+  console.log('CUSTOMER ?', customer);
   const classes = useStyles();
   return (
     <Grid container className={classes.root}>
@@ -99,7 +99,7 @@ export function HomePage({
           <CustomizedSlider
             min={productConfig.productAmountMin}
             step={step}
-            max={customer ? customer.customerSalar : 0}
+            max={customer ? customer.customerSalary : 0}
             defaultValue={productConfig.productAmountMax}
             value={Number(selectedAmount)}
             onChange={onChangeSlider}

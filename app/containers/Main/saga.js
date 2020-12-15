@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 import {
   deleteAccessToken,
@@ -9,10 +9,7 @@ import {
 import { loadedProfile } from '../App/actions';
 import { loadProfileSuccess } from './actions';
 import { LOAD_PROFILE } from './constants';
-import { makeSelectCurrentPhone } from './selectors';
-export function* loadProfile() {
-  console.log('LOAD PROFILE 3');
-  const phone = yield select(makeSelectCurrentPhone()); // Temp phone number for identity user
+export function* loadProfile({ phone }) {
   const requesProfileURL = `/customers/profile/${phone}`;
   try {
     const responseProfile = yield call(request, requesProfileURL);

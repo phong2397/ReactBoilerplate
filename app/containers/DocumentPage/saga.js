@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
-import { makeSelectCurrentPhone } from '../Main/selectors';
+import { makeSelectCurrentProfile } from '../App/selectors';
 import {
   requestloadDocument,
   loadDocumentError,
@@ -10,8 +10,8 @@ import {
 } from './actions';
 import { LOAD_DOCUMENT, ON_SUBMIT_DOCUMENT } from './constants';
 export function* loadDocument() {
-  const phone = yield select(makeSelectCurrentPhone());
-  const requestURL = `http://13.212.189.237:3456/file/${phone}`;
+  const { customerPhone } = yield select(makeSelectCurrentProfile());
+  const requestURL = `http://13.212.189.237:3456/file/${customerPhone}`;
   const parameters = {
     method: 'GET',
     headers: new Headers({
@@ -29,9 +29,9 @@ export function* loadDocument() {
   }
 }
 export function* uploadDocument({ documentType, description, file }) {
-  const phone = yield select(makeSelectCurrentPhone());
+  const { customerPhone } = yield select(makeSelectCurrentProfile());
   const formData = new FormData();
-  formData.append('customerPhone', phone);
+  formData.append('customerPhone', customerPhone);
   formData.append('description', description);
   formData.append('categoryId', documentType);
   formData.append('image', file);

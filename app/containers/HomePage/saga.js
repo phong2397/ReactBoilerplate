@@ -16,15 +16,15 @@ export function* loadProductSaga() {
   try {
     const requestURL = '/api/products/default';
     const response = yield call(request, requestURL);
-    const currentProfile = yield select(makeSelectCurrentProfile());
+    const { customerSalary } = yield select(makeSelectCurrentProfile());
     const config = {
       productCode: response.message.productCode,
       productName: response.message.productName,
       productStatus: response.message.productStatus,
       productAmountMax:
-        currentProfile.customerSalary >= response.productAmountMax
+        customerSalary >= response.productAmountMax
           ? response.productAmountMax
-          : currentProfile.customerSalary,
+          : customerSalary,
       productAmountMin: response.message.productAmountMin,
       productFee: response.message.productFee,
       productRate: response.message.productRate,

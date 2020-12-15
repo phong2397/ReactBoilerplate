@@ -11,7 +11,7 @@ import { convertWithCommas } from '../../utils/formater';
 // import styled from 'styled-components';
 
 function CustomerInfoCard({
-  customerId,
+  customerCode,
   customerName,
   companyName,
   amount,
@@ -32,7 +32,7 @@ function CustomerInfoCard({
               Mã khách hàng
             </Box>
             <Box p={1}>
-              <b>{customerId}</b>
+              <b>{customerCode}</b>
             </Box>
           </Box>
 
@@ -77,7 +77,7 @@ function CustomerInfoCard({
 }
 
 CustomerInfoCard.propTypes = {
-  customerId: PropTypes.string,
+  customerCode: PropTypes.string,
   customerName: PropTypes.string,
   companyName: PropTypes.string,
   amount: PropTypes.number,

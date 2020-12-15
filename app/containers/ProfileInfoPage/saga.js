@@ -1,6 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 import { saveProfile } from '../../utils/storage';
+import { makeSelectCurrentProfile } from '../App/selectors';
+import { loadProfile } from '../Main/actions';
 import { updateProfileError, updateProfileSuccess } from './actions';
 import { UPDATE_PROFILE } from './constants';
 // import { loadProfileError, loadProfileSuccess } from './actions';
@@ -10,9 +12,9 @@ export function* requestUpdate(action) {
   // const newProfile = yield select(makeSelectProfileInfo());
   // console.log('New Profile 2', action.newProfile);
   const { newProfile } = action;
-  console.log('New Profile: ', newProfile);
-  const phone = '0973154950';
-  const requestURL = `/customers/profile/${phone}`;
+  const { customerPhone } = yield select(makeSelectCurrentProfile());
+  const requestURL = `/customers/profile/${customerPhone}`;
+  console.log('Profile ', newProfile);
   const parameters = {
     method: 'PUT',
     headers: new Headers({
@@ -24,6 +26,7 @@ export function* requestUpdate(action) {
     const response = yield call(request, requestURL, parameters);
     if (response.code === 200) {
       saveProfile(newProfile);
+      yield put(loadProfile(customerPhone));
       yield put(updateProfileSuccess(newProfile));
     } else yield put(updateProfileError(response));
   } catch (err) {

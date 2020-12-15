@@ -23,10 +23,11 @@ export function changeTab(value) {
     value,
   };
 }
-export function loadProfile() {
+export function loadProfile(phone) {
   console.log('LOAD PROFILE 2');
   return {
     type: LOAD_PROFILE,
+    phone,
   };
 }
 export function loadProfileSuccess() {
