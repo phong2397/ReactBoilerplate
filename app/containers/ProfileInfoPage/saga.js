@@ -8,7 +8,7 @@ import { UPDATE_PROFILE } from './constants';
 
 export function* requestUpdate(action) {
   // const newProfile = yield select(makeSelectProfileInfo());
-  console.log('New Profile 2', action.newProfile);
+  // console.log('New Profile 2', action.newProfile);
   const { newProfile } = action;
   const phone = '0973154950';
   const requestURL = `/customers/profile/${phone}`;
@@ -18,17 +18,17 @@ export function* requestUpdate(action) {
       'Content-Type': 'application/json',
     }),
     body: JSON.stringify({
-      name: newProfile.customerName,
-      code: newProfile.customerId,
-      salary: newProfile.creditAmount,
+      customerName: newProfile.customerName,
+      customerId: newProfile.customerId,
+      customerSalary: newProfile.creditAmount,
       bankName: newProfile.bankName,
-      accNo: newProfile.accountNumber,
-      accName: newProfile.accountName,
+      accountNumber: newProfile.accountNumber,
+      accountName: newProfile.accountName,
       address: newProfile.customerAddress,
-      workAt: newProfile.companyName,
-      id: newProfile.idCard,
-      idLocation: newProfile.idCardIssuePlace,
-      idDate: newProfile.idCardIssueDate,
+      companyName: newProfile.companyName,
+      idCard: newProfile.idCard,
+      idCardIssuePlace: newProfile.idCardIssuePlace,
+      idCardIssueDate: newProfile.idCardIssueDate,
     }),
   };
   // accountName: 'Nguyen Van A';
