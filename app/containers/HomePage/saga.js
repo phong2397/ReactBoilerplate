@@ -45,20 +45,14 @@ export function* loadProductSaga() {
 }
 export function* callRequestOrder() {
   const customer = yield select(makeSelectCurrentProfile());
-  const check = yield checkEmptyProfile(customer);
-  if (!check) {
+  const check = Object.values(customer).some(
+    x => x === null || x === '' || x.length === 0,
+  );
+  if (check) {
     yield put(alertEmptyProfile());
   } else {
     yield put(push('/requestOrder'));
   }
-}
-function checkEmptyProfile(profile) {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in profile) {
-    // eslint-disable-next-line eqeqeq
-    if (profile[key] !== null && profile[key] != '') return false;
-  }
-  return true;
 }
 export function* goToProfile() {
   yield put(confirmAlert());
