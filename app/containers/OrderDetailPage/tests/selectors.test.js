@@ -1,7 +1,7 @@
-// import { selectOrderDetailPageDomain } from '../selectors';
+// // import { selectOrderDetailPageDomain } from '../selectors';
 
-describe('selectOrderDetailPageDomain', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
-  });
-});
+// describe('selectOrderDetailPageDomain', () => {
+//   it('Expect to have unit tests specified', () => {
+//     expect(true).toEqual(false);
+//   });
+// });

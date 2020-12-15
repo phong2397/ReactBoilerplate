@@ -1,7 +1,7 @@
-// import { selectHistoryPageDomain } from '../selectors';
+// // import { selectHistoryPageDomain } from '../selectors';
 
-describe('selectHistoryPageDomain', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
-  });
-});
+// describe('selectHistoryPageDomain', () => {
+//   it('Expect to have unit tests specified', () => {
+//     expect(true).toEqual(false);
+//   });
+// });
