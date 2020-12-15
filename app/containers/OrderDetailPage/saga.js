@@ -6,7 +6,6 @@ import { loadingOrderDetailSuccess, loadingOrderDetailError } from './actions';
 
 export function* loadOrderSaga() {
   console.log('SAGA LOAD ORDER DETAIL');
-  // console.log('GLOBAL URL: ', window.location.href);
 
   // TODO: refactor this cheat get :orderId
   const splitedUrl = window.location.href.split('/');

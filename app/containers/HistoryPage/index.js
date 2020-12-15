@@ -13,7 +13,8 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import OrderInfo from 'components/OrderInfo';
-import { Box, List, ListItem } from '@material-ui/core';
+import { Box, List, ListItem, Typography } from '@material-ui/core';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Link } from 'react-router-dom';
 
 import { loadingOrders } from './actions';
@@ -34,27 +35,44 @@ export function HistoryPage({ loading, listOrders, loadOrders }) {
       loadOrders();
     }
   });
+  if (typeof listOrders !== 'undefined' && listOrders.length > 0)
+    return (
+      <SubContent title="Lịch sử yêu cầu">
+        <Box mt={6}>
+          <List>
+            {listOrders.map(order => (
+              <ListItem
+                key={order.orderId}
+                button
+                component={Link}
+                to={`/orders/${order.orderId}`}
+              >
+                <OrderInfo
+                  orderId={order.orderIdDisplay}
+                  orderStatus={order.orderStatus}
+                  orderAmount={order.orderAmount}
+                  submitTime={order.submitTime}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </SubContent>
+    );
 
+  // If no data
   return (
     <SubContent title="Lịch sử yêu cầu">
-      <Box mt={6}>
-        <List>
-          {listOrders.map(order => (
-            <ListItem
-              key={order.orderId}
-              button
-              component={Link}
-              to={`/orders/${order.orderId}`}
-            >
-              <OrderInfo
-                orderId={order.orderIdDisplay}
-                orderStatus={order.orderStatus}
-                orderAmount={order.orderAmount}
-                submitTime={order.submitTime}
-              />
-            </ListItem>
-          ))}
-        </List>
+      <Box mt={28}>
+        <Box display="flex" justifyContent="center">
+          <AssignmentIcon style={{ fontSize: 160 }} />
+        </Box>
+
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h5" component="h2">
+            Bạn chưa có yêu cầu ứng lương
+          </Typography>
+        </Box>
       </Box>
     </SubContent>
   );

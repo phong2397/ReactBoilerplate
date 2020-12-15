@@ -23,51 +23,43 @@ function OrderInfo(props) {
     <Card>
       <CardContent>
         <Grid container spacing={1}>
-          {/* Title Ma don yeu cau */}
+          {/* Ma don yeu cau */}
           <Grid item xs={6}>
-            <Typography color="textSecondary" gutterBottom>
+            <Typography variant="body1" component="p">
               {' '}
               Mã đơn yêu cầu{' '}
             </Typography>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography color="textSecondary" align="right" gutterBottom />
-          </Grid>
-          <Divider />
-
-          {/* Ma don yeu cau */}
-          <Grid item xs={6}>
-            <Typography variant="h5" component="h2">
-              {props.orderId}
+            <Typography variant="body1" align="right" component="p">
+              <b>{props.orderId}</b>
             </Typography>
           </Grid>
-
-          <Grid item xs={6} />
           <Divider />
 
           {/* Trang thai */}
           <Grid item xs={6}>
-            <Typography color="textSecondary"> Trạng thái </Typography>
+            <Typography variant="body1"> Trạng thái </Typography>
           </Grid>
 
           <Grid item xs={6}>
             <Typography align="right" color="textSecondary">
-              {props.orderStatus}
+              <b>{props.orderStatus}</b>
             </Typography>
           </Grid>
           <Divider />
 
           {/*  So tien */}
           <Grid item xs={6}>
-            <Typography variant="body2" component="p">
+            <Typography variant="body1" component="p">
               {' '}
               Số tiền{' '}
             </Typography>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="body2" align="right" component="p">
+            <Typography variant="body1" align="right" component="p">
               {props.orderAmount}
             </Typography>
           </Grid>
@@ -75,7 +67,7 @@ function OrderInfo(props) {
 
           {/*  Ngay gui yeu cau */}
           <Grid item xs={6}>
-            <Typography variant="body2" component="p">
+            <Typography variant="body1" component="p">
               {' '}
               Ngày gửi{' '}
             </Typography>
