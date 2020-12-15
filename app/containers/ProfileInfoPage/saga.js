@@ -10,6 +10,7 @@ export function* requestUpdate(action) {
   // const newProfile = yield select(makeSelectProfileInfo());
   // console.log('New Profile 2', action.newProfile);
   const { newProfile } = action;
+  console.log(newProfile);
   const phone = '0973154950';
   const requestURL = `/customers/profile/${phone}`;
   const parameters = {

@@ -10,17 +10,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  TextField,
-  Button,
-  Box,
-  ButtonBase,
-  Typography,
-  List,
-  ListItem,
-} from '@material-ui/core';
-
-import { CameraAlt } from '@material-ui/icons';
+import { TextField, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
 
@@ -179,6 +169,7 @@ export function ProfileInfoPage({
             helperText={errors.companyName ? errors.companyName.message : ''}
           />
           <TextField
+            disabled
             id="creditAmount"
             name="creditAmount"
             label="Hạn mức lương"
@@ -279,66 +270,6 @@ export function ProfileInfoPage({
             helperText={errors.accountName ? errors.accountName.message : ''}
           />
         </Box>
-        {/* Image */}
-        <List>
-          <ListItem>
-            <ButtonBase
-              focusRipple
-              className={classes.image}
-              focusVisibleClassName={classes.focusVisible}
-            >
-              <span
-                className={classes.imageSrc}
-                style={{
-                  backgroundImage: `url(https://viknews.com/vi/wp-content/uploads/2019/04/lam-lai-cmnd5.jpg)`,
-                }}
-              />
-              <span className={classes.imageBackdrop} />
-              <span className={classes.imageButton}>
-                <Typography
-                  component="span"
-                  variant="subtitle1"
-                  color="inherit"
-                  className={classes.imageTitle}
-                >
-                  <CameraAlt />
-                  <div>Chứng minh nhân dân (mặt trước)</div>
-                  {/* <span>Mặt trước</span> */}
-                  <input type="file" hidden />
-                </Typography>
-              </span>
-            </ButtonBase>
-          </ListItem>
-          <ListItem>
-            <ButtonBase
-              focusRipple
-              className={classes.image}
-              focusVisibleClassName={classes.focusVisible}
-            >
-              <span
-                className={classes.imageSrc}
-                style={{
-                  backgroundImage: `url(https://cms.luatvietnam.vn/uploaded/Images/Original/2019/10/25/tay-not-ruoi-xoa-seo-co-phai-lam-lai-chung-minh-nhan-dan_2510140542.jpg)`,
-                }}
-              />
-              <span className={classes.imageBackdrop} />
-              <span className={classes.imageButton}>
-                <Typography
-                  component="span"
-                  variant="subtitle1"
-                  color="inherit"
-                  className={classes.imageTitle}
-                >
-                  <CameraAlt />
-                  <div>Chứng minh nhân dân (mặt sau)</div>
-                  {/* <span>Mặt trước</span> */}
-                  <input type="file" hidden />
-                </Typography>
-              </span>
-            </ButtonBase>
-          </ListItem>
-        </List>
-
         <Button
           variant="contained"
           color="primary"
@@ -370,6 +301,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadCurrentProfile: customer => dispatch(loadEditableProfile(customer)),
     onSubmitUpdateProfile: newProfile => {
+      console.log('REQUEST UPDATE NEW PROFILE ', newProfile);
       dispatch(requestUpdateProfile(newProfile));
     },
   };

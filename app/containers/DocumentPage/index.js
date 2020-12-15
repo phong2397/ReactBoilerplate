@@ -91,20 +91,6 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
   },
 }));
-// const convertCategoryId = id => {
-//   switch (id) {
-//     case 0:
-//       break;
-//     case 1:
-//       break;
-//     case 2:
-//       break;
-//     case 3:
-//       break;
-//     default:
-//       break;
-//   }
-// };
 export function DocumentPage({
   loading,
   documents,

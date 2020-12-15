@@ -84,8 +84,8 @@ export function HomePage({
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
-          Mức lớn nhất bạn có thể ứng
-          {convertWithCommas(customer.creditAmount)}đ
+          Mức lớn nhất bạn có thể ứng {convertWithCommas(customer.creditAmount)}
+          đ
         </Typography>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
