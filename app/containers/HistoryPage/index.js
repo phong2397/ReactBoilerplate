@@ -63,11 +63,16 @@ export function HistoryPage({ loading, listOrders, loadOrders }) {
   // If no data
   return (
     <SubContent title="Lịch sử yêu cầu">
-      <Box mt={6} justifyContent="center">
-        <AssignmentIcon />
-        <Typography variant="h5" component="h2">
-          Bạn không có đơn yêu cầu ứng lương nào!
-        </Typography>
+      <Box mt={28}>
+        <Box display="flex" justifyContent="center">
+          <AssignmentIcon style={{ fontSize: 160 }} />
+        </Box>
+
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h5" component="h2">
+            Bạn chưa có yêu cầu ứng lương
+          </Typography>
+        </Box>
       </Box>
     </SubContent>
   );
