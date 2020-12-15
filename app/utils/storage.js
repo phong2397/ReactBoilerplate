@@ -20,10 +20,3 @@ export const getProfile = () => {
   console.log('GET PROFILE ', localStorage.getItem('profile'));
   return JSON.parse(localStorage.getItem('profile'));
 };
-export const savePhone = phone => {
-  localStorage.setItem('phone', phone);
-};
-export const deletePhone = () => {
-  localStorage.removeItem('phone');
-};
-export const getPhone = () => localStorage.getItem('phone');

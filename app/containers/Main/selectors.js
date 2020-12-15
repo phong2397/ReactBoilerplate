@@ -25,20 +25,5 @@ const makeSelectValue = () =>
     selectMainDomain,
     mainState => mainState.value,
   );
-const makeSelectLoading = () =>
-  createSelector(
-    selectMainDomain,
-    mainState => mainState.loading,
-  );
-const makeSelectCurrentPhone = () =>
-  createSelector(
-    selectMainDomain,
-    mainState => mainState.phone,
-  );
 export default makeSelectMain;
-export {
-  makeSelectCurrentPhone,
-  selectMainDomain,
-  makeSelectValue,
-  makeSelectLoading,
-};
+export { selectMainDomain, makeSelectValue };

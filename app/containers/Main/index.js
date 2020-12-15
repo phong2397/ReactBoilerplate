@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import {
   AppBar,
   BottomNavigation,
@@ -28,15 +28,12 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectMain, {
-  makeSelectLoading,
-  makeSelectValue,
-} from './selectors';
+import makeSelectMain, { makeSelectValue } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import TabPanel from '../../components/TabPanel';
 
-import { changeTab, loadProfile } from './actions';
+import { changeTab } from './actions';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -62,21 +59,9 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-export function Main({
-  homePage,
-  profilePage,
-  faqPage,
-  value,
-  handleChange,
-  loading,
-  requestLoadProfile,
-}) {
+export function Main({ homePage, profilePage, faqPage, value, handleChange }) {
   useInjectReducer({ key: 'main', reducer });
   useInjectSaga({ key: 'main', saga });
-  useEffect(() => {
-    console.log('LOAD PROFILE');
-    if (loading) requestLoadProfile();
-  });
   const classes = useStyles();
   return (
     <div>
@@ -150,21 +135,17 @@ Main.propTypes = {
   faqPage: PropTypes.any,
   value: PropTypes.number,
   handleChange: PropTypes.func,
-  loading: PropTypes.bool,
-  requestLoadProfile: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   main: makeSelectMain(),
   value: makeSelectValue(),
-  loading: makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     handleChange: (evt, newValue) => dispatch(changeTab(newValue)),
-    requestLoadProfile: () => dispatch(loadProfile()),
   };
 }
 
