@@ -91,8 +91,8 @@ export function RequestOrderPage({
           <Box p={1} />
           <BankCard
             bankName={customer.bankName}
-            accNo={customer.accountNumber}
-            accName={customer.accountName}
+            accNo={customer.accNo}
+            accName={customer.accName}
           />
 
           <ShowRule />

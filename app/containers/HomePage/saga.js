@@ -22,9 +22,9 @@ export function* loadProductSaga() {
       productName: response.message.productName,
       productStatus: response.message.productStatus,
       productAmountMax:
-        currentProfile.creditAmount >= response.productAmountMax
+        currentProfile.customerSalary >= response.productAmountMax
           ? response.productAmountMax
-          : currentProfile.creditAmount,
+          : currentProfile.customerSalary,
       productAmountMin: response.message.productAmountMin,
       productFee: response.message.productFee,
       productRate: response.message.productRate,

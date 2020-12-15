@@ -16,19 +16,7 @@ export function* loadProfile() {
   const requesProfileURL = `/customers/profile/${phone}`;
   try {
     const responseProfile = yield call(request, requesProfileURL);
-    const profile = {
-      customerName: responseProfile.customerName,
-      customerId: responseProfile.customerId,
-      companyName: responseProfile.companyName,
-      creditAmount: responseProfile.customerSalary,
-      idCard: responseProfile.customerIdentity,
-      customerAddress: responseProfile.customerAddress,
-      idCardIssueDate: responseProfile.identityDate,
-      idCardIssuePlace: responseProfile.identityLocation,
-      bankName: responseProfile.bankName,
-      accountNumber: responseProfile.bankAcc,
-      accountName: responseProfile.accountName,
-    };
+    const profile = responseProfile;
     saveProfile(profile);
     yield put(loadProfileSuccess(profile));
     yield put(loadedProfile(profile));

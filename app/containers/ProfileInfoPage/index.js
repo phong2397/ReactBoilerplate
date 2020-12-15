@@ -145,16 +145,16 @@ export function ProfileInfoPage({
             helperText={errors.customerName ? errors.customerName.message : ''}
           />
           <TextField
-            id="customerId"
-            name="customerId"
+            id="customerCode"
+            name="customerCode"
             label="Mã nhân viên"
-            defaultValue={customer.customerId}
+            defaultValue={customer.customerCode}
             variant="filled"
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
             })}
-            error={!!errors.customerId}
-            helperText={errors.customerId ? errors.customerId.message : ''}
+            error={!!errors.customerCode}
+            helperText={errors.customerCode ? errors.customerCode.message : ''}
           />
           <TextField
             id="companyName"
@@ -170,28 +170,30 @@ export function ProfileInfoPage({
           />
           <TextField
             disabled
-            id="creditAmount"
-            name="creditAmount"
+            id="customerSalary"
+            name="customerSalary"
             label="Hạn mức lương"
-            defaultValue={customer.creditAmount}
+            defaultValue={customer.customerSalary}
             variant="filled"
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
             })}
-            error={!!errors.creditAmount}
-            helperText={errors.creditAmount ? errors.creditAmount.message : ''}
+            error={!!errors.customerSalary}
+            helperText={
+              errors.customerSalary ? errors.customerSalary.message : ''
+            }
           />
           <TextField
-            id="idCard"
-            name="idCard"
+            id="customerId"
+            name="customerId"
             label="CMND/CCCD"
-            defaultValue={customer.idCard}
+            defaultValue={customer.customerId}
             variant="filled"
             inputRef={register({
               required: 'CMND/CCCD không được để trống',
             })}
-            error={!!errors.idCard}
-            helperText={errors.idCard ? errors.idCard.message : ''}
+            error={!!errors.customerId}
+            helperText={errors.customerId ? errors.customerId.message : ''}
           />
           <TextField
             id="customerAddress"
@@ -206,29 +208,29 @@ export function ProfileInfoPage({
             }
           />
           <TextField
-            id="idCardIssueDate"
-            name="idCardIssueDate"
+            id="customerIdDate"
+            name="customerIdDate"
             label="Ngày cấp"
-            defaultValue={customer.idCardIssueDate}
+            defaultValue={customer.customerIdDate}
             variant="filled"
             inputRef={register({
               required: 'Ngày cấp không được để trống',
             })}
-            error={!!errors.idCardIssueDate}
+            error={!!errors.customerIdDate}
             helperText={
-              errors.idCardIssueDate ? errors.idCardIssueDate.message : ''
+              errors.customerIdDate ? errors.customerIdDate.message : ''
             }
           />
           <TextField
             id="idCardIssuePlace"
             name="idCardIssuePlace"
             label="Nơi cấp"
-            defaultValue={customer.idCardIssuePlace}
+            defaultValue={customer.customerIdLocation}
             variant="filled"
             inputRef={register({ required: 'Nơi cấp không được để trống' })}
-            error={!!errors.idCardIssuePlace}
+            error={!!errors.customerIdLocation}
             helperText={
-              errors.idCardIssuePlace ? errors.idCardIssuePlace.message : ''
+              errors.customerIdLocation ? errors.customerIdLocation.message : ''
             }
           />
           <TextField
@@ -244,30 +246,28 @@ export function ProfileInfoPage({
             helperText={errors.bankName ? errors.bankName.message : ''}
           />
           <TextField
-            id="accountNumber"
-            name="accountNumber"
+            id="accNo"
+            name="accNo"
             label="Số tài khoản"
-            defaultValue={customer.accountNumber}
+            defaultValue={customer.accNo}
             variant="filled"
             inputRef={register({
               required: 'Số tài khoản không được để trống',
             })}
-            error={!!errors.accountNumber}
-            helperText={
-              errors.accountNumber ? errors.accountNumber.message : ''
-            }
+            error={!!errors.accNo}
+            helperText={errors.accNo ? errors.accNo.message : ''}
           />
           <TextField
-            id="accountName"
-            name="accountName"
+            id="accName"
+            name="accName"
             label="Chủ tài khoản"
-            defaultValue={customer.accountName}
+            defaultValue={customer.accName}
             variant="filled"
             inputRef={register({
               required: 'Chủ tài khoản không được để trống',
             })}
-            error={!!errors.accountName}
-            helperText={errors.accountName ? errors.accountName.message : ''}
+            error={!!errors.accName}
+            helperText={errors.accName ? errors.accName.message : ''}
           />
         </Box>
         <Button

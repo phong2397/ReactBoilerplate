@@ -29,7 +29,6 @@ import saga from './saga';
 
 import makeSelectHomePage, {
   makeSelectAmount,
-  makeSelectCreditAmount,
   makeSelectDefaultAmount,
   makeSelectFeeAmount,
   makeSelectStep,
@@ -79,13 +78,14 @@ export function HomePage({
       loadProduct();
     }
   });
+  console.log(productConfig.defaultAmount);
   const classes = useStyles();
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
-          Mức lớn nhất bạn có thể ứng
-          {customer && convertWithCommas(customer.creditAmount)}đ
+          Mức lớn nhất bạn có thể ứng{' '}
+          {customer && convertWithCommas(customer.customerSalary)}đ
         </Typography>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
@@ -99,8 +99,8 @@ export function HomePage({
           <CustomizedSlider
             min={productConfig.productAmountMin}
             step={step}
-            max={customer && Number(customer.creditAmount)}
-            defaultValue={productConfig.defaultAmount}
+            max={customer ? customer.customerSalar : 0}
+            defaultValue={productConfig.productAmountMax}
             value={Number(selectedAmount)}
             onChange={onChangeSlider}
           />
@@ -116,8 +116,8 @@ export function HomePage({
       <Grid item xs={12} md={12} className={classes.rowStyle}>
         <BankCard
           bankName={customer && customer.bankName}
-          accNo={customer && customer.accountNumber}
-          accName={customer && customer.accountName}
+          accNo={customer && customer.accNo}
+          accName={customer && customer.accName}
         />
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
@@ -161,7 +161,6 @@ const mapStateToProps = createStructuredSelector({
   homePage: makeSelectHomePage(),
   customer: makeSelectCurrentProfile(),
   productConfig: makeSelectProductConfig(),
-  creditAmount: makeSelectCreditAmount(),
   selectedAmount: makeSelectAmount(),
   step: makeSelectStep(),
   defaultAmount: makeSelectDefaultAmount(),

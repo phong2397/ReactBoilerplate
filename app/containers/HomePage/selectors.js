@@ -30,11 +30,6 @@ const makeSelectProductConfig = () =>
     selectHomePageDomain,
     homeState => homeState.productConfig,
   );
-const makeSelectCreditAmount = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.creditAmount,
-  );
 const makeSelectAmount = () =>
   createSelector(
     selectHomePageDomain,
@@ -62,46 +57,14 @@ const makeSelectRate = () =>
     selectHomePageDomain,
     homeState => homeState.rate,
   );
-const makeSelectAccNo = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.accNo,
-  );
-const makeSelectCustomePhone = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.phone,
-  );
-const makeSelectBankName = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.bankName,
-  );
-
-const makeSelectAccName = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.accName,
-  );
-const makeSelectCompanyCode = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.companyCode,
-  );
 export default makeSelectHomePage;
 export {
   selectHomePageDomain,
   makeSelectLoading,
   makeSelectProductConfig,
-  makeSelectCreditAmount,
   makeSelectAmount,
   makeSelectStep,
   makeSelectDefaultAmount,
   makeSelectFeeAmount,
   makeSelectRate,
-  makeSelectAccNo,
-  makeSelectBankName,
-  makeSelectAccName,
-  makeSelectCustomePhone,
-  makeSelectCompanyCode,
 };

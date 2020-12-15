@@ -17,31 +17,8 @@ export function* requestUpdate(action) {
     headers: new Headers({
       'Content-Type': 'application/json',
     }),
-    body: JSON.stringify({
-      customerName: newProfile.customerName,
-      customerId: newProfile.customerId,
-      customerSalary: newProfile.creditAmount,
-      bankName: newProfile.bankName,
-      accountNumber: newProfile.accountNumber,
-      accountName: newProfile.accountName,
-      address: newProfile.customerAddress,
-      companyName: newProfile.companyName,
-      idCard: newProfile.idCard,
-      idCardIssuePlace: newProfile.idCardIssuePlace,
-      idCardIssueDate: newProfile.idCardIssueDate,
-    }),
+    body: JSON.stringify(newProfile),
   };
-  // accountName: 'Nguyen Van A';
-  // accountNumber: '12091129099283';
-  // bankName: 'SCB';
-  // companyName: 'SGFintech';
-  // creditAmount: '5000000';
-  // customerAddress: '12 Hau Giang Quan 6';
-  // customerId: 'SGF123';
-  // customerName: 'Nguyen Van D';
-  // idCard: '026062666';
-  // idCardIssuePlace: 'CA TPHCM';
-  // issueDate: '2020-12-01T00:00:00.000Z';
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.code === 200) {

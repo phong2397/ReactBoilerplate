@@ -4,7 +4,6 @@ import request from 'utils/request';
 import { makeSelectCurrentProfile } from '../App/selectors';
 import {
   makeSelectAmount,
-  makeSelectCustomePhone,
   makeSelectProductConfig,
 } from '../HomePage/selectors';
 import {
@@ -30,7 +29,6 @@ export function* sendOrder() {
   try {
     const requestURL = '/api/orders/';
     const borrow = yield select(makeSelectAmount());
-    const customerPhone = yield select(makeSelectCustomePhone());
     const customer = yield select(makeSelectCurrentProfile());
     const productConfig = yield select(makeSelectProductConfig());
     const parameters = {
@@ -41,8 +39,8 @@ export function* sendOrder() {
         'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
       }),
       body: JSON.stringify({
-        companyCode: customer.companyName,
-        customerPhone,
+        companyCode: customer.companyCode,
+        customerPhone: customer.customerPhone,
         borrow,
         timeBorrow: '1',
         interestRate: productConfig.productRate,
