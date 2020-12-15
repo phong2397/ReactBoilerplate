@@ -1,5 +1,6 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
+import { makeSelectCurrentPhone } from '../Main/selectors';
 import {
   requestloadDocument,
   loadDocumentError,
@@ -9,7 +10,8 @@ import {
 } from './actions';
 import { LOAD_DOCUMENT, ON_SUBMIT_DOCUMENT } from './constants';
 export function* loadDocument() {
-  const requestURL = `http://localhost:3456/file/0973154950`;
+  const phone = yield select(makeSelectCurrentPhone());
+  const requestURL = `http://13.212.189.237:3456/file/${phone}`;
   const parameters = {
     method: 'GET',
     headers: new Headers({
@@ -27,22 +29,14 @@ export function* loadDocument() {
   }
 }
 export function* uploadDocument({ documentType, description, file }) {
-  // customerPhone: customerPhone,
-  // fileName: `img${new Date().toISOString()}`,
-  // originalName: req.file.originalname,
-  // mimetype: req.file.mimetype,
-  // size: req.file.size,
-  // description: description,
-  // categoryId: categoryId,
-  // img: filePngBuffer,
-  // eslint-disable-next-line prefer-const
-  let formData = new FormData();
-  formData.append('customerPhone', '0973154950');
+  const phone = yield select(makeSelectCurrentPhone());
+  const formData = new FormData();
+  formData.append('customerPhone', phone);
   formData.append('description', description);
   formData.append('categoryId', documentType);
   formData.append('image', file);
   // console.log({ documentType, description, file });
-  const requestURL = `http://localhost:3456/file`;
+  const requestURL = `http://13.212.189.237:3456/file`;
   const parameters = {
     method: 'POST',
     headers: new Headers({
