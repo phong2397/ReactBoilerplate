@@ -25,3 +25,5 @@ export const savePhone = phone => {
   console.log(phone);
   localStorage.setItem('phone', phone);
 };
+
+export const getPhone = () => localStorage.getItem('phone');

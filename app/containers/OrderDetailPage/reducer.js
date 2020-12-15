@@ -16,24 +16,24 @@ export const initialState = {
   loading: true,
   orderId: '0',
   initStage: {
-    orderId: '0010',
-    status: 'Khởi tạo',
-    orderAmount: 5000000,
-    submitTime: '20/11/2020 8h30',
+    orderId: '',
+    status: '',
+    orderAmount: 0,
+    submitTime: '',
   },
   appraisalStage: {
-    status: 'Yêu cầu được chấp nhận',
-    approveTime: '20/11/2020 11h30',
+    status: '',
+    approveTime: '',
   },
   disbursementStage: {
-    status: 'Đợi giải ngân',
-    accountName: 'Nguyen Van A',
-    accountNo: '130342340001',
-    bankName: 'SCB',
+    status: '',
+    accountName: '',
+    accountNo: '',
+    bankName: '',
   },
   repaymentStage: {
-    status: 'Thanh toán',
-    repayTime: '30/11/2020 17h30',
+    status: '',
+    repayTime: '',
   },
 };
 
