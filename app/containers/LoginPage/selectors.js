@@ -38,7 +38,7 @@ const makeSelectData = () =>
 const makeSelectCompanyId = () =>
   createSelector(
     selectLoginPageDomain,
-    loginState => loginState.companyId,
+    loginState => loginState.comapanyId,
   );
 const makeSelectError = () =>
   createSelector(

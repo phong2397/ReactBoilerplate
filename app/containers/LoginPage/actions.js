@@ -15,7 +15,6 @@ import {
   REQUEST_LOGIN,
   REQUEST_LOGIN_SUCCESS,
   REQUEST_LOGIN_ERROR,
-  CHECK_USER_EXIST,
 } from './constants';
 
 export function defaultAction() {
@@ -41,17 +40,14 @@ export function changeOtp(otp) {
     otp,
   };
 }
-export function checkUserExistAction() {
-  return {
-    type: CHECK_USER_EXIST,
-  };
-}
 export function requestOtpAction() {
+  console.log('Request OTP 2');
   return {
     type: REQUEST_OTP,
   };
 }
 export function loadRequestOtp(response) {
+  console.log('REQUEST OTP SUCCESS');
   return {
     type: REQUEST_OTP_SUCCESS,
     response,

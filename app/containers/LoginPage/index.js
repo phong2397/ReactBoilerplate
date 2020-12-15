@@ -45,8 +45,8 @@ import {
   changeCompanyId,
   changeOtp,
   changePhone,
-  checkUserExistAction,
   requestLoginAction,
+  requestOtpAction,
 } from './actions';
 
 const useStyles = makeStyles(theme =>
@@ -109,10 +109,6 @@ const convertErrorStatus = code => {
       return 'Yêu cầu gửi mã xác nhận quá nhiều';
     case '014':
       return 'Mã xác nhận không đúng';
-    case '028':
-      return 'Số điện thoại không hợp lệ';
-    case '029':
-      return 'Mã công ty không hợp lệ';
     default:
       return 'Lỗi không xác định';
   }
@@ -147,7 +143,6 @@ export function LoginPage({
       onSubmitValidateOtp();
     }
   };
-  console.log(companyId);
   return (
     <div className={classes.paper}>
       <Switch>
@@ -317,7 +312,7 @@ export function mapDispatchToProps(dispatch) {
     onChangeCompanyId: evt => dispatch(changeCompanyId(evt.target.value)),
     onChangePhone: evt => dispatch(changePhone(evt.target.value)),
     onChangeOtpInput: otp => dispatch(changeOtp(otp)),
-    onSubmitRequestOtp: () => dispatch(checkUserExistAction()),
+    onSubmitRequestOtp: () => dispatch(requestOtpAction()),
     onSubmitValidateOtp: () => dispatch(requestLoginAction()),
   };
 }
