@@ -74,7 +74,6 @@ export function Main({
   useInjectReducer({ key: 'main', reducer });
   useInjectSaga({ key: 'main', saga });
   useEffect(() => {
-    console.log('LOAD PROFILE');
     if (loading) requestLoadProfile();
   });
   const classes = useStyles();
@@ -99,6 +98,7 @@ export function Main({
           {faqPage}
         </TabPanel>
       </div>
+
       <AppBar
         position="fixed"
         color="primary"

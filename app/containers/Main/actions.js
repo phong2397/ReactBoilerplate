@@ -29,7 +29,7 @@ export function loadProfile() {
     type: LOAD_PROFILE,
   };
 }
-export function loaddedProfile() {
+export function loadProfileSuccess() {
   return {
     type: LOAD_PROFILE_SUCCESS,
   };

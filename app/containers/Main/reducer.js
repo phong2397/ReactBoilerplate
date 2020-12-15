@@ -11,6 +11,7 @@ export const initialState = {
   value: 0,
   loading: true,
   phone: getPhone(),
+  unCompleteProfile: true,
 };
 
 /* eslint-disable default-case, no-param-reassign */

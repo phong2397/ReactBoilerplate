@@ -6,7 +6,8 @@ import {
   removeProifle,
   saveProfile,
 } from '../../utils/storage';
-import { loaddedProfile } from './actions';
+import { loadedProfile } from '../App/actions';
+import { loadProfileSuccess } from './actions';
 import { LOAD_PROFILE } from './constants';
 import { makeSelectCurrentPhone } from './selectors';
 export function* loadProfile() {
@@ -29,7 +30,8 @@ export function* loadProfile() {
       accountName: responseProfile.accountName,
     };
     saveProfile(profile);
-    yield put(loaddedProfile(profile));
+    yield put(loadProfileSuccess(profile));
+    yield put(loadedProfile(profile));
   } catch (err) {
     deleteAccessToken();
     removeProifle();

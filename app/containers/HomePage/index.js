@@ -84,8 +84,8 @@ export function HomePage({
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.rowStyle}>
         <Typography variant="subtitle1" align="center">
-          Mức lớn nhất bạn có thể ứng {convertWithCommas(customer.creditAmount)}
-          đ
+          Mức lớn nhất bạn có thể ứng
+          {customer && convertWithCommas(customer.creditAmount)}đ
         </Typography>
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
@@ -99,7 +99,7 @@ export function HomePage({
           <CustomizedSlider
             min={productConfig.productAmountMin}
             step={step}
-            max={Number(customer.creditAmount)}
+            max={customer && Number(customer.creditAmount)}
             defaultValue={productConfig.defaultAmount}
             value={Number(selectedAmount)}
             onChange={onChangeSlider}
@@ -115,9 +115,9 @@ export function HomePage({
       </Grid>
       <Grid item xs={12} md={12} className={classes.rowStyle}>
         <BankCard
-          bankName={customer.bankName}
-          accNo={customer.accountNumber}
-          accName={customer.accountName}
+          bankName={customer && customer.bankName}
+          accNo={customer && customer.accountNumber}
+          accName={customer && customer.accountName}
         />
       </Grid>
       <Grid item xs={12} className={classes.rowStyle}>
@@ -137,7 +137,7 @@ export function HomePage({
 
 HomePage.propTypes = {
   loading: PropTypes.bool,
-  customer: PropTypes.object.isRequired,
+  customer: PropTypes.object,
   productConfig: PropTypes.object.isRequired,
   selectedAmount: PropTypes.number,
   step: PropTypes.number,
