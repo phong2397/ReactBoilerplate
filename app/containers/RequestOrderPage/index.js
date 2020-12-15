@@ -7,21 +7,39 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Box, Button, makeStyles, Modal, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  makeStyles,
+  Modal,
+  Typography,
+} from '@material-ui/core';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectRequestOrderPage, { makeSelectOpenModal } from './selectors';
+import makeSelectRequestOrderPage, {
+  makeSelectCheckTerm,
+  makeSelectOpenModal,
+  makeSelectOpenTermModal,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import CustomerInfoCard from '../../components/CustomerInfoCard';
 import { ShowRule } from '../../components/Rule';
 import { makeSelectAmount, makeSelectFeeAmount } from '../HomePage/selectors';
 import BankCard from '../../components/BankCard';
-import { confirmOrderAction, sendOrderRequestAction } from './actions';
+import {
+  checkTermPolicy,
+  confirmOrderAction,
+  openTermModal,
+  sendOrderRequestAction,
+} from './actions';
 import SubContent from '../SubContent/Loadable';
 import { makeSelectCurrentProfile } from '../App/selectors';
 const useStyles = makeStyles(theme => ({
@@ -43,10 +61,46 @@ export function RequestOrderPage({
   openModal,
   confirmOrder,
   sendOrderRequest,
+  checkTerm,
+  handleCheckTerm,
+  error,
+  // handleOpenTermModal,
+  // openTermModal,
 }) {
   useInjectReducer({ key: 'requestOrderPage', reducer });
   useInjectSaga({ key: 'requestOrderPage', saga });
   const classes = useStyles();
+  // const bodyTerm = (
+  //   <div className={classes.paper}>
+  //     <Container component="main" maxWidth="sm">
+  //       <Typography variant="h5" align="center">
+  //         Điều khoản sử dụng
+  //       </Typography>
+
+  //       <List>
+  //         {data.map(q => (
+  //           <div key={q.id}>
+  //             <ListItem>
+  //               <ListItemText primary={`${q.id}. ${q.name}`} />
+  //             </ListItem>
+  //             <Divider />
+  //           </div>
+  //         ))}
+  //       </List>
+
+  //       <Typography variant="h5" align="center">
+  //         <Button
+  //           align="center"
+  //           variant="contained"
+  //           onClick={handleClose}
+  //           className={classes.button}
+  //         >
+  //           Trờ lại
+  //         </Button>
+  //       </Typography>
+  //     </Container>
+  //   </div>
+  // );
   const body = (
     <div className={classes.paper}>
       <Box display="flex" justifyContent="center">
@@ -82,7 +136,7 @@ export function RequestOrderPage({
       <SubContent title="Gửi yêu cầu ứng lương">
         <Box pt={3} margin={1}>
           <CustomerInfoCard
-            customerId={customer.customerId}
+            customerCode={customer.customerCode}
             customerName={customer.customerName}
             companyName={customer.companyName}
             amount={amount}
@@ -96,7 +150,27 @@ export function RequestOrderPage({
           />
 
           <ShowRule />
-
+          <FormControlLabel
+            required
+            error={error}
+            control={
+              <Checkbox
+                color="primary"
+                checked={checkTerm}
+                onChange={handleCheckTerm}
+                name="checkTerm"
+              />
+            }
+            label={
+              <span>
+                Tôi chấp nhận{' '}
+                {/* <Link href="#" onClick={handleOpenTermModal}>
+                  điều khoản
+                </Link> */}
+              </span>
+            }
+          />
+          <FormHelperText>Phải chấp nhận điều khoản</FormHelperText>
           <Box pt={2}>
             <Button
               fullWidth
@@ -114,6 +188,13 @@ export function RequestOrderPage({
             >
               {body}
             </Modal>
+            <Modal
+              open={openTermModal}
+              aria-labelledby="simple-modal-title-term"
+              aria-describedby="simple-modal-description-term"
+            >
+              {/* {bodyTerm} */}
+            </Modal>
           </Box>
         </Box>
       </SubContent>
@@ -128,6 +209,11 @@ RequestOrderPage.propTypes = {
   openModal: PropTypes.bool,
   confirmOrder: PropTypes.func,
   sendOrderRequest: PropTypes.func,
+  checkTerm: PropTypes.bool,
+  handleCheckTerm: PropTypes.func,
+  error: PropTypes.bool,
+  // openTermModal: PropTypes.bool,
+  // handleOpenTermModal: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -136,6 +222,8 @@ const mapStateToProps = createStructuredSelector({
   feeAmount: makeSelectFeeAmount(),
   requestOrderPage: makeSelectRequestOrderPage(),
   openModal: makeSelectOpenModal(),
+  checkTerm: makeSelectCheckTerm(),
+  openTermModal: makeSelectOpenTermModal(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -143,6 +231,8 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     sendOrderRequest: () => dispatch(sendOrderRequestAction()),
     confirmOrder: () => dispatch(confirmOrderAction()),
+    handleCheckTerm: evt => dispatch(checkTermPolicy(evt.target.checked)),
+    handleOpenTermModal: () => dispatch(openTermModal()),
   };
 }
 

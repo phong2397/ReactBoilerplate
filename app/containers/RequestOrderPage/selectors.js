@@ -42,11 +42,23 @@ const makeSelectOpenModal = () =>
     selectRequestOrderPageDomain,
     requestOrderState => requestOrderState.openModal,
   );
+const makeSelectCheckTerm = () =>
+  createSelector(
+    selectRequestOrderPageDomain,
+    requestOrderState => requestOrderState.checkTerm,
+  );
+const makeSelectOpenTermModal = () =>
+  createSelector(
+    selectRequestOrderPageDomain,
+    requestOrderState => requestOrderState.makeSelectOpenTermModal,
+  );
 export default makeSelectRequestOrderPage;
 export {
   selectRequestOrderPageDomain,
+  makeSelectCheckTerm,
   makeSelectCustomerId,
   makeSelectCustomerName,
   makeSelectCompanyName,
   makeSelectOpenModal,
+  makeSelectOpenTermModal,
 };

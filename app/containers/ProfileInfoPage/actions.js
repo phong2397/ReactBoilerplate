@@ -12,6 +12,8 @@ import {
   UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_ERROR,
   LOAD_EDITED_PROFILE,
+  CLOSE_DIALOG,
+  CLOSE_DIALOG_GO_HOME,
 } from './constants';
 
 export function defaultAction() {
@@ -54,5 +56,15 @@ export function updateProfileError(error) {
   return {
     type: UPDATE_PROFILE_ERROR,
     error,
+  };
+}
+export function closeDialog() {
+  return {
+    type: CLOSE_DIALOG,
+  };
+}
+export function closeAndGoHome() {
+  return {
+    type: CLOSE_DIALOG_GO_HOME,
   };
 }

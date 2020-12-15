@@ -24,7 +24,6 @@ export function changeTab(value) {
   };
 }
 export function loadProfile(phone) {
-  console.log('LOAD PROFILE 2');
   return {
     type: LOAD_PROFILE,
     phone,

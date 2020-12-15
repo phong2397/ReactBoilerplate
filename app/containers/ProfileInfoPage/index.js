@@ -10,19 +10,39 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { TextField, Button, Box } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import { makeSelectLoading } from './selectors';
+import {
+  makeSelectLoading,
+  makeSelectMessageContent,
+  makeSelectNotifyTitle,
+  makeSelectOpen,
+  makeSelectTypeId,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import SubContent from '../SubContent/Loadable';
 import { makeSelectCurrentProfile } from '../App/selectors';
-import { loadEditableProfile, requestUpdateProfile } from './actions';
+import {
+  closeAndGoHome,
+  closeDialog,
+  loadEditableProfile,
+  requestUpdateProfile,
+} from './actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -107,6 +127,12 @@ export function ProfileInfoPage({
   loading,
   loadCurrentProfile,
   onSubmitUpdateProfile,
+  open,
+  handleClose,
+  handleCloseBack,
+  notifyTitle,
+  typeId,
+  messageContent,
 }) {
   useInjectReducer({ key: 'profileInfoPage', reducer });
   useInjectSaga({ key: 'profileInfoPage', saga });
@@ -115,8 +141,8 @@ export function ProfileInfoPage({
       loadCurrentProfile(customer);
     }
   });
+  console.log('OPEN ?');
   const classes = useStyles();
-
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   console.log('CUSTOMER ', customer);
   const onSubmit = data => {
@@ -169,7 +195,6 @@ export function ProfileInfoPage({
             helperText={errors.companyName ? errors.companyName.message : ''}
           />
           <TextField
-            disabled
             id="customerSalary"
             name="customerSalary"
             label="Hạn mức lương"
@@ -178,6 +203,9 @@ export function ProfileInfoPage({
             inputRef={register({
               required: 'Hạn mức lương không được để trống',
             })}
+            InputProps={{
+              readOnly: true,
+            }}
             error={!!errors.customerSalary}
             helperText={
               errors.customerSalary ? errors.customerSalary.message : ''
@@ -201,7 +229,9 @@ export function ProfileInfoPage({
             label="Địa chỉ"
             defaultValue={customer.customerAddress}
             variant="filled"
-            inputRef={register({ required: 'Địa chỉ không được để trống' })}
+            inputRef={register({
+              required: 'Địa chỉ không được để trống',
+            })}
             error={!!errors.customerAddress}
             helperText={
               errors.customerAddress ? errors.customerAddress.message : ''
@@ -227,13 +257,18 @@ export function ProfileInfoPage({
             label="Nơi cấp"
             defaultValue={customer.customerIdLocation}
             variant="filled"
-            inputRef={register({ required: 'Nơi cấp không được để trống' })}
+            inputRef={register({
+              required: 'Nơi cấp không được để trống',
+            })}
             error={!!errors.customerIdLocation}
             helperText={
               errors.customerIdLocation ? errors.customerIdLocation.message : ''
             }
           />
           <TextField
+            InputProps={{
+              readOnly: true,
+            }}
             id="bankName"
             name="bankName"
             label="Ngân hàng"
@@ -279,6 +314,36 @@ export function ProfileInfoPage({
         >
           Cập nhật
         </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{notifyTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {messageContent}
+            </DialogContentText>
+          </DialogContent>
+          {typeId === 1 && (
+            <DialogActions>
+              <Button onClick={handleClose} color="primary" autoFocus>
+                Xác nhận
+              </Button>
+              <Button onClick={handleCloseBack} color="default">
+                Quay lại trang chủ
+              </Button>
+            </DialogActions>
+          )}
+          {typeId === 0 && (
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Xác nhận
+              </Button>
+            </DialogActions>
+          )}
+        </Dialog>
       </form>
     </SubContent>
   );
@@ -290,11 +355,21 @@ ProfileInfoPage.propTypes = {
   customer: PropTypes.object,
   loadCurrentProfile: PropTypes.func,
   onSubmitUpdateProfile: PropTypes.func,
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  handleCloseBack: PropTypes.func,
+  notifyTitle: PropTypes.string,
+  typeId: PropTypes.number,
+  messageContent: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   customer: makeSelectCurrentProfile(),
+  open: makeSelectOpen(),
+  notifyTitle: makeSelectNotifyTitle(),
+  typeId: makeSelectTypeId(),
+  messageContent: makeSelectMessageContent(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -304,6 +379,8 @@ function mapDispatchToProps(dispatch) {
       console.log('REQUEST UPDATE NEW PROFILE ', newProfile);
       dispatch(requestUpdateProfile(newProfile));
     },
+    handleCloseBack: () => dispatch(closeAndGoHome()),
+    handleClose: () => dispatch(closeDialog()),
   };
 }
 

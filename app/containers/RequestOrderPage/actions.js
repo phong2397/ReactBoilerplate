@@ -12,6 +12,8 @@ import {
   CLOSE_MODAL,
   SEND_ORDER_SUCCESS,
   SEND_ORDER_ERROR,
+  OPEN_TERM_MODAL,
+  CHECK_TERM,
 } from './constants';
 
 export function defaultAction() {
@@ -51,5 +53,16 @@ export function sendOrderError(error) {
   return {
     type: SEND_ORDER_ERROR,
     error,
+  };
+}
+export function checkTermPolicy(checked) {
+  return {
+    type: CHECK_TERM,
+    checked,
+  };
+}
+export function openTermModal() {
+  return {
+    type: OPEN_TERM_MODAL,
   };
 }

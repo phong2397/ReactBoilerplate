@@ -16,7 +16,7 @@ import {
   loadLoginSuccess,
   requestOtpAction,
 } from './actions';
-import { saveAccessToken, savePhone } from '../../utils/storage';
+import { saveAccessToken } from '../../utils/storage';
 import { loadProfile } from '../Main/actions';
 export function* requestOtp() {
   // const companyId = yield select(makeSelectCompanyId());
@@ -78,11 +78,9 @@ export function* doLogin() {
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.ResponseCode === '000') {
-      // SAVE TOKEN
-      savePhone(tel);
+      yield put(loadProfile(tel));
       saveAccessToken(response.Data);
       yield put(push('/'));
-      yield put(loadProfile(tel));
       yield put(loadLoginSuccess(response));
     } else yield put(requestLoginError(response));
   } catch (err) {

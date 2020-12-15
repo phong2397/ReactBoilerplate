@@ -6,8 +6,10 @@
  */
 import produce from 'immer';
 import {
+  CLOSE_DIALOG,
   DEFAULT_ACTION,
   LOAD_EDITABLE_PROFILE,
+  UPDATE_PROFILE_ERROR,
   UPDATE_PROFILE_SUCCESS,
 } from './constants';
 
@@ -28,13 +30,15 @@ export const initialState = {
     listImages: '',
   },
   editableProfile: {},
+  open: false,
+  notifyTitle: '',
+  typeId: -1,
+  messageContent: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const profileInfoPageReducer = (state = initialState, action) =>
   produce(state, draft => {
-    console.log(state);
-    console.log(action);
     switch (action.type) {
       case DEFAULT_ACTION:
         break;
@@ -43,7 +47,20 @@ const profileInfoPageReducer = (state = initialState, action) =>
         draft.editableProfile = action.profile;
         break;
       case UPDATE_PROFILE_SUCCESS:
-        draft.editableProfile = action.newProfile;
+        draft.open = true;
+        draft.notifyTitle = 'Cập nhật thành công';
+        draft.typeId = 1;
+        draft.messageContent = 'Thông tin của bạn đã được cập nhật.';
+        break;
+      case UPDATE_PROFILE_ERROR:
+        draft.open = true;
+        draft.notifyTitle = 'Cập nhật thất bại';
+        draft.typeId = 0;
+        draft.messageContent = 'Vui lòng kiểm tra lại thông tin';
+        break;
+      case CLOSE_DIALOG:
+        draft.open = false;
+        break;
     }
   });
 

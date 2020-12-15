@@ -31,6 +31,33 @@ const makeSelectLoading = () =>
     selectProfileInfoPageDomain,
     profileState => profileState.loading,
   );
-
+const makeSelectOpen = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.open,
+  );
+const makeSelectNotifyTitle = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.notifyTitle,
+  );
+const makeSelectTypeId = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.typeId,
+  );
+const makeSelectMessageContent = () =>
+  createSelector(
+    selectProfileInfoPageDomain,
+    profileState => profileState.messageContent,
+  );
 export default makeSelectProfileInfoPage;
-export { selectProfileInfoPageDomain, makeSelectLoading, makeSelectCustomer };
+export {
+  selectProfileInfoPageDomain,
+  makeSelectLoading,
+  makeSelectCustomer,
+  makeSelectOpen,
+  makeSelectNotifyTitle,
+  makeSelectTypeId,
+  makeSelectMessageContent,
+};
