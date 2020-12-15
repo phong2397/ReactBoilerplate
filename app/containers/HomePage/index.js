@@ -9,12 +9,16 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import {
   Box,
   Button,
   createStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   makeStyles,
   Typography,
@@ -35,11 +39,18 @@ import makeSelectHomePage, {
   makeSelectRate,
   makeSelectLoading,
   makeSelectProductConfig,
+  makeSelectOpenDialog,
 } from './selectors';
 import CustomizedSlider from '../../components/CustomizeSlider';
 import FeeToolTip from '../../components/FeeTooltip';
 import BankCard from '../../components/BankCard';
-import { changeSelectAmount, loadingProductConfig } from './actions';
+import {
+  changeSelectAmount,
+  confirmAlert,
+  goToProfile,
+  loadingProductConfig,
+  requestOrder,
+} from './actions';
 import { makeSelectCurrentProfile } from '../App/selectors';
 
 function convertWithCommas(x) {
@@ -70,6 +81,10 @@ export function HomePage({
   feeAmount,
   onChangeSlider,
   loadProduct,
+  handleRequestOrder,
+  openDialog,
+  handleClose,
+  handleCloseAndGo,
 }) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
@@ -125,11 +140,31 @@ export function HomePage({
           fullWidth
           variant="contained"
           color="primary"
-          component={Link}
-          to="/requestOrder"
+          onClick={handleRequestOrder}
         >
           <b>Yêu cầu ứng lương</b>
         </Button>
+        <Dialog
+          open={openDialog}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Chưa đủ điều kiện</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Vui lòng bổ sung thông tin cá nhân
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Xác nhận
+            </Button>
+            <Button onClick={handleCloseAndGo} color="default">
+              Bổ sung thông tin
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Grid>
   );
@@ -144,18 +179,11 @@ HomePage.propTypes = {
   onChangeSlider: PropTypes.func,
   feeAmount: PropTypes.number,
   loadProduct: PropTypes.func.isRequired,
+  handleRequestOrder: PropTypes.func,
+  handleClose: PropTypes.func,
+  handleCloseAndGo: PropTypes.func,
+  openDialog: PropTypes.bool,
 };
-// customerName: action.customer.customer_name,
-// customerId: action.customer.customer_code,
-// companyName: action.customer.company_name,
-// creditAmount: action.customer.customer_salary,
-// idCard: action.customer.customer_id,
-// customerAddress: action.customer.customer_address,
-// idCardIssueDate: action.customer.customer_id_date,
-// idCardIssuePlace: action.customer.customer_id_location,
-// bankName: action.customer.customer_bank_name,
-// accountNumber: action.customer.customer_bank_acc,
-// accountName: action.customer.customer_bank,
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   homePage: makeSelectHomePage(),
@@ -166,12 +194,16 @@ const mapStateToProps = createStructuredSelector({
   defaultAmount: makeSelectDefaultAmount(),
   feeAmount: makeSelectFeeAmount(),
   rate: makeSelectRate(),
+  openDialog: makeSelectOpenDialog(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onChangeSlider: (evt, newValue) => dispatch(changeSelectAmount(newValue)),
     loadProduct: () => dispatch(loadingProductConfig()),
+    handleRequestOrder: () => dispatch(requestOrder()),
+    handleClose: () => dispatch(confirmAlert()),
+    handleCloseAndGo: () => dispatch(goToProfile()),
   };
 }
 

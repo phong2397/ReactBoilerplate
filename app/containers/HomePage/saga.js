@@ -5,8 +5,17 @@ import request from 'utils/request';
 import { deleteAccessToken, removeProifle } from '../../utils/storage';
 import { REQUEST_LOGOUT } from '../App/constants';
 import { makeSelectCurrentProfile } from '../App/selectors';
-import { loadedProductConfig, loadProductError } from './actions';
-import { LOAD_PRODUCT_CONFIG } from './constants';
+import {
+  alertEmptyProfile,
+  confirmAlert,
+  loadedProductConfig,
+  loadProductError,
+} from './actions';
+import {
+  CALL_REQUEST_ORDER,
+  GO_TO_PROFILE,
+  LOAD_PRODUCT_CONFIG,
+} from './constants';
 export function* logout() {
   removeProifle();
   deleteAccessToken();
@@ -34,10 +43,32 @@ export function* loadProductSaga() {
     yield put(loadProductError(err));
   }
 }
-
+export function* callRequestOrder() {
+  const customer = yield select(makeSelectCurrentProfile());
+  const check = yield checkEmptyProfile(customer);
+  if (!check) {
+    yield put(alertEmptyProfile());
+  } else {
+    yield put(push('/requestOrder'));
+  }
+}
+function checkEmptyProfile(profile) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in profile) {
+    // eslint-disable-next-line eqeqeq
+    if (profile[key] !== null && profile[key] != '') return false;
+  }
+  return true;
+}
+export function* goToProfile() {
+  yield put(confirmAlert());
+  yield put(push('/profile'));
+}
 // Individual exports for testing
 export default function* homePageSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(REQUEST_LOGOUT, logout);
   yield takeLatest(LOAD_PRODUCT_CONFIG, loadProductSaga);
+  yield takeLatest(CALL_REQUEST_ORDER, callRequestOrder);
+  yield takeLatest(GO_TO_PROFILE, goToProfile);
 }

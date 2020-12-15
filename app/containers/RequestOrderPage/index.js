@@ -76,7 +76,6 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     width: '90%',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
   },
 }));
 export function RequestOrderPage({

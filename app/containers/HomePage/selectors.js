@@ -57,6 +57,11 @@ const makeSelectRate = () =>
     selectHomePageDomain,
     homeState => homeState.rate,
   );
+const makeSelectOpenDialog = () =>
+  createSelector(
+    selectHomePageDomain,
+    homeState => homeState.openDialog,
+  );
 export default makeSelectHomePage;
 export {
   selectHomePageDomain,
@@ -67,4 +72,5 @@ export {
   makeSelectDefaultAmount,
   makeSelectFeeAmount,
   makeSelectRate,
+  makeSelectOpenDialog,
 };
