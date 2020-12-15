@@ -14,11 +14,6 @@ const selectDocumentPageDomain = state => state.documentPage || initialState;
 /**
  * Default selector used by DocumentPage
  */
-const makeSelectLoadingDocument = () =>
-  createSelector(
-    selectDocumentPageDomain,
-    documentState => documentState.loading,
-  );
 const makeSelectDocuments = () =>
   createSelector(
     selectDocumentPageDomain,
@@ -29,33 +24,6 @@ const makeSelectDocumentPage = () =>
     selectDocumentPageDomain,
     substate => substate,
   );
-const makeSelectOpenFormUpload = () =>
-  createSelector(
-    selectDocumentPageDomain,
-    documentState => documentState.openForm,
-  );
-const makeSelectFileDocument = () =>
-  createSelector(
-    selectDocumentPageDomain,
-    documentState => documentState.file,
-  );
-const makeSelectDescription = () =>
-  createSelector(
-    selectDocumentPageDomain,
-    documentState => documentState.description,
-  );
-const makeSelectFilter = () =>
-  createSelector(
-    selectDocumentPageDomain,
-    documentState => documentState.filter,
-  );
+
 export default makeSelectDocumentPage;
-export {
-  selectDocumentPageDomain,
-  makeSelectLoadingDocument,
-  makeSelectDocuments,
-  makeSelectOpenFormUpload,
-  makeSelectFileDocument,
-  makeSelectDescription,
-  makeSelectFilter,
-};
+export { selectDocumentPageDomain, makeSelectDocuments };
