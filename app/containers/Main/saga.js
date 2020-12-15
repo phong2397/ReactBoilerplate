@@ -7,7 +7,6 @@ import {
   saveProfile,
 } from '../../utils/storage';
 import { loadedProfile } from '../App/actions';
-import { loadProfileSuccess } from './actions';
 import { LOAD_PROFILE } from './constants';
 export function* loadProfile({ phone }) {
   const requesProfileURL = `/customers/profile/${phone}`;
@@ -15,7 +14,6 @@ export function* loadProfile({ phone }) {
     const responseProfile = yield call(request, requesProfileURL);
     const profile = responseProfile;
     saveProfile(profile);
-    yield put(loadProfileSuccess(profile));
     yield put(loadedProfile(profile));
   } catch (err) {
     deleteAccessToken();

@@ -147,7 +147,6 @@ export function LoginPage({
       onSubmitValidateOtp();
     }
   };
-  console.log(companyId);
   return (
     <div className={classes.paper}>
       <Switch>

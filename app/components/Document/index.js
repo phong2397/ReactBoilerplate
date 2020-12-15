@@ -39,7 +39,7 @@ const convertDocumentType = id => {
     default:
       break;
   }
-  return 'Unknow';
+  return 'Unknown';
 };
 function handleOpenImageNewTab(img) {
   const base64ImageData = `data:image/png;base64, ${img}`;

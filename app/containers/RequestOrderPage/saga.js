@@ -17,6 +17,7 @@ import {
   SEND_ORDER_REQUEST,
   SEND_ORDER_SUCCESS,
 } from './constants';
+import { makeSelectCheckTerm } from './selectors';
 
 export function* sendOrderSuccessSaga() {
   yield put(openModalAction());
@@ -27,31 +28,37 @@ export function* closeModalAndRedirect() {
 }
 export function* sendOrder() {
   try {
-    const requestURL = '/api/orders/';
-    const borrow = yield select(makeSelectAmount());
-    const customer = yield select(makeSelectCurrentProfile());
-    const productConfig = yield select(makeSelectProductConfig());
-    const parameters = {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        // prettier-ignore
-        'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
-      }),
-      body: JSON.stringify({
-        companyCode: customer.companyCode,
-        customerPhone: customer.customerPhone,
-        borrow,
-        timeBorrow: '1',
-        interestRate: productConfig.productRate,
-        feeBorrow: productConfig.productFee,
-      }),
-    };
-    console.log('PARAMETERS ', parameters);
-    const response = yield call(request, requestURL, parameters);
-    yield put(sendOrderSuccess(response));
+    const checkTerm = yield select(makeSelectCheckTerm());
+    if (checkTerm) {
+      const requestURL = '/api/orders/';
+      const borrow = yield select(makeSelectAmount());
+      const customer = yield select(makeSelectCurrentProfile());
+      const productConfig = yield select(makeSelectProductConfig());
+      const parameters = {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          // prettier-ignore
+          'Authorization': 'Basic c2dmaW50ZWNoOms2bXpNdFBKTFBNaTVjckY='
+        }),
+        body: JSON.stringify({
+          companyCode: customer.companyCode,
+          customerPhone: customer.customerPhone,
+          borrow,
+          timeBorrow: '1',
+          interestRate: productConfig.productRate,
+          feeBorrow: productConfig.productFee,
+        }),
+      };
+      const response = yield call(request, requestURL, parameters);
+      yield put(sendOrderSuccess(response));
+    } else {
+      const err = {
+        message: 'Bạn cần phải chấp thuận với điều khoản',
+      };
+      yield put(sendOrderError(err));
+    }
   } catch (err) {
-    console.log('SEND ORDER REQUEST ERROR, ', err);
     yield put(sendOrderError(err));
   }
 }

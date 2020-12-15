@@ -7,6 +7,7 @@ export const deleteAccessToken = () => {
 export const getAccessToken = () => localStorage.getItem('accessToken');
 
 export const saveProfile = profile => {
+  console.log('SAVE PROFILE ?', profile);
   localStorage.setItem('profile', JSON.stringify(profile));
 };
 export const removeProifle = () => {

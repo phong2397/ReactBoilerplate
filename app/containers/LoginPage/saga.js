@@ -16,8 +16,13 @@ import {
   loadLoginSuccess,
   requestOtpAction,
 } from './actions';
-import { saveAccessToken } from '../../utils/storage';
-import { loadProfile } from '../Main/actions';
+import {
+  deleteAccessToken,
+  removeProifle,
+  saveAccessToken,
+  saveProfile,
+} from '../../utils/storage';
+import { loadedProfile } from '../App/actions';
 export function* requestOtp() {
   // const companyId = yield select(makeSelectCompanyId());
   const phone = yield select(makeSelectPhone());
@@ -78,7 +83,7 @@ export function* doLogin() {
   try {
     const response = yield call(request, requestURL, parameters);
     if (response.ResponseCode === '000') {
-      yield put(loadProfile(tel));
+      yield call(loadProfile, { phone: tel });
       saveAccessToken(response.Data);
       yield put(push('/'));
       yield put(loadLoginSuccess(response));
@@ -120,6 +125,19 @@ export function* checkExistProfile() {
     }
   } catch (err) {
     yield put(requestOtpError(err));
+  }
+}
+export function* loadProfile({ phone }) {
+  const requesProfileURL = `/customers/profile/${phone}`;
+  try {
+    const responseProfile = yield call(request, requesProfileURL);
+    const profile = responseProfile;
+    saveProfile(profile);
+    yield put(loadedProfile(profile));
+  } catch (err) {
+    deleteAccessToken();
+    removeProifle();
+    yield put(push('/login'));
   }
 }
 export default function* loginPageSaga() {
