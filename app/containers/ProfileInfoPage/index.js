@@ -141,7 +141,6 @@ export function ProfileInfoPage({
       loadCurrentProfile(customer);
     }
   });
-  console.log('OPEN ?');
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   console.log('CUSTOMER ', customer);
@@ -178,6 +177,9 @@ export function ProfileInfoPage({
             inputRef={register({
               required: 'Mã nhân viên không được để trống',
             })}
+            InputProps={{
+              readOnly: true,
+            }}
             error={!!errors.customerCode}
             helperText={errors.customerCode ? errors.customerCode.message : ''}
           />
