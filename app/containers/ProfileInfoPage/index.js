@@ -154,7 +154,6 @@ export function ProfileInfoPage({
         id="form-profile"
         className={classes.root}
         noValidate
-        autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Box pt={1.5} pr={2} component="div">
