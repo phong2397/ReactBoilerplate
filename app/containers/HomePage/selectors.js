@@ -20,57 +20,15 @@ const makeSelectHomePage = () =>
     selectHomePageDomain,
     substate => substate,
   );
-const makeSelectLoading = () =>
+const makeSelectProfileName = () =>
   createSelector(
     selectHomePageDomain,
-    homeState => homeState.loading,
+    homeState => homeState.profileName,
   );
-const makeSelectProductConfig = () =>
+const makeSelectActiveStep = () =>
   createSelector(
     selectHomePageDomain,
-    homeState => homeState.productConfig,
-  );
-const makeSelectAmount = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.selectedAmount,
-  );
-const makeSelectStep = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.step,
-  );
-
-const makeSelectDefaultAmount = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.defaultAmount,
-  );
-
-const makeSelectFeeAmount = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.feeAmount,
-  );
-const makeSelectRate = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.rate,
-  );
-const makeSelectOpenDialog = () =>
-  createSelector(
-    selectHomePageDomain,
-    homeState => homeState.openDialog,
+    homeState => homeState.activeStep,
   );
 export default makeSelectHomePage;
-export {
-  selectHomePageDomain,
-  makeSelectLoading,
-  makeSelectProductConfig,
-  makeSelectAmount,
-  makeSelectStep,
-  makeSelectDefaultAmount,
-  makeSelectFeeAmount,
-  makeSelectRate,
-  makeSelectOpenDialog,
-};
+export { selectHomePageDomain, makeSelectActiveStep, makeSelectProfileName };

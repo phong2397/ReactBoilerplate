@@ -3,11 +3,12 @@
  * HistoryPage actions
  *
  */
+
 import {
   DEFAULT_ACTION,
-  LOAD_ORDERS,
-  LOAD_ORDERS_SUCCESS,
-  LOAD_ORDERS_ERROR,
+  REQUEST_ORDER_LIST_BY_PHONE,
+  REQUEST_ORDER_LIST_BY_PHONE_SUCCESS,
+  REQUEST_ORDER_LIST_BY_PHONE_FAIL,
 } from './constants';
 
 export function defaultAction() {
@@ -15,21 +16,27 @@ export function defaultAction() {
     type: DEFAULT_ACTION,
   };
 }
-export function loadingOrders() {
-  console.log('STEP 2');
+
+export function requestOrderListByPhone(phone) {
   return {
-    type: LOAD_ORDERS,
+    type: REQUEST_ORDER_LIST_BY_PHONE,
+    phone,
   };
 }
-export function loadOrdersSuccess(value) {
+
+export function requestOrderListByPhoneSuccess({ orderList, rawData }) {
   return {
-    type: LOAD_ORDERS_SUCCESS,
-    value,
+    type: REQUEST_ORDER_LIST_BY_PHONE_SUCCESS,
+    data: {
+      orderList,
+      rawData,
+    },
   };
 }
-export function loadOrdersError(value) {
+
+export function requestOrderListByPhoneFail(err) {
   return {
-    type: LOAD_ORDERS_ERROR,
-    value,
+    type: REQUEST_ORDER_LIST_BY_PHONE_FAIL,
+    err,
   };
 }

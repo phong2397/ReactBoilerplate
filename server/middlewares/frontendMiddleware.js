@@ -7,27 +7,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 module.exports = (app, options) => {
   const isProd = process.env.NODE_ENV === 'production';
   app.use(
-    '/smsgateway/api/v1',
-    createProxyMiddleware({ target: 'http://52.76.217.79:8080' }),
-  );
-  app.use(
-    '/customergateway/api/v1',
-    createProxyMiddleware({ target: 'http://52.76.217.79:8080' }),
-  );
-  app.use(
-    '/api/',
-    createProxyMiddleware({ target: 'http://13.212.189.237:3333' }),
-  );
-  app.use(
-    '/customers/profile',
-    createProxyMiddleware({
-      target: 'http://13.212.189.237:3033/api/v1',
-    }),
-  );
-  app.use(
-    '/orders',
-    createProxyMiddleware({
-      target: 'http://13.212.189.237:3033/api/v1',
+    '/',
+    createProxyMiddleware(['/customergateway', '/smsgateway', '/upload'], {
+      target: 'https://dev.sgft.info',
+      changeOrigin: true,
     }),
   );
 

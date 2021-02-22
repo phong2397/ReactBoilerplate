@@ -1,149 +1,90 @@
-# Command Line Commands
+## Overview
 
-## Initialization
+### Quickstart
 
-```Shell
-npm run setup
-```
+1.  First, let's kick the tyres by launching the sample _Repospective_ app
+    bundled with this project to demo some of its best features:
 
-Initializes a new project with this boilerplate. Deletes the `react-boilerplate`
-git history, installs the dependencies and initializes a new repository.
+    ```Shell
+    npm run setup && npm start
+    ```
 
-> Note: This command is self-destructive, once you've run it the init script is
-> gone forever. This is for your own safety, so you can't delete your project's
-> history irreversibly by accident.
+1.  Open [localhost:3000](http://localhost:3000) to see it in action.
 
-## Development
+    - Add a Github username to see Redux and Redux Sagas in action: effortless
+      async state updates and side effects are now yours :)
+    - Edit the file at `./app/components/Header/index.js` so that the text of
+      the `<Button>` component reads "Features!!!"... [Hot Module Reloading](https://webpack.js.org/guides/hot-module-replacement/) gives
+      you a feedback loop with your UI so smooth it's almost conversational!
+    - Click your (newly emphatic) Features button to see React Router in action...
+      Now you can share a direct link to that content privately over your LAN or
+      globally addressable to any device, anywhere. Not bad for a locally-running
+      Single Page App.
 
-```Shell
-npm run start
-```
+1.  Time to build your own app: run
 
-Starts the development server running on `http://localhost:3000`
+    ```shell
+    npm run clean
+    ```
 
-## Cleaning
-
-```Shell
-npm run clean
-```
-
-Deletes the example app, replacing it with the smallest amount of boilerplate
-code necessary to start writing your app!
-
-> Note: This command is self-destructive, once you've run it you cannot run it
-> again. This is for your own safety, so you can't delete portions of your project
-> irreversibly by accident.
-
-## Generators
-
-```Shell
-npm run generate
-```
-
-Allows you to auto-generate boilerplate code for common parts of your
-application, specifically `component`s, and `container`s. You can
-also run `npm run generate <part>` to skip the first selection. (e.g. `npm run generate container`)
-
-## Server
+    ...and use the built-in generators to start your first feature.
 
 ### Development
 
-```Shell
-npm start
-```
+Run `npm start` to see your app at `localhost:3000`
 
-Starts the development server and makes your application accessible at
-`localhost:3000`. Changes in the application code will be hot-reloaded.
+### Building & Deploying
 
-### Production
+1.  Run `npm run build`, which will compile all the necessary files to the
+    `build` folder.
 
-```Shell
-npm run start:production
-```
+2.  Upload the contents of the `build` folder to your web server's root folder.
 
-- Runs tests (see `npm test`)
-- Builds your app (see `npm run build`)
-- Starts the production server (see `npm run start:prod`)
+### Structure
 
-The app is built for optimal performance: assets are
-minified and served gzipped.
+The [`app/`](../../../tree/master/app) directory contains your entire application code, including CSS,
+JavaScript, HTML and tests.
 
-### Host and Port
+The rest of the folders and files only exist to make your life easier, and
+should not need to be touched.
 
-To change the host and/or port the app is accessible at, pass the `--host` and/or `--port` option to the command
-with `--`. E.g. to make the app visible at `my-local-hostname:5000`, run the following:
-`npm start -- --host my-local-hostname --port 5000`
+_(If they do have to be changed, please [submit an issue](https://github.com/react-boilerplate/react-boilerplate/issues)!)_
 
-## Building
+### CSS
 
-```Shell
-npm run build
-```
+Using [tagged template literals](https://www.styled-components.com/docs/advanced#tagged-template-literals)
+(a recent addition to JavaScript) and the [power of CSS](https://github.com/styled-components/styled-components/blob/master/docs/css-we-support.md),
+`styled-components` allows you to write actual CSS code to style your components.
+It also removes the mapping between components and styles – using components as a
+low-level styling construct could not be easier!
 
-Preps your app for deployment (does not run tests). Optimizes and minifies all files, piping them to the `build` folder.
+See the [CSS documentation](./css/README.md) for more information.
 
-Upload the contents of `build` to your web server to
-see your work live!
+### JS
 
-## Testing
+We bundle all your clientside scripts and chunk them into several files using
+code splitting where possible. We then automatically optimize your code when
+building for production so you don't have to worry about that.
 
-See the [testing documentation](../testing/README.md) for detailed information
-about our testing setup!
+See the [JS documentation](./js/README.md) for more information about the
+JavaScript side of things.
 
-## Unit testing
+### SEO
 
-```Shell
-npm test
-```
+We use [react-helmet](https://github.com/nfl/react-helmet) for managing document head tags. Examples on how to
+write head tags can be found [here](https://github.com/nfl/react-helmet#examples).
 
-Tests your application with the unit tests specified in the `**/tests/*.js` files
-throughout the application.  
-All the `test` commands allow an optional `-- [string]` argument to filter
-the tests run by Jest. Useful if you need to run a specific test only.
+### Testing
 
-```Shell
-# Run only the Button component tests
-npm test -- Button
-```
+For a thorough explanation of the testing procedure, see the
+[testing documentation](./testing/README.md)!
 
-### Watching
+#### Browser testing
 
-```Shell
-npm run test:watch
-```
+`npm run start:tunnel` makes your locally-running app globally available on the web
+via a temporary URL: great for testing on different devices, client demos, etc!
 
-Watches changes to your application and re-runs tests whenever a file changes.
+#### Unit testing
 
-### Remote testing
-
-```Shell
-npm run start:tunnel
-```
-
-Starts the development server and tunnels it with `ngrok`, making the website
-available worldwide. Useful for testing on different devices in different locations!
-
-### Dependency size test
-
-```Shell
-npm run analyze
-```
-
-This command will generate a `stats.json` file from your production build, which
-you can upload to the [webpack analyzer](https://webpack.github.io/analyse/) or [Webpack Visualizer](https://chrisbateman.github.io/webpack-visualizer/). This
-analyzer will visualize your dependencies and chunks with detailed statistics
-about the bundle size.
-
-## Linting
-
-```Shell
-npm run lint
-```
-
-Lints your JavaScript and your CSS.
-
-```Shell
-npm run lint:eslint:fix -- .
-```
-
-Lints your code and tries to fix any errors it finds.
+Unit tests live in `test/` directories right next to the components being tested
+and are run with `npm run test`.

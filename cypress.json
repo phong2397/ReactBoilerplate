@@ -1,0 +1,5 @@
+{
+  "baseUrlProduction": "https://client.sgft.info",
+  "baseUrl": "http://localhost:3000",
+  "video": false
+}

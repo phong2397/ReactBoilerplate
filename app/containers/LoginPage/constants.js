@@ -19,3 +19,9 @@ export const REQUEST_OTP_ERROR = 'app/LoginPage/REQUEST_OTP_ERROR';
 export const REQUEST_LOGIN = 'app/LoginPage/REQUEST_LOGIN';
 export const REQUEST_LOGIN_SUCCESS = 'app/LoginPage/REQUEST_LOGIN_SUCCESS';
 export const REQUEST_LOGIN_ERROR = 'app/LoginPage/REQUEST_LOGIN_ERROR';
+//
+export const LOADING_LOGIN = 'app/LoginPage/LOADING_LOGIN';
+export const GO_BACK_INPUT = 'app/LoginPage/GO_BACK_INPUT';
+export const LOAD_COMPANY_LIST = 'app/LoginPage/LOAD_COMPANY_LIST';
+export const LOAD_COMPANY_LIST_SUCCESS =
+  'app/LoginPage/LOAD_COMPANY_LIST_SUCCESS';

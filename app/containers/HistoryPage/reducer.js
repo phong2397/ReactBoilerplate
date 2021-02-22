@@ -4,12 +4,17 @@
  *
  */
 import produce from 'immer';
-import { DEFAULT_ACTION, LOAD_ORDERS_SUCCESS } from './constants';
-import { formatListOrders } from './formater';
+import { setCountBorrowInMonth } from 'utils/storage';
+import {
+  DEFAULT_ACTION,
+  REQUEST_ORDER_LIST_BY_PHONE_SUCCESS,
+  REQUEST_ORDER_LIST_BY_PHONE_FAIL,
+} from './constants';
 
 export const initialState = {
-  loading: true,
-  listOrders: [],
+  orderList: [],
+  firstLoad: true,
+  listBorrowInMonth: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -18,11 +23,18 @@ const historyPageReducer = (state = initialState, action) =>
     switch (action.type) {
       case DEFAULT_ACTION:
         break;
-      case LOAD_ORDERS_SUCCESS:
-        console.log('REDUCER ACTION: ', action);
-        draft.loading = false;
-        draft.listOrders = formatListOrders(action.value);
-        console.log('DRAFT: ', draft);
+      case REQUEST_ORDER_LIST_BY_PHONE_SUCCESS:
+        draft.firstLoad = false;
+        draft.orderList = action.data.orderList;
+        // console.log('REDUCER history: ', action.data.orderList);
+        // TODO: check in same month
+        draft.listBorrowInMonth = action.data.orderList.filter(order => {
+          const listAccept = ['act', 'done'];
+          return listAccept.includes(order.orderStatusCode);
+        });
+        setCountBorrowInMonth(draft.listBorrowInMonth.length);
+        break;
+      case REQUEST_ORDER_LIST_BY_PHONE_FAIL:
         break;
     }
   });

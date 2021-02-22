@@ -23,8 +23,7 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
-
-  const error = new Error(response.statusText);
+  const error = new Error(response.status.toString());
   error.response = response;
   throw error;
 }
@@ -38,10 +37,13 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
-  // console.log('OPTIONS: ', options);
-  // console.log('Request OTP 4');
-  console.log('URL: ', url);
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);
+}
+
+export function requestImage(url) {
+  return fetch(url)
+    .then(checkStatus)
+    .then(r => r.blob());
 }

@@ -1,22 +1,20 @@
 import { createMuiTheme } from '@material-ui/core';
-
+// import Monsterrat from './app/containers/fonts/Montserrat-Medium.ttf';
 const theme = createMuiTheme({
   palette: {
-    secondary: {
-      main: '#EB5757',
-      contrastText: '#fff',
-    },
     primary: {
-      main: '#3cb88c',
+      main: '#20c997',
       contrastText: '#fff',
     },
-    info: {
-      main: '#E8E8E8',
+    background: {
+      default: '#303030',
+      dark: '#272c34',
+      contrastText: '#fff',
     },
   },
   typography: {
     // Use the system font instead of the default Roboto font.
-    fontFamily: ['"Lato"', 'sans-serif'].join(','),
+    fontFamily: ['Montserrat', 'sans-serif'].join(','),
   },
   overrides: {
     MuiTimelineItem: {

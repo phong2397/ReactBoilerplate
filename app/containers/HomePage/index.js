@@ -4,206 +4,190 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
+// import PropTypes from 'prop-types';
 
+import { Redirect, Switch } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  Box,
-  Button,
-  createStyles,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-
-// import makeSelectHomePage from './selectors';
+import history from 'utils/history';
+import CustomStepper from 'components/CustomStepper';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import PrivateRoute from 'components/PrivateRoute';
+import IntroduceBox from 'components/IntroduceBox';
+import DocumentForm from 'containers/DocumentForm/Loadable';
+import ConfirmPage from 'containers/ConfirmPage/Loadable';
+import CompletedOrder from 'containers/CompletedOrder/Loadable';
+import CompletedCustomerInfo from 'containers/CompletedCustomerInfo/Loadable';
+import HistoryPage from 'containers/HistoryPage/Loadable';
+import OrderDetailPage from 'containers/OrderDetailPage/Loadable';
+import IntroducePage from 'containers/IntroducePage/Loadable';
+import TutorialPage from 'containers/TutorialPage/Loadable';
+import FaqPage from 'containers/FaqPage/Loadable';
+import OrderForm from 'containers/OrderForm/Loadable';
+import BasicInfoForm from 'containers/BasicInfoForm/Loadable';
+import makeSelectHomePage, {
+  makeSelectActiveStep,
+  makeSelectProfileName,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import { changeActiveStep, loadBasicInfo } from './actions';
 
-import makeSelectHomePage, {
-  makeSelectAmount,
-  makeSelectDefaultAmount,
-  makeSelectFeeAmount,
-  makeSelectStep,
-  makeSelectRate,
-  makeSelectLoading,
-  makeSelectProductConfig,
-  makeSelectOpenDialog,
-} from './selectors';
-import CustomizedSlider from '../../components/CustomizeSlider';
-import FeeToolTip from '../../components/FeeTooltip';
-import BankCard from '../../components/BankCard';
-import {
-  changeSelectAmount,
-  confirmAlert,
-  goToProfile,
-  loadingProductConfig,
-  requestOrder,
-} from './actions';
-import { makeSelectCurrentProfile } from '../App/selectors';
-
-function convertWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  root: {
+    // maxWidth: 'calc(768px + 16px * 2)',
+    margin: '0 auto',
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    minHeight: '100%',
+    flexDirection: 'column',
+  },
+  heroContent: {
+    // backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(4, 0, 3),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  stepper: { backgroundColor: 'transparent' },
+}));
+function getSteps() {
+  return ['Thông tin cơ bản', 'Bổ sung tài liệu', 'Chọn mức ứng', 'Xác nhận'];
 }
-
-const useStyles = makeStyles(theme =>
-  createStyles({
-    root: {
-      marginTop: theme.spacing(8),
-      padding: theme.spacing(1),
-      minHeight: '80vh',
-    },
-    rowStyle: {
-      display: 'inline-block',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-  }),
-);
-
-export function HomePage({
-  loading,
-  customer,
-  productConfig,
-  selectedAmount,
-  step,
-  feeAmount,
-  onChangeSlider,
-  loadProduct,
-  handleRequestOrder,
-  openDialog,
-  handleClose,
-  handleCloseAndGo,
-}) {
+function convertPathToStep(path) {
+  switch (path) {
+    case '/yeucau/thong-tin-co-ban':
+      return 0;
+    case '/yeucau/tai-lieu':
+      return 1;
+    case '/yeucau/chon-muc-ung':
+      return 2;
+    case '/yeucau/chi-tiet':
+      return 3;
+    default:
+      return -1;
+  }
+}
+export function HomePage({ dispatch, activeStep, profileName }) {
   useInjectReducer({ key: 'homePage', reducer });
   useInjectSaga({ key: 'homePage', saga });
-  useEffect(() => {
-    if (loading) {
-      loadProduct();
-    }
-  });
-  console.log('CUSTOMER ?', customer);
   const classes = useStyles();
+  const steps = getSteps();
+  useEffect(() => {
+    dispatch(changeActiveStep(convertPathToStep(history.location.pathname)));
+  });
+  useEffect(() => {
+    dispatch(loadBasicInfo());
+  }, []);
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12} className={classes.rowStyle}>
-        <Typography variant="subtitle1" align="center">
-          Mức lớn nhất bạn có thể ứng{' '}
-          {customer && convertWithCommas(customer.customerSalary)}đ
-        </Typography>
-      </Grid>
-      <Grid item xs={12} className={classes.rowStyle}>
-        <Typography variant="subtitle1" align="center">
-          Số tiền lương được ứng
-        </Typography>
-        <Typography color="primary" variant="h3" align="center">
-          <b>{convertWithCommas(Number(selectedAmount))}đ</b>
-        </Typography>
-        <Box px={3}>
-          <CustomizedSlider
-            min={productConfig.productAmountMin}
-            step={step}
-            max={customer ? customer.customerSalary : 0}
-            defaultValue={productConfig.productAmountMax}
-            value={Number(selectedAmount)}
-            onChange={onChangeSlider}
-          />
-        </Box>
-        <Typography variant="subtitle2" align="center" display="block">
-          Phí: {convertWithCommas(feeAmount)}đ
-          <FeeToolTip
-            amount={Number(selectedAmount)}
-            rate={productConfig.productRate}
-          />
-        </Typography>
-      </Grid>
-      <Grid item xs={12} md={12} className={classes.rowStyle}>
-        <BankCard
-          bankName={customer && customer.bankName}
-          accNo={customer && customer.accNo}
-          accName={customer && customer.accName}
-        />
-      </Grid>
-      <Grid item xs={12} className={classes.rowStyle}>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleRequestOrder}
-        >
-          <b>Yêu cầu ứng lương</b>
-        </Button>
-        <Dialog
-          open={openDialog}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Chưa đủ điều kiện</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Vui lòng bổ sung thông tin cá nhân
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Xác nhận
-            </Button>
-            <Button onClick={handleCloseAndGo} color="default">
-              Bổ sung thông tin
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-    </Grid>
+    <React.Fragment>
+      <Header name={profileName} />
+
+      <main className={classes.root}>
+        <Container maxWidth="md">
+          {activeStep !== -1 && (
+            <CustomStepper steps={steps} activeStep={activeStep} />
+          )}
+        </Container>
+      </main>
+      <Container maxWidth="md">
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <div className={classes.heroContent}>
+              <Switch>
+                <PrivateRoute exact path="/yeucau">
+                  <Redirect to="/yeucau/thong-tin-co-ban" />
+                </PrivateRoute>
+                <PrivateRoute
+                  path="/yeucau/thong-tin-co-ban"
+                  component={BasicInfoForm}
+                />
+
+                <PrivateRoute
+                  path="/yeucau/tai-lieu"
+                  component={DocumentForm}
+                />
+                <PrivateRoute
+                  exact
+                  path="/yeucau/chon-muc-ung"
+                  component={OrderForm}
+                />
+                <PrivateRoute
+                  exact
+                  path="/yeucau/hoan-thanh-cap-nhat"
+                  component={CompletedCustomerInfo}
+                />
+                <PrivateRoute path="/yeucau/chi-tiet" component={ConfirmPage} />
+                <PrivateRoute
+                  path="/yeucau/hoan-thanh"
+                  component={CompletedOrder}
+                />
+                <PrivateRoute
+                  path="/yeucau/danh-sach"
+                  component={HistoryPage}
+                />
+                <PrivateRoute
+                  path="/yeucau/don-yeu-cau/:id"
+                  component={OrderDetailPage}
+                />
+                <PrivateRoute
+                  path="/yeucau/gioi-thieu"
+                  component={IntroducePage}
+                />
+                <PrivateRoute
+                  path="/yeucau/huong-dan"
+                  component={TutorialPage}
+                />
+                <PrivateRoute path="/yeucau/hoi-dap" component={FaqPage} />
+                <PrivateRoute>
+                  <Redirect to="/yeucau/" />
+                </PrivateRoute>
+              </Switch>
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <IntroduceBox />
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* Footer */}
+      <Footer />
+      {/* End footer */}
+    </React.Fragment>
   );
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  customer: PropTypes.object,
-  productConfig: PropTypes.object.isRequired,
-  selectedAmount: PropTypes.number,
-  step: PropTypes.number,
-  onChangeSlider: PropTypes.func,
-  feeAmount: PropTypes.number,
-  loadProduct: PropTypes.func.isRequired,
-  handleRequestOrder: PropTypes.func,
-  handleClose: PropTypes.func,
-  handleCloseAndGo: PropTypes.func,
-  openDialog: PropTypes.bool,
+  dispatch: PropTypes.func.isRequired,
+  activeStep: PropTypes.number,
+  profileName: PropTypes.string,
 };
+
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
   homePage: makeSelectHomePage(),
-  customer: makeSelectCurrentProfile(),
-  productConfig: makeSelectProductConfig(),
-  selectedAmount: makeSelectAmount(),
-  step: makeSelectStep(),
-  defaultAmount: makeSelectDefaultAmount(),
-  feeAmount: makeSelectFeeAmount(),
-  rate: makeSelectRate(),
-  openDialog: makeSelectOpenDialog(),
+  activeStep: makeSelectActiveStep(),
+  profileName: makeSelectProfileName(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChangeSlider: (evt, newValue) => dispatch(changeSelectAmount(newValue)),
-    loadProduct: () => dispatch(loadingProductConfig()),
-    handleRequestOrder: () => dispatch(requestOrder()),
-    handleClose: () => dispatch(confirmAlert()),
-    handleCloseAndGo: () => dispatch(goToProfile()),
+    dispatch,
   };
 }
 
@@ -212,7 +196,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withConnect,
-  memo,
-)(HomePage);
+export default compose(withConnect)(HomePage);

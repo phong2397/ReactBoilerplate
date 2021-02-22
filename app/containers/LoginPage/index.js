@@ -4,320 +4,435 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
+  Avatar,
   Box,
   Button,
-  createStyles,
-  Fab,
+  CssBaseline,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Grid,
   IconButton,
+  Link,
   makeStyles,
+  Paper,
   TextField,
   Typography,
 } from '@material-ui/core';
-import {
-  KeyboardBackspaceOutlined,
-  SmartphoneOutlined,
-  Textsms,
-  LiveHelp,
-} from '@material-ui/icons';
-import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { Link, Route, Switch } from 'react-router-dom';
+
+import { KeyboardBackspaceOutlined } from '@material-ui/icons';
+import OtpInput from 'react-otp-input';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Alert } from '@material-ui/lab';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import PhoneInput from 'components/PhoneInput';
+import { Alert, Autocomplete, createFilterOptions } from '@material-ui/lab';
+import { useForm } from 'react-hook-form';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import OtpInput from 'react-otp-input';
+import Background from 'images/bg.svg';
 import makeSelectLoginPage, {
   makeSelectCompanyId,
-  makeSelectError,
+  makeSelectCompanyList,
+  makeSelectLoading,
+  makeSelectLoginStep,
   makeSelectOtp,
   makeSelectPhone,
+  makeSelectServerError,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-
 import {
-  changeCompanyId,
   changeOtp,
-  changePhone,
   checkUserExistAction,
+  goBackInput,
+  loadCompanyListAction,
   requestLoginAction,
 } from './actions';
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="http://www.sgfintech.com.vn/">
+        Sgfintech
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
-const useStyles = makeStyles(theme =>
-  createStyles({
-    header: {
-      textAlign: 'center',
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: `url(${Background})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
     },
-    backSpace: {
-      position: 'fixed',
-      top: theme.spacing(4),
-      left: theme.spacing(4),
-    },
-    paper: {
-      width: '100%',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: 0,
-    },
-    control: {
-      position: 'fixed',
-      bottom: theme.spacing(1),
-      right: theme.spacing(0),
-    },
-    title: {
-      flexGrow: 1,
-      alignSelf: 'flex-end',
-    },
-    form: {
-      width: '100%',
-      padding: theme.spacing(2),
-    },
-    appHeader: {
-      background: 'linear-gradient(to right, #3cb88c, #2cb0d0)',
-      minWidth: '100%',
-      minHeight: '30vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-    },
-    mainStyle: {
-      // background: "rgb(60, 184, 140)",
-      background:
-        'linear - gradient(90deg, rgba(60, 184, 140, 1) 0 %, rgba(44, 176, 208, 1) 75 %)',
-    },
-    fab: {
-      position: 'fixed',
-      bottom: theme.spacing(2),
-    },
-  }),
-);
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 const convertErrorStatus = code => {
   switch (code) {
     case '019':
-      return 'Số điện thoại không hợp lệ';
+      return { field: 'phone', message: 'Số điện thoại không hợp lệ' };
     case '013':
-      return 'Yêu cầu gửi mã xác nhận quá nhiều';
+      return { field: 'all', message: 'Yêu cầu gửi mã xác nhận quá nhiều' };
     case '014':
-      return 'Mã xác nhận không đúng';
+      return {
+        field: 'otp',
+        message: 'Mã OTP không chính xác. Bạn vui lòng nhập lại',
+      };
     case '028':
-      return 'Số điện thoại không hợp lệ';
+      return {
+        field: 'phone',
+        message: 'Số điện thoại không tồn tại trên hệ thống',
+      };
     case '029':
-      return 'Mã công ty không hợp lệ';
+      return { field: 'companyId', message: 'Mã công ty không hợp lệ' };
     default:
-      return 'Lỗi không xác định';
+      return {
+        field: 'all',
+        message: 'Máy chủ đang bảo trì, vui lòng chờ trong giây lát',
+      };
   }
 };
+const errorMessageType = {
+  phoneErrorMessage: 'Số điện thoại gồm 10 chữ số',
+  otpErrorMessage: 'Mã xác nhận gồm 6 chữ số',
+  notEmpty: 'Không được để trống',
+};
+const schema = yup.object().shape({
+  companyId: yup.string().required(errorMessageType.notEmpty),
+  phone: yup
+    .string()
+    .min(12, errorMessageType.phoneErrorMessage)
+    .max(12, errorMessageType.phoneErrorMessage)
+    .required(errorMessageType.notEmpty),
+  otp: yup.string(),
+});
+const schemaOtp = yup.object().shape({
+  otp: yup
+    .string()
+    .min(6, errorMessageType.otpErrorMessage)
+    .max(6, errorMessageType.otpErrorMessage),
+  // .required(errorMessageType.notEmpty),
+});
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+  stringify: option => option.companyCode,
+});
 export function LoginPage({
+  dispatch,
+  loginStep,
   errorServer,
-  companyId,
-  phone,
-  otp,
-  onChangePhone,
-  onChangeCompanyId,
-  onChangeOtpInput,
-  onSubmitRequestOtp,
-  onSubmitValidateOtp,
+  loading,
+  companyList,
 }) {
+  const [otp, setOtp] = useState('');
+  const [errorOtp, setErrorOtp] = useState(null);
+  const [errorAll, setErrorAll] = useState(null);
+  // const [compnayId, setCompanyId] = useState('');
+  // const [phone, setPhone] = useState('');
+
   useInjectReducer({ key: 'loginPage', reducer });
   useInjectSaga({ key: 'loginPage', saga });
-  const classes = useStyles();
-  const schema = yup.object().shape({
-    companyId: yup.string().required(),
-    phone: yup.string().required(),
+  const { register, handleSubmit, errors, setError } = useForm({
+    resolver: yupResolver(schema),
   });
-  const { register, errors, handleSubmit } = useForm({
-    validationSchema: schema,
-  });
-
-  const onSubmit = () => onSubmitRequestOtp();
-  const onSubmitOtp = () => {
-    if (otp.length < 6) {
-      console.log('error');
-    } else {
-      onSubmitValidateOtp();
+  useEffect(() => {
+    dispatch(loadCompanyListAction());
+  }, []);
+  useEffect(() => {
+    if (errorServer) {
+      const errorConvert = convertErrorStatus(errorServer.ResponseCode);
+      if (errorConvert.field === 'otp')
+        setErrorOtp({ message: errorConvert.message });
+      if (errorConvert.field === 'all')
+        setErrorAll({ message: errorConvert.message });
+      setError(errorConvert.field, {
+        type: 'manual',
+        message: errorConvert.message,
+      });
     }
+  }, [errorServer]);
+  const classes = useStyles();
+  const onSubmit = data => {
+    const { companyId, phone } = data;
+    const p = phone.replace(/ /g, '');
+    dispatch(checkUserExistAction({ companyId, phone: p }));
+  };
+  const handleLogin = () => {
+    schemaOtp.isValid({ otp }).then(valid => {
+      if (valid) {
+        dispatch(changeOtp(otp));
+        dispatch(requestLoginAction(otp));
+        setOtp('');
+        setErrorOtp(null);
+      } else {
+        setErrorOtp({
+          message: errorMessageType.otpErrorMessage,
+        });
+      }
+    });
   };
   return (
-    <div className={classes.paper}>
-      <Switch>
-        <Route exact path="/login">
-          <div>
-            <div className={classes.appHeader}>
-              <SmartphoneOutlined style={{ fontSize: 40 }} />
-              <Typography variant="h4" gutterBottom>
-                <b>Đăng Nhập</b>
-              </Typography>
-            </div>
-
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={8} md={7} className={classes.image} />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={5}
+        component={Paper}
+        elevation={6}
+        square
+      >
+        {loginStep === 0 && (
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Đăng Nhập
+            </Typography>
             <form
-              autoComplete="off"
               className={classes.form}
+              noValidate
               onSubmit={handleSubmit(onSubmit)}
             >
-              {errorServer && (
-                <Alert severity="error">
-                  {convertErrorStatus(errorServer.ResponseCode)}
-                </Alert>
-              )}
-              <TextField
-                fullWidth
-                id="companyId"
-                label="Mã công ty"
-                name="companyId"
-                inputRef={register({
-                  required: 'Mã công ty không được để trống',
-                })}
-                margin="normal"
-                variant="outlined"
-                value={companyId}
-                onChange={onChangeCompanyId}
-                error={!!errors.companyId}
-                helperText={errors.companyId ? errors.companyId.message : ''}
-              />
-              <TextField
-                fullWidth
-                id="phone"
-                label="Số điện thoại"
-                name="phone"
-                inputRef={register({
-                  required: 'Số điện thoại không được để trống',
-                })}
-                value={phone}
-                onChange={onChangePhone}
-                margin="normal"
-                variant="outlined"
-                error={!!errors.phone}
-                helperText={errors.phone ? errors.phone.message : ''}
-              />
-              <Box pt={1}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  type="submit"
-                  color="primary"
-                >
-                  <b>Gửi mã xác nhận</b>
-                </Button>
-              </Box>
+              <div>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    {errorAll && (
+                      <Alert severity="error">{errorAll.message}</Alert>
+                    )}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <FormLabel error={!!errors.companyId} component="legend">
+                        Mã công ty
+                      </FormLabel>
+                      <Autocomplete
+                        id="filter-demo"
+                        options={companyList}
+                        filterOptions={filterOptions}
+                        getOptionLabel={option => option.companyCode}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            required
+                            fullWidth
+                            id="companyId"
+                            placeholder="Nhập mã công ty"
+                            name="companyId"
+                            variant="outlined"
+                            inputRef={register}
+                            error={!!errors.companyId}
+                          />
+                        )}
+                      />
+
+                      <FormHelperText error={!!errors.companyId} id="companyId">
+                        {errors.companyId && errors.companyId.message}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <FormLabel error={!!errors.phone} component="legend">
+                        Số điện thoại
+                      </FormLabel>
+                      <TextField
+                        required
+                        fullWidth
+                        id="phone"
+                        type="tel"
+                        placeholder="Nhập số điện thoại"
+                        name="phone"
+                        variant="outlined"
+                        InputProps={{
+                          inputComponent: PhoneInput,
+                        }}
+                        inputRef={register}
+                        error={!!errors.phone}
+                      />
+                      <FormHelperText error={!!errors.phone} id="companyId">
+                        {errors.phone && errors.phone.message}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                {!loading ? (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Gửi mã xác nhận
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    disabled
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Gửi mã xác nhận
+                  </Button>
+                )}
+              </div>
             </form>
           </div>
-        </Route>
-        <Route path="/login/verify">
-          <div
-            style={{
-              width: '100%',
-              minHeight: '100vh',
-            }}
-          >
-            <div className={classes.appHeader}>
-              <Textsms style={{ fontSize: 40 }} />
-              <Typography variant="h4" gutterBottom>
-                Nhập mã OTP
-              </Typography>
-              <IconButton
-                style={{
-                  color: '#ffff',
-                }}
-                component={Link}
-                to="/login"
-              >
-                <KeyboardBackspaceOutlined />
-              </IconButton>
-            </div>
-            {/* {<p>{otp}</p>} */}
-            <form
-              className={classes.form}
-              onSubmit={handleSubmit(onSubmitOtp)}
-              noValidate
-            >
-              {errorServer && (
-                <Alert severity="error">
-                  {convertErrorStatus(errorServer.ResponseCode)}
-                </Alert>
-              )}
-              <Box p={1}>
-                <OtpInput
-                  // autoFocus
-                  id="otp"
-                  name="otp"
-                  value={otp}
-                  onChange={onChangeOtpInput}
-                  w={1}
-                  numInputs={6}
-                  otpType="number"
-                  disabled={false}
-                  containerStyle={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}
-                  inputStyle={{
-                    height: '45px',
-                    width: '45px',
-                    border: '1px solid #000000',
-                  }}
-                  separator={<span>-</span>}
-                  // secure
-                />
-              </Box>
-              <Box pt={1}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                >
-                  Xác nhận OTP
-                </Button>
-              </Box>
+        )}
+        {loginStep === 1 && (
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Mã xác nhận
+            </Typography>
+            <IconButton onClick={() => dispatch(goBackInput())}>
+              <KeyboardBackspaceOutlined />
+            </IconButton>
+            <form className={classes.form} noValidate>
+              <Grid container>
+                <Grid item xs={12}>
+                  {errorAll && (
+                    <Alert severity="error">{errorAll.message}</Alert>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl error={!!errorOtp} fullWidth>
+                    <OtpInput
+                      id="otp"
+                      name="otp"
+                      value={otp}
+                      onChange={setOtp}
+                      w={1}
+                      numInputs={6}
+                      otpType="number"
+                      disabled={false}
+                      isInputNum
+                      containerStyle={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        display: 'flex',
+                      }}
+                      inputStyle={{
+                        height: 45,
+                        width: 45,
+                        border: '1px solid #000000',
+                      }}
+                      separator={<span> &nbsp; &nbsp;</span>}
+                    />
+                    <FormHelperText
+                      id="otp"
+                      style={{ textAlign: 'center' }}
+                      error={!!errorOtp}
+                    >
+                      {errorOtp && errorOtp.message}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <div>
+                {!loading ? (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleLogin}
+                  >
+                    Đăng nhập
+                  </Button>
+                ) : (
+                  <Button
+                    disabled
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Đăng nhập
+                  </Button>
+                )}
+              </div>
             </form>
           </div>
-        </Route>
-      </Switch>
-      <Fab className={classes.fab} color="primary" aria-label="help">
-        <LiveHelp />
-      </Fab>
-    </div>
+        )}
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
+
 LoginPage.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  loginStep: PropTypes.number,
   errorServer: PropTypes.any,
-  companyId: PropTypes.string,
-  phone: PropTypes.string,
-  otp: PropTypes.string,
-  onChangeCompanyId: PropTypes.func,
-  onChangePhone: PropTypes.func,
-  onChangeOtpInput: PropTypes.func,
-  onSubmitRequestOtp: PropTypes.func,
-  onSubmitValidateOtp: PropTypes.func,
+  loading: PropTypes.bool,
+  companyList: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
   loginPage: makeSelectLoginPage(),
   companyId: makeSelectCompanyId(),
   phone: makeSelectPhone(),
+  loginStep: makeSelectLoginStep(),
   otp: makeSelectOtp(),
-  errorServer: makeSelectError(),
+  errorServer: makeSelectServerError(),
+  companyList: makeSelectCompanyList(),
 });
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    onChangeCompanyId: evt => dispatch(changeCompanyId(evt.target.value)),
-    onChangePhone: evt => dispatch(changePhone(evt.target.value)),
-    onChangeOtpInput: otp => dispatch(changeOtp(otp)),
-    onSubmitRequestOtp: () => dispatch(checkUserExistAction()),
-    onSubmitValidateOtp: () => dispatch(requestLoginAction()),
+    dispatch,
   };
 }
 

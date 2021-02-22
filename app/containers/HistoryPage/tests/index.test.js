@@ -8,21 +8,15 @@
 
 import React from 'react';
 import { render } from 'react-testing-library';
-import { IntlProvider } from 'react-intl';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
 import { HistoryPage } from '../index';
-import { DEFAULT_LOCALE } from '../../../i18n';
 
 describe('<HistoryPage />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
     const dispatch = jest.fn();
-    render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <HistoryPage dispatch={dispatch} />
-      </IntlProvider>,
-    );
+    render(<HistoryPage dispatch={dispatch} />);
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -38,11 +32,7 @@ describe('<HistoryPage />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <HistoryPage />
-      </IntlProvider>,
-    );
+    } = render(<HistoryPage />);
     expect(firstChild).toMatchSnapshot();
   });
 });

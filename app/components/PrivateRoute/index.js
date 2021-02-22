@@ -1,17 +1,7 @@
-/**
- *
- * PrivateRoute
- *
- */
-
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getAccessToken } from '../../utils/storage';
-// import styled from 'styled-components';
-
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 
 function PrivateRoute({ component: Component, ...rest }) {
   return (

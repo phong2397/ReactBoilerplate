@@ -16,6 +16,10 @@ import {
   REQUEST_LOGIN_SUCCESS,
   REQUEST_LOGIN_ERROR,
   CHECK_USER_EXIST,
+  LOADING_LOGIN,
+  GO_BACK_INPUT,
+  LOAD_COMPANY_LIST,
+  LOAD_COMPANY_LIST_SUCCESS,
 } from './constants';
 
 export function defaultAction() {
@@ -41,14 +45,17 @@ export function changeOtp(otp) {
     otp,
   };
 }
-export function checkUserExistAction() {
+export function checkUserExistAction({ phone, companyId }) {
   return {
     type: CHECK_USER_EXIST,
+    phone,
+    companyId,
   };
 }
-export function requestOtpAction() {
+export function requestOtpAction(phone) {
   return {
     type: REQUEST_OTP,
+    phone,
   };
 }
 export function loadRequestOtp(response) {
@@ -63,9 +70,10 @@ export function requestOtpError(error) {
     error,
   };
 }
-export function requestLoginAction() {
+export function requestLoginAction(otp) {
   return {
     type: REQUEST_LOGIN,
+    otp,
   };
 }
 export function loadLoginSuccess(response) {
@@ -78,5 +86,27 @@ export function requestLoginError(error) {
   return {
     type: REQUEST_LOGIN_ERROR,
     error,
+  };
+}
+export function loadingRequest(loading) {
+  return {
+    type: LOADING_LOGIN,
+    loading,
+  };
+}
+export function goBackInput() {
+  return {
+    type: GO_BACK_INPUT,
+  };
+}
+export function loadCompanyListAction() {
+  return {
+    type: LOAD_COMPANY_LIST,
+  };
+}
+export function loadedCompanyList(response) {
+  return {
+    type: LOAD_COMPANY_LIST_SUCCESS,
+    response,
   };
 }

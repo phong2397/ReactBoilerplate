@@ -2,6 +2,7 @@
   "name": "react-boilerplate",
   "version": "4.0.0",
   "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "homepage": "./",
   "repository": {
     "type": "git",
     "url": "git://github.com/react-boilerplate/react-boilerplate.git"
@@ -42,7 +43,9 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prettify": "prettier --write"
+    "prettify": "prettier --write",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open"
   },
   "browserslist": [
     "last 2 versions",
@@ -65,13 +68,19 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.4.3",
-    "@material-ui/core": "^4.11.2",
+    "@date-io/date-fns": "1.3.13",
+    "@hookform/resolvers": "^1.2.0",
+    "@material-ui/core": "^4.9.0",
+    "@material-ui/data-grid": "^4.0.0-alpha.17",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.2.10",
     "chalk": "^2.4.2",
+    "clsx": "^1.1.1",
     "compression": "1.7.4",
     "connected-react-router": "6.4.0",
     "cross-env": "5.2.0",
+    "date-fns": "^2.16.1",
     "express": "4.16.4",
     "fontfaceobserver": "2.1.0",
     "history": "4.9.0",
@@ -86,20 +95,28 @@
     "moment": "^2.29.1",
     "prop-types": "15.7.2",
     "react": "16.8.6",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "16.8.6",
+    "react-dropzone": "^11.2.4",
     "react-helmet": "6.0.0-beta",
-    "react-hook-form": "^6.12.2",
+    "react-hook-form": "^6.13.1",
+    "react-input-mask": "^2.0.4",
     "react-intl": "2.8.0",
+    "react-material-ui-carousel": "^2.1.1",
+    "react-number-format": "^4.4.4",
     "react-otp-input": "^2.3.0",
     "react-redux": "7.0.2",
+    "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "5.0.0",
-    "react-router-redux": "^4.0.8",
+    "react-text-mask": "^5.4.3",
     "redux": "4.0.1",
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
     "styled-components": "4.2.0",
-    "yup": "^0.32.5"
+    "universal-cookie": "^4.0.4",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",
@@ -126,6 +143,7 @@
     "compression-webpack-plugin": "2.0.0",
     "coveralls": "3.0.3",
     "css-loader": "2.1.1",
+    "cypress": "^6.3.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
@@ -157,7 +175,7 @@
     "react-test-renderer": "16.8.6",
     "react-testing-library": "6.1.2",
     "rimraf": "2.6.3",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.3",
     "style-loader": "0.23.1",
     "stylelint": "10.0.1",
     "stylelint-config-recommended": "2.2.0",
@@ -170,7 +188,7 @@
     "webpack-cli": "3.3.0",
     "webpack-dev-middleware": "3.6.2",
     "webpack-hot-middleware": "2.24.3",
-    "webpack-pwa-manifest": "^4.3.0",
+    "webpack-pwa-manifest": "4.0.0",
     "whatwg-fetch": "3.0.0"
   }
 }

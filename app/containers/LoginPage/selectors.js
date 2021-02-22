@@ -45,19 +45,48 @@ const makeSelectError = () =>
     selectLoginPageDomain,
     loginState => loginState.error,
   );
+const makeSelectServerError = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.errorServer,
+  );
 const makeSelectOtp = () =>
   createSelector(
     selectLoginPageDomain,
     loginState => loginState.otp,
   );
-
+const makeSelectLoadingButton = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.loadingButton,
+  );
+const makeSelectLoading = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.loading,
+  );
+const makeSelectLoginStep = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.loginStep,
+  );
+const makeSelectCompanyList = () =>
+  createSelector(
+    selectLoginPageDomain,
+    loginState => loginState.companyList,
+  );
 export default makeSelectLoginPage;
 export {
   selectLoginPageDomain,
+  makeSelectServerError,
   makeSelectProfile,
   makeSelectPhone,
   makeSelectCompanyId,
   makeSelectData,
   makeSelectError,
   makeSelectOtp,
+  makeSelectLoadingButton,
+  makeSelectLoading,
+  makeSelectLoginStep,
+  makeSelectCompanyList,
 };

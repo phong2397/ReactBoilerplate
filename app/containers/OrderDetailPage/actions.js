@@ -6,9 +6,16 @@
 
 import {
   DEFAULT_ACTION,
-  LOAD_ORDER_DETAIL,
-  LOAD_ORDER_DETAIL_SUCCESS,
-  LOAD_ORDER_DETAIL_ERROR,
+  REQUEST_ORDER_BY_ID,
+  REQUEST_ORDER_BY_ID_SUCCESS,
+  REQUEST_ORDER_BY_ID_FAIL,
+  REQUEST_CUSTOMER,
+  REQUEST_CUSTOMER_SUCCESS,
+  REQUEST_CUSTOMER_FAIL,
+  LOAD_STATE,
+  LOADING,
+  REQUEST_ORDER_DETAIL,
+  REFRESH_INIT_STATE,
 } from './constants';
 
 export function defaultAction() {
@@ -17,25 +24,65 @@ export function defaultAction() {
   };
 }
 
-export function loadingOrderDetail() {
-  console.log('STEP 2');
+export function requestOrderById(id) {
   return {
-    type: LOAD_ORDER_DETAIL,
+    type: REQUEST_ORDER_BY_ID,
+    data: id,
+  };
+}
+export function requestOrderByIdSuccess(order) {
+  return {
+    type: REQUEST_ORDER_BY_ID_SUCCESS,
+    order,
+  };
+}
+export function requestOrderByIdFail(err) {
+  return {
+    type: REQUEST_ORDER_BY_ID_FAIL,
+    err,
   };
 }
 
-export function loadingOrderDetailSuccess(value) {
-  console.log('STEP 3 Load success');
+export function requestCustomer() {
   return {
-    type: LOAD_ORDER_DETAIL_SUCCESS,
-    value,
+    type: REQUEST_CUSTOMER,
   };
 }
 
-export function loadingOrderDetailError(error) {
-  console.log('STEP 3 Load error');
+export function requestCustomerSuccess(customer) {
   return {
-    type: LOAD_ORDER_DETAIL_ERROR,
+    type: REQUEST_CUSTOMER_SUCCESS,
+    customer,
+  };
+}
+
+export function requestCustomerFail(error) {
+  return {
+    type: REQUEST_CUSTOMER_FAIL,
     error,
+  };
+}
+export function loadingAction(loading) {
+  return {
+    type: LOADING,
+    loading,
+  };
+}
+export function loadStateAction(loadState) {
+  return {
+    type: LOAD_STATE,
+    loadState,
+  };
+}
+export function requestOrderDetail() {
+  return {
+    type: REQUEST_ORDER_DETAIL,
+  };
+}
+
+export function refreshInitState(state) {
+  return {
+    type: REFRESH_INIT_STATE,
+    state,
   };
 }

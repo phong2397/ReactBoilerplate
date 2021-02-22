@@ -28,6 +28,13 @@ const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
 
+// allow cross domain
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+});
+
 // use the gzipped bundle
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz'; // eslint-disable-line
